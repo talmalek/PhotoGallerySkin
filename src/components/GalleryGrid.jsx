@@ -25,6 +25,7 @@ function useWindowWidth() {
 
 /**
  * Ambient Starfield Particle Canvas (Matrix View Background ONLY)
+ * Lightweight, 120 FPS canvas particle background
  */
 function StarfieldCanvas({ cursorX, cursorY }) {
   const { darkMode } = useFlickr();
@@ -36,7 +37,7 @@ function StarfieldCanvas({ cursorX, cursorY }) {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
 
-    const count = darkMode ? 120 : 75;
+    const count = darkMode ? 110 : 65;
     const stars = Array.from({ length: count }, () => ({
       x: Math.random(),
       y: Math.random(),
@@ -54,8 +55,8 @@ function StarfieldCanvas({ cursorX, cursorY }) {
 
       const cx = cursorX.get();
       const cy = cursorY.get();
-      const mx = cx !== -9999 ? (cx / (window.innerWidth || 1200) - 0.5) * 20 : 0;
-      const my = cy !== -9999 ? (cy / (window.innerHeight || 800) - 0.5) * 20 : 0;
+      const mx = cx !== -9999 ? (cx / (window.innerWidth || 1200) - 0.5) * 18 : 0;
+      const my = cy !== -9999 ? (cy / (window.innerHeight || 800) - 0.5) * 18 : 0;
 
       stars.forEach((star) => {
         star.y -= star.speed;
@@ -96,15 +97,14 @@ function StarfieldCanvas({ cursorX, cursorY }) {
 
 /**
  * ZipperCard Component (Masonry View)
- * Left Column (colIdx 0): arrives from LEFT (-120px -> 0px)
+ * Left Column (colIdx 0): arrives from LEFT (-125px -> 0px)
  * Middle Column (colIdx 1): STAYS in middle (0px)
- * Right Column (colIdx 2): arrives from RIGHT (+120px -> 0px)
+ * Right Column (colIdx 2): arrives from RIGHT (+125px -> 0px)
  * Scrubbed 1-to-1: Scrolling DOWN aligns to position, Scrolling UP returns to original position
  */
 const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActivePhoto }) {
   const cardRef = useRef(null);
 
-  // 1-to-1 Scroll Scrub tied directly to viewport entry/exit
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ['start end', 'center center']
@@ -185,21 +185,25 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
 });
 
 /**
- * MatrixCard Component (Matrix View ONLY - Starfield Mouse Displacement)
+ * MatrixCard Component (Matrix View ONLY - Ultra-Fast 120 FPS Viewport-Gated Mouse Physics)
+ * Uses lightweight image thumbnail for fast loading & viewport check to skip offscreen cards
  */
 const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY, setActivePhoto }) {
   const cardRef = useRef(null);
 
+  // Viewport-gated mouse displacement math: skips calculations if offscreen
   const rawShiftX = useTransform(cursorX, (cx) => {
     if (cx === -9999 || !cardRef.current) return 0;
     const rect = cardRef.current.getBoundingClientRect();
+    if (rect.bottom < -100 || rect.top > (window.innerHeight || 800) + 100) return 0;
+
     const cardCenterX = rect.left + rect.width / 2;
     const dx = cardCenterX - cx;
     const dy = (rect.top + rect.height / 2) - cursorY.get();
     const dist = Math.hypot(dx, dy);
 
-    if (dist < 200 && dist > 0) {
-      return (dx / dist) * Math.pow(1 - dist / 200, 2) * 18;
+    if (dist < 220 && dist > 0) {
+      return (dx / dist) * Math.pow(1 - dist / 220, 2) * 22;
     }
     return 0;
   });
@@ -207,25 +211,27 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
   const rawShiftY = useTransform(cursorY, (cy) => {
     if (cy === -9999 || !cardRef.current) return 0;
     const rect = cardRef.current.getBoundingClientRect();
+    if (rect.bottom < -100 || rect.top > (window.innerHeight || 800) + 100) return 0;
+
     const cardCenterY = rect.top + rect.height / 2;
     const dx = (rect.left + rect.width / 2) - cursorX.get();
     const dy = cardCenterY - cy;
     const dist = Math.hypot(dx, dy);
 
-    if (dist < 200 && dist > 0) {
-      return (dy / dist) * Math.pow(1 - dist / 200, 2) * 18;
+    if (dist < 220 && dist > 0) {
+      return (dy / dist) * Math.pow(1 - dist / 220, 2) * 22;
     }
     return 0;
   });
 
-  const shiftX = useSpring(rawShiftX, { stiffness: 280, damping: 26 });
-  const shiftY = useSpring(rawShiftY, { stiffness: 280, damping: 26 });
+  const shiftX = useSpring(rawShiftX, { stiffness: 300, damping: 28 });
+  const shiftY = useSpring(rawShiftY, { stiffness: 300, damping: 28 });
 
   return (
     <motion.div
       ref={cardRef}
       style={{ x: shiftX, y: shiftY }}
-      whileHover={{ scale: 1.04, zIndex: 30 }}
+      whileHover={{ scale: 1.05, zIndex: 30 }}
       onClick={() => setActivePhoto(photo)}
       className="group relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer z-10 will-change-transform"
     >
@@ -234,7 +240,7 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
         style={{ aspectRatio: photo.aspectRatio || '4/3' }}
       >
         <img
-          src={photo.mediumUrl || photo.thumbUrl}
+          src={photo.thumbUrl || photo.mediumUrl}
           alt={photo.title}
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
@@ -286,12 +292,12 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
  */
 function MatrixColumnContainer({ colIdx, children, scrollYProgress }) {
   const speeds = [
-    [0, -60],
-    [0, 60],
-    [0, -40],
-    [0, 50],
     [0, -50],
-    [0, 40]
+    [0, 50],
+    [0, -35],
+    [0, 45],
+    [0, -45],
+    [0, 35]
   ];
   const range = speeds[colIdx % speeds.length];
   const y = useTransform(scrollYProgress, [0, 1], range);
@@ -305,7 +311,6 @@ function MatrixColumnContainer({ colIdx, children, scrollYProgress }) {
 
 /**
  * Column Parallax Container for Masonry View (Exact mfrports.com 3-column Zipper Parallax)
- * Column 0 & 2 slide UP while Column 1 slides DOWN in opposite directions as you scroll down
  */
 function ZipperColumnContainer({ colIdx, children, scrollYProgress }) {
   const parallaxRanges = [
@@ -394,7 +399,7 @@ export default function GalleryGrid() {
     return cols;
   }, [photos, masonryCols]);
 
-  // Infinite Scroll Observer
+  // Infinite Lazy Scroll Observer
   useEffect(() => {
     if (!sentinelRef.current) return;
 
@@ -404,7 +409,7 @@ export default function GalleryGrid() {
           loadNextPage();
         }
       },
-      { rootMargin: '600px' }
+      { rootMargin: '800px' }
     );
 
     observer.observe(sentinelRef.current);
@@ -433,7 +438,7 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Matrix View (5 Columns with Starfield Particle Background & Frame Displacement)
+  // Render Matrix View (5 Columns with Fast Thumbnails, Viewport-Gated Mouse Physics & Lazy Scroll)
   if (viewMode === 'grid') {
     return (
       <section
@@ -470,12 +475,12 @@ export default function GalleryGrid() {
           ))}
         </div>
 
-        {/* Sentinel */}
-        <div ref={sentinelRef} className="py-20 flex items-center justify-center min-h-[120px] relative z-10">
+        {/* Sentinel for Infinite Lazy Scroll */}
+        <div ref={sentinelRef} className="py-20 flex items-center justify-center min-h-[140px] relative z-10">
           {loadingMore && (
             <div className="flex items-center gap-3 text-amber-800 font-mono text-sm">
               <Loader2 className="w-5 h-5 animate-spin text-amber-700" />
-              <span>Fetching next photostream batch...</span>
+              <span>Fetching next photostream batch from Flickr...</span>
             </div>
           )}
           {!hasMore && photos.length > 0 && (
@@ -517,7 +522,7 @@ export default function GalleryGrid() {
       </div>
 
       {/* Sentinel for Infinite Lazy Scroll */}
-      <div ref={sentinelRef} className="py-20 flex items-center justify-center min-h-[120px]">
+      <div ref={sentinelRef} className="py-20 flex items-center justify-center min-h-[140px]">
         {loadingMore && (
           <div className="flex items-center gap-3 text-amber-800 font-mono text-sm">
             <Loader2 className="w-5 h-5 animate-spin text-amber-700" />
