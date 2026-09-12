@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
-  base: '/PhotoGallerySkin/',
+  base: mode === 'production' ? '/PhotoGallerySkin/' : '/',
   server: {
     host: true,
     port: 3000,
@@ -17,4 +17,4 @@ export default defineConfig({
       }
     }
   }
-});
+}));
