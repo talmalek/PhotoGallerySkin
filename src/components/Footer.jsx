@@ -23,9 +23,9 @@ export default function Footer() {
             />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">PhotoGallerySkin</h4>
+            <h4 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">Tal Malek Photography</h4>
             <p className="text-xs text-neutral-500 font-mono">
-              Flickr Portfolio Skin for @{FLICKR_CONFIG.USERNAME}
+              Official Photography Portfolio for @{FLICKR_CONFIG.USERNAME}
             </p>
           </div>
         </div>

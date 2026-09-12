@@ -42,7 +42,7 @@ export default function Navbar() {
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <span className="font-bold text-base tracking-tight text-neutral-900 dark:text-neutral-100 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
-                Tal Malek
+                Tal Malek Photography
               </span>
               <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
                 PORTFOLIO

@@ -76,7 +76,7 @@ export default function FlickrAuthModal() {
                   className="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-neutral-700/80 text-sm text-neutral-100 placeholder-neutral-600 focus:outline-none focus:border-amber-500 font-mono transition-colors"
                 />
                 <p className="text-[11px] text-neutral-500 mt-2 font-light">
-                  If omitted, PhotoGallerySkin operates using zero-config public feeds automatically.
+                  If omitted, Tal Malek Photography operates using zero-config public feeds automatically.
                 </p>
               </div>
 

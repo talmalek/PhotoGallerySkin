@@ -28,9 +28,9 @@ export default function Hero() {
           alt="Tal Malek"
           className="w-5 h-5 rounded-full object-cover border border-amber-500/40 shrink-0"
         />
-        <span>Flickr Live Portfolio Skin</span>
+        <span>Tal Malek Photography</span>
         <span className="w-1 h-1 rounded-full bg-amber-500"></span>
-        <span className="text-neutral-600 dark:text-neutral-400">mfrports-Inspired Design</span>
+        <span className="text-neutral-600 dark:text-neutral-400">Official Portfolio</span>
       </motion.div>
 
       {/* Main Headline */}
@@ -40,9 +40,9 @@ export default function Hero() {
         transition={{ duration: 0.7, delay: 0.1 }}
         className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 max-w-4xl leading-[1.15]"
       >
-        AUTHENTIC FRAMES &amp; <br className="hidden sm:inline" />
+        TAL MALEK PHOTOGRAPHY <br className="hidden sm:inline" />
         <span className="font-serif-italic font-normal text-amber-700 dark:text-amber-300 underline decoration-amber-500/30 decoration-wavy underline-offset-8">
-          Cinematic Photography
+          Authentic Frames &amp; Cinematic Portfolio
         </span>
       </motion.h1>
 
