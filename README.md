@@ -2,6 +2,10 @@
 
 > A luxury, high-performance web application inspired by `mfrports.com/portfolio/`, designed to stream high-resolution photography live from Flickr profiles with zero local media storage.
 
+🌐 **Live Website**: [https://talmalek.github.io/PhotoGallerySkin/](https://talmalek.github.io/PhotoGallerySkin/)
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-https%3A%2F%2Ftalmalek.github.io%2FPhotoGallerySkin%2F-emerald?style=for-the-badge&logo=githubpages)](https://talmalek.github.io/PhotoGallerySkin/)
+
 ![License](https://img.shields.io/badge/License-MIT-amber.svg)
 ![React](https://img.shields.io/badge/React-19.0.0-blue.svg)
 ![Vite](https://img.shields.io/badge/Vite-6.4.3-purple.svg)
