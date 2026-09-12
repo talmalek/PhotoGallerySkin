@@ -370,9 +370,9 @@ export default function GalleryGrid() {
   const sentinelRef = useRef(null);
   const windowWidth = useWindowWidth();
 
-  // Matrix View 50-Item Sliding Window Buffer State
+  // Matrix View 200-Item Sliding Window Buffer State
   const [matrixOffset, setMatrixOffset] = useState(0);
-  const MATRIX_BUFFER_SIZE = 50;
+  const MATRIX_BUFFER_SIZE = 200;
 
   // Reset matrixOffset when album, search query, or view mode changes
   useEffect(() => {
@@ -544,7 +544,7 @@ export default function GalleryGrid() {
               className="px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-neutral-900 hover:bg-amber-500/10 text-neutral-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-xs font-mono font-bold flex items-center gap-1"
             >
               <ChevronLeft className="w-3.5 h-3.5" />
-              <span>Prev 50</span>
+              <span>Prev 200</span>
             </button>
             <span className="px-2 text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
               Batch {currentBatch} / {totalBatches}
@@ -554,7 +554,7 @@ export default function GalleryGrid() {
               disabled={matrixOffset + MATRIX_BUFFER_SIZE >= photos.length && !hasMore}
               className="px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-neutral-900 hover:bg-amber-500/10 text-neutral-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-xs font-mono font-bold flex items-center gap-1"
             >
-              <span>Next 50</span>
+              <span>Next 200</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -595,14 +595,14 @@ export default function GalleryGrid() {
               className="px-4 py-2 rounded-xl glass-panel hover:bg-amber-500/10 text-neutral-700 dark:text-neutral-300 border border-neutral-200/80 dark:border-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-xs font-mono font-bold flex items-center gap-1.5 shadow-sm"
             >
               <ChevronLeft className="w-4 h-4" />
-              <span>Previous 50 Photos</span>
+              <span>Previous 200 Photos</span>
             </button>
             <button
               onClick={handleNextBatch}
               disabled={matrixOffset + MATRIX_BUFFER_SIZE >= photos.length && !hasMore}
               className="px-4 py-2 rounded-xl glass-panel hover:bg-amber-500/10 text-neutral-700 dark:text-neutral-300 border border-neutral-200/80 dark:border-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-xs font-mono font-bold flex items-center gap-1.5 shadow-sm"
             >
-              <span>Next 50 Photos</span>
+              <span>Next 200 Photos</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
