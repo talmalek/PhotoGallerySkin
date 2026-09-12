@@ -25,7 +25,6 @@ function useWindowWidth() {
 
 /**
  * Ambient Starfield Particle Canvas (Matrix View Background ONLY)
- * Glowing starlight particle canvas reacting smoothly to mouse & dark mode
  */
 function StarfieldCanvas({ cursorX, cursorY }) {
   const { darkMode } = useFlickr();
@@ -97,17 +96,37 @@ function StarfieldCanvas({ cursorX, cursorY }) {
 
 /**
  * ZipperCard Component (Masonry View)
- * Exact mfrports.com editorial photo card layout
+ * 100% 2-Way Scroll Scrubbed Entrance & Exit
+ * Scrolling DOWN: Cards enter from Left (-85px) / Right (+85px) and align to (0,0)
+ * Scrolling UP: Cards slide BACK OUT to Left (-85px) / Right (+85px) returning to original position
  */
 const ZipperCard = memo(function ZipperCard({ photo, globalIdx, setActivePhoto }) {
+  const cardRef = useRef(null);
+
+  // 1-to-1 Scroll Scrub tied directly to viewport entry/exit
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start end', 'center center']
+  });
+
   const isPortrait = globalIdx % 3 === 0;
   const isWide = globalIdx % 5 === 0;
   const aspectStyle = isPortrait ? '3/4' : isWide ? '16/9' : '4/3';
 
+  // Alternate entrance slide direction: Left (-85px) vs Right (+85px)
+  const initialX = (globalIdx % 2 === 0) ? -85 : 85;
+
+  // Continuous 2-way scrubbed transforms
+  const x = useTransform(scrollYProgress, [0, 1], [initialX, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [45, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [0, 1]);
+
   return (
     <motion.div
+      ref={cardRef}
+      style={{ x, y, opacity }}
       whileHover={{ scale: 1.03 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.3 }}
       onClick={() => setActivePhoto(photo)}
       className="group relative rounded-3xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer"
     >
@@ -283,29 +302,20 @@ function MatrixColumnContainer({ colIdx, children, scrollYProgress }) {
 }
 
 /**
- * Column Parallax Container for Masonry View (Exact mfrports.com 2D Scrubbed Zipper Parallax)
- * Both X (horizontal entrance/exit from Left/Right) and Y (vertical zipper slide) are SCRUBBED to scroll direction!
- * Scrolling DOWN moves columns into position from Left & Right.
- * Scrolling UP reverses the movement and returns images back to their original position!
+ * Column Parallax Container for Masonry View (Exact mfrports.com 3-column Zipper Parallax)
+ * Column 0 & 2 slide UP while Column 1 slides DOWN in opposite directions as you scroll down
  */
 function ZipperColumnContainer({ colIdx, children, scrollYProgress }) {
-  const colTransforms = [
-    { x: [50, -50], y: [90, -90] },    // Column 0 enters from Right (+50px) & slides UP
-    { x: [-60, 60], y: [-90, 90] },   // Column 1 enters from Left (-60px) & slides DOWN (Zipper Opposite!)
-    { x: [40, -40], y: [70, -70] }     // Column 2 enters from Right (+40px) & slides UP
+  const parallaxRanges = [
+    [0, -120], // Column 0 slides UP
+    [0, 120],  // Column 1 slides DOWN (Zipper Opposite!)
+    [0, -90]   // Column 2 slides UP
   ];
-
-  const config = colTransforms[colIdx % colTransforms.length];
-
-  const rawX = useTransform(scrollYProgress, [0, 1], config.x);
-  const rawY = useTransform(scrollYProgress, [0, 1], config.y);
-
-  // Smooth scroll spring scrub
-  const x = useSpring(rawX, { stiffness: 140, damping: 26, mass: 0.3 });
-  const y = useSpring(rawY, { stiffness: 140, damping: 26, mass: 0.3 });
+  const range = parallaxRanges[colIdx % parallaxRanges.length];
+  const y = useTransform(scrollYProgress, [0, 1], range);
 
   return (
-    <motion.div style={{ x, y }} className="flex flex-col gap-8 lg:gap-10">
+    <motion.div style={{ y }} className="flex flex-col gap-8 lg:gap-10">
       {children}
     </motion.div>
   );
@@ -326,7 +336,7 @@ export default function GalleryGrid() {
   const sentinelRef = useRef(null);
   const windowWidth = useWindowWidth();
 
-  // Scroll Progress relative to Gallery Section (Continuous 2-way scrub)
+  // Scroll Progress relative to Gallery Section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start']
@@ -476,7 +486,7 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Masonry View (Exact mfrports.com Continuous 2-Way Scrubbed 3-column Zipper Parallax)
+  // Render Masonry View (Exact mfrports.com 3-column Zipper Parallax with 2-Way Entrance/Exit Scrub)
   return (
     <section ref={sectionRef} className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden min-h-screen">
       <div
