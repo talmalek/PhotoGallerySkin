@@ -73,13 +73,13 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
 
   // 1. Try Direct Flickr REST API (flickr.people.getPublicPhotos) - per_page=500
   try {
-    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500&page=${page}`;
+    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,o_dims,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500&page=${page}`;
     const res = await fetch(apiUrl);
     const data = await res.json();
 
     if (data.stat === 'ok' && data.photos && data.photos.photo && data.photos.photo.length > 0) {
       console.log(`[Flickr REST API] Successfully fetched ${data.photos.photo.length} photostream photos (page ${page})`);
-      return data.photos.photo.map((item, idx) => {
+      return data.photos.photo.map((item) => {
         const photoId = item.id;
         const serverId = item.server;
         const secret = item.secret;
@@ -90,6 +90,10 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
         const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
         const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
         const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
+
+        const w = parseInt(item.width_z || item.width_c || item.width_b || item.width_n || item.width_o || 0, 10);
+        const h = parseInt(item.height_z || item.height_c || item.height_b || item.height_n || item.height_o || 0, 10);
+        const aspectRatio = (w > 0 && h > 0) ? `${w}/${h}` : '4/3';
 
         return {
           id: photoId,
@@ -108,7 +112,7 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
           mediumUrl,
           largeUrl,
           fullUrl: item.url_k || largeUrl,
-          aspectRatio: (idx % 3 === 0) ? '3/4' : (idx % 2 === 0) ? '4/3' : '16/9'
+          aspectRatio
         };
       });
     }
@@ -169,13 +173,13 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
 
   // 1. REST API Album Query (flickr.photosets.getPhotos)
   try {
-    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500`;
+    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,o_dims,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500`;
     const res = await fetch(apiUrl);
     const data = await res.json();
 
     if (data.stat === 'ok' && data.photoset && data.photoset.photo && data.photoset.photo.length > 0) {
       console.log(`[Flickr REST API] Loaded ${data.photoset.photo.length} photos for album ${albumId}`);
-      return data.photoset.photo.map((item, idx) => {
+      return data.photoset.photo.map((item) => {
         const photoId = item.id;
         const serverId = item.server;
         const secret = item.secret;
@@ -186,6 +190,10 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
         const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
         const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
         const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
+
+        const w = parseInt(item.width_z || item.width_c || item.width_b || item.width_n || item.width_o || 0, 10);
+        const h = parseInt(item.height_z || item.height_c || item.height_b || item.height_n || item.height_o || 0, 10);
+        const aspectRatio = (w > 0 && h > 0) ? `${w}/${h}` : '4/3';
 
         return {
           id: photoId,
@@ -204,7 +212,7 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
           mediumUrl,
           largeUrl,
           fullUrl: item.url_k || largeUrl,
-          aspectRatio: (idx % 2 === 0) ? '4/3' : '3/4'
+          aspectRatio
         };
       });
     }

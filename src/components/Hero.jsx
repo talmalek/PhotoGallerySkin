@@ -114,7 +114,7 @@ export default function Hero() {
             {currentAlbum.title}
           </h2>
           <span className="text-xs font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-500/10 px-3 py-1 rounded-lg border border-amber-500/20">
-            Showing {photos.length} of {currentAlbum.count} Photos
+            Showing {photos.length} Photos
           </span>
         </div>
 

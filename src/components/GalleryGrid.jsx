@@ -114,15 +114,26 @@ function StarfieldCanvas({ cursorX, cursorY }) {
  */
 const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActivePhoto }) {
   const cardRef = useRef(null);
+  const [realAspectRatio, setRealAspectRatio] = useState(photo.aspectRatio || '4/3');
+
+  useEffect(() => {
+    if (photo.aspectRatio) {
+      setRealAspectRatio(photo.aspectRatio);
+    }
+  }, [photo.aspectRatio]);
+
+  const handleImageLoad = (e) => {
+    const nw = e.target.naturalWidth;
+    const nh = e.target.naturalHeight;
+    if (nw > 0 && nh > 0) {
+      setRealAspectRatio(`${nw}/${nh}`);
+    }
+  };
 
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ['start end', 'center center']
   });
-
-  const isPortrait = globalIdx % 3 === 0;
-  const isWide = globalIdx % 5 === 0;
-  const aspectStyle = isPortrait ? '3/4' : isWide ? '16/9' : '4/3';
 
   // Column-based entrance direction logic
   const initialX = colIdx === 0 ? -125 : colIdx === 2 ? 125 : 0;
@@ -144,12 +155,13 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
     >
       <div
         className="w-full relative overflow-hidden flex items-center justify-center bg-neutral-200/40 dark:bg-neutral-800/40"
-        style={{ aspectRatio: photo.aspectRatio || aspectStyle }}
+        style={{ aspectRatio: realAspectRatio }}
       >
         <img
           src={photo.mediumUrl || photo.thumbUrl}
           alt={photo.title}
           loading="lazy"
+          onLoad={handleImageLoad}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           onError={(e) => {
             e.target.src = photo.thumbUrl;
@@ -194,6 +206,17 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
   );
 });
 
+function getAspectRatioHeight(aspectRatioStr) {
+  if (!aspectRatioStr) return 0.75;
+  const parts = aspectRatioStr.split('/');
+  if (parts.length === 2) {
+    const w = parseFloat(parts[0]);
+    const h = parseFloat(parts[1]);
+    if (w > 0 && h > 0) return h / w;
+  }
+  return 0.75;
+}
+
 /**
  * MatrixCard Component (Matrix View - Native Engine Offscreen Pruning, Progressive Loading & Starfield Repulsion)
  * Uses content-visibility: auto for instant browser offscreen pruning, preserving zero GPU memory bloat.
@@ -203,6 +226,21 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { margin: '200px 0px 200px 0px' });
   const [isHovered, setIsHovered] = useState(false);
+  const [realAspectRatio, setRealAspectRatio] = useState(photo.aspectRatio || '4/3');
+
+  useEffect(() => {
+    if (photo.aspectRatio) {
+      setRealAspectRatio(photo.aspectRatio);
+    }
+  }, [photo.aspectRatio]);
+
+  const handleImageLoad = (e) => {
+    const nw = e.target.naturalWidth;
+    const nh = e.target.naturalHeight;
+    if (nw > 0 && nh > 0) {
+      setRealAspectRatio(`${nw}/${nh}`);
+    }
+  };
 
   // Progressive image resolution sources
   const lowResSrc = photo.small320Url || photo.smallUrl || photo.thumbUrl;
@@ -267,13 +305,14 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
     >
       <div
         className="w-full relative overflow-hidden flex items-center justify-center bg-neutral-200/40 dark:bg-neutral-800/40"
-        style={{ aspectRatio: photo.aspectRatio || '4/3' }}
+        style={{ aspectRatio: realAspectRatio }}
       >
         <img
           src={currentSrc}
           alt={photo.title}
           loading="lazy"
           decoding="async"
+          onLoad={handleImageLoad}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           onError={(e) => {
             e.target.src = photo.thumbUrl;
@@ -323,12 +362,12 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
  */
 function MatrixColumnContainer({ colIdx, children, scrollYProgress }) {
   const speeds = [
-    [0, -50],
-    [0, 50],
-    [0, -35],
-    [0, 45],
-    [0, -45],
-    [0, 35]
+    [0, -12],
+    [0, 12],
+    [0, -8],
+    [0, 8],
+    [0, -10],
+    [0, 10]
   ];
   const range = speeds[colIdx % speeds.length];
   const y = useTransform(scrollYProgress, [0, 1], range);
@@ -337,6 +376,97 @@ function MatrixColumnContainer({ colIdx, children, scrollYProgress }) {
     <motion.div style={{ y }} className="flex flex-col gap-4 sm:gap-5">
       {children}
     </motion.div>
+  );
+}
+
+/**
+ * Responsive Page Pagination Controls Component (50 / 100 / 200 photos per page)
+ */
+function PaginationBar({ currentPage, totalPages, pageSize, setPageSize, setCurrentPage, sectionRef, totalPhotos }) {
+  if (totalPhotos === 0 || totalPages <= 1) return null;
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages || newPage === currentPage) return;
+    setCurrentPage(newPage);
+    if (sectionRef && sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const startIdx = (currentPage - 1) * pageSize + 1;
+  const endIdx = Math.min(totalPhotos, currentPage * pageSize);
+
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  return (
+    <div className="mt-12 mb-6 flex flex-col sm:flex-row items-center justify-between gap-6 py-5 px-6 rounded-3xl bg-neutral-100/90 dark:bg-neutral-900/90 border border-neutral-200/80 dark:border-neutral-800 backdrop-blur-md relative z-20 shadow-lg">
+      {/* Page Size Selector */}
+      <div className="flex items-center gap-3">
+        <span className="text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider font-semibold">Per Page:</span>
+        <div className="flex items-center gap-1.5 bg-neutral-200/60 dark:bg-neutral-800/60 p-1 rounded-xl">
+          {[50, 100, 200].map((size) => (
+            <button
+              key={size}
+              onClick={() => {
+                setPageSize(size);
+                if (sectionRef && sectionRef.current) {
+                  sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all ${
+                pageSize === size
+                  ? 'bg-amber-600 text-white shadow-md'
+                  : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+              }`}
+            >
+              {size}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Page Info */}
+      <div className="text-xs font-mono font-semibold text-neutral-600 dark:text-neutral-400">
+        Showing <span className="text-amber-600 dark:text-amber-400 font-bold">{startIdx}–{endIdx}</span> of <span className="font-bold">{totalPhotos}</span> Photos
+      </div>
+
+      {/* Page Navigation Buttons */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="p-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm flex items-center gap-1 text-xs font-mono font-bold"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          <span>Prev</span>
+        </button>
+
+        <div className="flex items-center gap-1">
+          {pages.map((p) => (
+            <button
+              key={p}
+              onClick={() => handlePageChange(p)}
+              className={`w-8 h-8 rounded-xl text-xs font-mono font-bold transition-all ${
+                currentPage === p
+                  ? 'bg-amber-600 text-white shadow-md'
+                  : 'bg-white/50 dark:bg-neutral-800/50 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700'
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="p-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm flex items-center gap-1 text-xs font-mono font-bold"
+        >
+          <span>Next</span>
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -363,15 +493,15 @@ export default function GalleryGrid() {
   const {
     photos,
     loading,
-    loadingMore,
-    loadNextPage,
-    hasMore,
     setActivePhoto,
-    viewMode
+    viewMode,
+    pageSize,
+    setPageSize,
+    currentPage,
+    setCurrentPage
   } = useFlickr();
 
   const sectionRef = useRef(null);
-  const sentinelRef = useRef(null);
   const windowWidth = useWindowWidth();
 
   // Scroll Progress relative to Gallery Section
@@ -413,39 +543,68 @@ export default function GalleryGrid() {
     return 1;
   }, [windowWidth]);
 
-  // Stable column photo distributions
+  // Page pagination slicing
+  const activePageSize = pageSize || 200;
+  const totalPages = Math.ceil(photos.length / activePageSize);
+  const paginatedPhotos = useMemo(() => {
+    const start = (currentPage - 1) * activePageSize;
+    return photos.slice(start, start + activePageSize);
+  }, [photos, currentPage, activePageSize]);
+
+  // Shortest-Column Height Balancing: preserves native image aspect ratios while filling all columns evenly without gaps
   const matrixColumns = useMemo(() => {
-    const cols = Array.from({ length: matrixCols }, () => []);
-    photos.forEach((photo, globalIdx) => {
-      cols[globalIdx % matrixCols].push({ photo, globalIdx });
+    const cols = Array.from({ length: matrixCols }, () => ({
+      items: [],
+      height: 0
+    }));
+    if (viewMode !== 'grid') return cols.map(c => c.items);
+
+    paginatedPhotos.forEach((photo, idx) => {
+      const globalIdx = (currentPage - 1) * activePageSize + idx;
+      const h = getAspectRatioHeight(photo.aspectRatio);
+
+      let minColIdx = 0;
+      let minHeight = cols[0].height;
+      for (let c = 1; c < matrixCols; c++) {
+        if (cols[c].height < minHeight) {
+          minHeight = cols[c].height;
+          minColIdx = c;
+        }
+      }
+
+      cols[minColIdx].items.push({ photo, globalIdx });
+      cols[minColIdx].height += h + 0.08;
     });
-    return cols;
-  }, [photos, matrixCols]);
+
+    return cols.map(c => c.items);
+  }, [paginatedPhotos, matrixCols, currentPage, activePageSize, viewMode]);
 
   const masonryColumns = useMemo(() => {
-    const cols = Array.from({ length: masonryCols }, () => []);
-    photos.forEach((photo, globalIdx) => {
-      cols[globalIdx % masonryCols].push({ photo, globalIdx, colIdx: globalIdx % masonryCols });
-    });
-    return cols;
-  }, [photos, masonryCols]);
+    const cols = Array.from({ length: masonryCols }, () => ({
+      items: [],
+      height: 0
+    }));
+    if (viewMode === 'grid') return cols.map(c => c.items);
 
-  // Infinite Lazy Scroll Observer (Triggers stream fetch when scrolling to ~80% of gallery height)
-  useEffect(() => {
-    if (!sentinelRef.current) return;
+    paginatedPhotos.forEach((photo, idx) => {
+      const globalIdx = (currentPage - 1) * activePageSize + idx;
+      const h = getAspectRatioHeight(photo.aspectRatio);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading && !loadingMore) {
-          loadNextPage();
+      let minColIdx = 0;
+      let minHeight = cols[0].height;
+      for (let c = 1; c < masonryCols; c++) {
+        if (cols[c].height < minHeight) {
+          minHeight = cols[c].height;
+          minColIdx = c;
         }
-      },
-      { rootMargin: '600px' }
-    );
+      }
 
-    observer.observe(sentinelRef.current);
-    return () => observer.disconnect();
-  }, [hasMore, loading, loadingMore, loadNextPage]);
+      cols[minColIdx].items.push({ photo, globalIdx, colIdx: minColIdx });
+      cols[minColIdx].height += h + 0.08;
+    });
+
+    return cols.map(c => c.items);
+  }, [paginatedPhotos, masonryCols, currentPage, activePageSize, viewMode]);
 
   if (loading && photos.length === 0) {
     return (
@@ -469,14 +628,14 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Matrix View (Native Engine Offscreen Pruning, Progressive Loading & 120 FPS Starfield Repulsion)
+  // Render Matrix View
   if (viewMode === 'grid') {
     return (
       <section
         ref={sectionRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden relative min-h-screen"
+        className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 relative min-h-screen"
       >
         <StarfieldCanvas cursorX={cursorX} cursorY={cursorY} />
 
@@ -506,27 +665,23 @@ export default function GalleryGrid() {
           ))}
         </div>
 
-        {/* Sentinel & Dynamic Loading Indicator */}
-        <div ref={sentinelRef} className="py-16 flex flex-col items-center justify-center gap-4 relative z-10">
-          {loadingMore && (
-            <div className="flex items-center gap-3 text-amber-800 dark:text-amber-300 font-mono text-sm">
-              <Loader2 className="w-5 h-5 animate-spin text-amber-700 dark:text-amber-400" />
-              <span>Streaming next photostream batch from Flickr...</span>
-            </div>
-          )}
-          {!hasMore && photos.length > 0 && (
-            <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest">
-              — End of Flickr Collection ({photos.length} photos loaded) —
-            </span>
-          )}
-        </div>
+        {/* Pagination Controls */}
+        <PaginationBar
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pageSize={activePageSize}
+          setPageSize={setPageSize}
+          setCurrentPage={setCurrentPage}
+          sectionRef={sectionRef}
+          totalPhotos={photos.length}
+        />
       </section>
     );
   }
 
-  // Render Masonry View (Exact mfrports.com 3-column Zipper Parallax: Left arrives from Left, Right from Right, Middle Stays)
+  // Render Masonry View
   return (
-    <section ref={sectionRef} className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden min-h-screen">
+    <section ref={sectionRef} className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 min-h-screen">
       <div
         className="grid gap-8 lg:gap-10 items-start"
         style={{
@@ -552,20 +707,16 @@ export default function GalleryGrid() {
         ))}
       </div>
 
-      {/* Sentinel for Infinite Lazy Scroll */}
-      <div ref={sentinelRef} className="py-20 flex items-center justify-center min-h-[140px]">
-        {loadingMore && (
-          <div className="flex items-center gap-3 text-amber-800 dark:text-amber-300 font-mono text-sm">
-            <Loader2 className="w-5 h-5 animate-spin text-amber-700 dark:text-amber-400" />
-            <span>Fetching next photostream batch from Flickr...</span>
-          </div>
-        )}
-        {!hasMore && photos.length > 0 && (
-          <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest">
-            — End of Flickr Collection ({photos.length} photos loaded) —
-          </span>
-        )}
-      </div>
+      {/* Pagination Controls */}
+      <PaginationBar
+        currentPage={currentPage}
+        totalPages={totalPages}
+        pageSize={activePageSize}
+        setPageSize={setPageSize}
+        setCurrentPage={setCurrentPage}
+        sectionRef={sectionRef}
+        totalPhotos={photos.length}
+      />
     </section>
   );
 }

@@ -50,35 +50,43 @@ export function FlickrProvider({ children }) {
     }
   }, [darkMode]);
 
-  // Load photos when album or page changes
-  const loadPhotos = useCallback(async (albumId, pageNum, isInitial = false) => {
-    if (isInitial) {
-      setLoading(true);
-    } else {
-      setLoadingMore(true);
-    }
+  // Pagination State - Options: 50, 100, 200 (Default: 200)
+  const [pageSize, setPageSizeState] = useState(() => {
+    const saved = localStorage.getItem('flickr_page_size');
+    return saved ? parseInt(saved, 10) : 200;
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const setPageSize = (size) => {
+    setPageSizeState(size);
+    localStorage.setItem('flickr_page_size', size.toString());
+    setCurrentPage(1);
+  };
+
+  // Load photos when album changes
+  const loadPhotos = useCallback(async (albumId, isInitial = false) => {
+    setLoading(true);
 
     try {
       let fetched = [];
       if (albumId === 'all') {
-        fetched = await fetchPublicPhotostream(pageNum);
+        // Fetch full photostream in parallel batches (635 photos total)
+        const [batch1, batch2] = await Promise.all([
+          fetchPublicPhotostream(1, apiKey),
+          fetchPublicPhotostream(2, apiKey)
+        ]);
+        const existingIds = new Set();
+        fetched = [...batch1, ...batch2].filter(p => {
+          if (existingIds.has(p.id)) return false;
+          existingIds.add(p.id);
+          return true;
+        });
       } else {
         fetched = await fetchAlbumPhotos(albumId, apiKey);
       }
 
-      if (isInitial) {
-        setPhotos(fetched);
-      } else {
-        // Append unique items to existing photos list
-        setPhotos(prev => {
-          const existingIds = new Set(prev.map(p => p.id));
-          const uniqueNew = fetched.filter(p => !existingIds.has(p.id));
-          return [...prev, ...uniqueNew];
-        });
-      }
-
-      // Check if more items exist
-      setHasMore(fetched.length > 0 && (albumId === 'all' || pageNum === 1));
+      setPhotos(fetched);
+      setCurrentPage(1);
     } catch (err) {
       console.error('Failed to load photos:', err);
     } finally {
@@ -89,14 +97,14 @@ export function FlickrProvider({ children }) {
 
   // Initial load
   useEffect(() => {
-    loadPhotos(activeAlbum, 1, true);
+    loadPhotos(activeAlbum, true);
   }, [activeAlbum, loadPhotos]);
 
   // Album selection handler
   const selectAlbum = (albumId) => {
     if (albumId === activeAlbum) return;
     setActiveAlbum(albumId);
-    setPage(1);
+    setCurrentPage(1);
     setPhotos([]);
   };
 
@@ -165,6 +173,10 @@ export function FlickrProvider({ children }) {
         setIsAuthModalOpen,
         searchQuery,
         setSearchQuery,
+        pageSize,
+        setPageSize,
+        currentPage,
+        setCurrentPage,
         apiKey,
         saveApiKey
       }}

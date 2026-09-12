@@ -29,10 +29,11 @@
     - **Middle Column (Column 1)**: Images **stay centered** (`x: 0px`) and glide vertically (`y: +55px` ➔ `0px`).
     - **Right Column (Column 2)**: Images arrive from the **Right** (`x: +125px` ➔ `0px`).
     - **2-Way Continuous Scrub**: Scrolling DOWN aligns images into position; scrolling BACK UP reverses the animation and returns every image to its starting offscreen position.
-  - **✨ Matrix View (5–6 Columns)**:
-    - **Ambient Starfield Background**: Canvas-rendered starlight particles drifting smoothly in 120 FPS.
-    - **Starfield Proximity Repulsion**: Each image card behaves like a star floating in space. When the mouse cursor moves close to an image, **only that specific image repels slowly away from the cursor by a small margin (up to 22px)** with soft spring physics (`stiffness: 180, damping: 24`).
-    - **Viewport-Gated Performance (`useInView`)**: Proximity math executes ONLY on cards currently visible in the active viewport (~15–20 cards), ensuring 120 FPS zero-lag scrolling even on large photostreams (500+ items).
+- **⚡ Page Pagination Engine (50 / 100 / 200 per page)**: Selectable page size selector (default 200 items per page) with smooth page transitions and instant 120 FPS performance across the entire 635+ photo collection.
+- **📐 Authentic Native Aspect Ratios & Shortest-Column Masonry Height Balancing**:
+  - Queries exact image dimensions directly from Flickr REST API (`width_z`, `height_z`) with dynamic `onLoad` natural dimension verification (`e.target.naturalWidth`/`naturalHeight`).
+  - **DSC_6909** and all photos display in their authentic, un-cropped native aspect ratio (portrait, landscape, panorama).
+  - Uses shortest-column height balancing so all columns fill evenly from top to bottom with **zero empty gaps or missing columns**.
 - **🎬 Hero Filmstrip Marquee**: Continuous infinite horizontal marquee reel at the hero section running at silky-smooth 120 FPS.
 - **🏷️ Authentic Flickr Metadata**: Preserves real photo titles and original camera filenames (`DSC04892`, `IMG_2023...`).
 - **🔍 Cinema Lightbox & EXIF Drawer**:
