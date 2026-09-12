@@ -195,12 +195,18 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
 });
 
 /**
- * MatrixCard Component (Matrix View - Low-Res Ultra-Fast Starfield Proximity Repulsion)
- * Uses lightweight nanoUrl/smallUrl thumbnail for 10x faster loading & zero GPU texture bloat
+ * MatrixCard Component (Matrix View - Progressive Image Loading & Starfield Proximity Repulsion)
+ * Loads fast, aspect-ratio-preserving 320px (_n) image instantly, upgrading to 640px (_z) HD on hover
  */
 const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY, setActivePhoto }) {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { margin: '200px 0px 200px 0px' });
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Progressive image resolution sources
+  const lowResSrc = photo.small320Url || photo.smallUrl || photo.thumbUrl;
+  const highResSrc = photo.thumbUrl || photo.mediumUrl;
+  const currentSrc = isHovered ? highResSrc : lowResSrc;
 
   // Viewport-gated mouse displacement math: skips calculations if offscreen
   const rawShiftX = useTransform(cursorX, (cx) => {
@@ -249,6 +255,7 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
       transition={{ duration: 0.4, delay: Math.min((globalIdx % 12) * 0.03, 0.36) }}
       style={{ x: shiftX, y: shiftY }}
       whileHover={{ scale: 1.05, zIndex: 30 }}
+      onMouseEnter={() => setIsHovered(true)}
       onClick={() => setActivePhoto(photo)}
       className="group relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer z-10 will-change-transform"
     >
@@ -257,7 +264,7 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
         style={{ aspectRatio: photo.aspectRatio || '4/3' }}
       >
         <img
-          src={photo.nanoUrl || photo.smallUrl || photo.thumbUrl}
+          src={currentSrc}
           alt={photo.title}
           loading="lazy"
           decoding="async"

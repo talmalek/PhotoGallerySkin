@@ -86,6 +86,7 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
 
         const nanoUrl = item.url_q || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_q.jpg`;
         const smallUrl = item.url_s || item.url_m || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_m.jpg`;
+        const small320Url = item.url_n || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_n.jpg`;
         const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
         const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
         const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
@@ -102,6 +103,7 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
           tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Photography', 'Portfolio'],
           nanoUrl,
           smallUrl,
+          small320Url,
           thumbUrl,
           mediumUrl,
           largeUrl,
@@ -139,6 +141,7 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
           tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Photography', 'Portfolio'],
           nanoUrl: getFlickrImageUrl(mediaUrl, 'q'),
           smallUrl: getFlickrImageUrl(mediaUrl, 'm'),
+          small320Url: getFlickrImageUrl(mediaUrl, 'n'),
           thumbUrl: getFlickrImageUrl(mediaUrl, 'z'),
           mediumUrl: getFlickrImageUrl(mediaUrl, 'c'),
           largeUrl: getFlickrImageUrl(mediaUrl, 'b'),
@@ -179,6 +182,7 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
 
         const nanoUrl = item.url_q || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_q.jpg`;
         const smallUrl = item.url_s || item.url_m || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_m.jpg`;
+        const small320Url = item.url_n || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_n.jpg`;
         const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
         const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
         const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
@@ -195,6 +199,7 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
           tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Album'],
           nanoUrl,
           smallUrl,
+          small320Url,
           thumbUrl,
           mediumUrl,
           largeUrl,
