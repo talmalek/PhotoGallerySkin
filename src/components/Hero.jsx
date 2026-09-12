@@ -36,7 +36,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.1 }}
-        className="text-3xl sm:text-5xl font-serif font-light tracking-wide text-neutral-900 dark:text-neutral-100 max-w-3xl leading-tight"
+        className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 max-w-3xl leading-tight"
       >
         Tal Malek Photography
       </motion.h1>
