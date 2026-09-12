@@ -96,11 +96,12 @@ function StarfieldCanvas({ cursorX, cursorY }) {
 
 /**
  * ZipperCard Component (Masonry View)
- * 100% 2-Way Scroll Scrubbed Entrance & Exit
- * Scrolling DOWN: Cards enter from Left (-85px) / Right (+85px) and align to (0,0)
- * Scrolling UP: Cards slide BACK OUT to Left (-85px) / Right (+85px) returning to original position
+ * Left Column (colIdx 0): arrives from LEFT (-120px -> 0px)
+ * Middle Column (colIdx 1): STAYS in middle (0px)
+ * Right Column (colIdx 2): arrives from RIGHT (+120px -> 0px)
+ * Scrubbed 1-to-1: Scrolling DOWN aligns to position, Scrolling UP returns to original position
  */
-const ZipperCard = memo(function ZipperCard({ photo, globalIdx, setActivePhoto }) {
+const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActivePhoto }) {
   const cardRef = useRef(null);
 
   // 1-to-1 Scroll Scrub tied directly to viewport entry/exit
@@ -113,13 +114,14 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, setActivePhoto }
   const isWide = globalIdx % 5 === 0;
   const aspectStyle = isPortrait ? '3/4' : isWide ? '16/9' : '4/3';
 
-  // Alternate entrance slide direction: Left (-85px) vs Right (+85px)
-  const initialX = (globalIdx % 2 === 0) ? -85 : 85;
+  // Column-based entrance direction logic
+  const initialX = colIdx === 0 ? -125 : colIdx === 2 ? 125 : 0;
+  const initialY = colIdx === 1 ? 55 : 35; // Middle column glides up vertically
 
   // Continuous 2-way scrubbed transforms
   const x = useTransform(scrollYProgress, [0, 1], [initialX, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [45, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.75], [0, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], [initialY, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [0, 1]);
 
   return (
     <motion.div
@@ -387,7 +389,7 @@ export default function GalleryGrid() {
   const masonryColumns = useMemo(() => {
     const cols = Array.from({ length: masonryCols }, () => []);
     photos.forEach((photo, globalIdx) => {
-      cols[globalIdx % masonryCols].push({ photo, globalIdx });
+      cols[globalIdx % masonryCols].push({ photo, globalIdx, colIdx: globalIdx % masonryCols });
     });
     return cols;
   }, [photos, masonryCols]);
@@ -486,7 +488,7 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Masonry View (Exact mfrports.com 3-column Zipper Parallax with 2-Way Entrance/Exit Scrub)
+  // Render Masonry View (Exact mfrports.com 3-column Zipper Parallax: Left arrives from Left, Right from Right, Middle Stays)
   return (
     <section ref={sectionRef} className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden min-h-screen">
       <div
@@ -501,11 +503,12 @@ export default function GalleryGrid() {
             colIdx={colIdx}
             scrollYProgress={scrollYProgress}
           >
-            {colItems.map(({ photo, globalIdx }) => (
+            {colItems.map(({ photo, globalIdx, colIdx: itemColIdx }) => (
               <ZipperCard
                 key={`zipper-${photo.id}-${globalIdx}`}
                 photo={photo}
                 globalIdx={globalIdx}
+                colIdx={itemColIdx}
                 setActivePhoto={setActivePhoto}
               />
             ))}
