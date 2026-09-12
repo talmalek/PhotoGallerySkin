@@ -4,7 +4,7 @@ import { Sparkles, Search, ArrowDown } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 
 export default function Hero() {
-  const { photos, searchQuery, setSearchQuery, activeAlbum, albums } = useFlickr();
+  const { photos, searchQuery, setSearchQuery, activeAlbum, albums, viewMode } = useFlickr();
 
   const marqueeItems = photos.slice(0, 8);
   const currentAlbum = albums.find(a => a.id === activeAlbum) || albums[0];
@@ -73,8 +73,8 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Marquee Reel Preview */}
-      {marqueeItems.length > 0 && (
+      {/* Marquee Reel Preview (Masonry View Only) */}
+      {viewMode === 'masonry' && marqueeItems.length > 0 && (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}

@@ -84,6 +84,8 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
         const serverId = item.server;
         const secret = item.secret;
 
+        const nanoUrl = item.url_q || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_q.jpg`;
+        const smallUrl = item.url_s || item.url_m || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_m.jpg`;
         const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
         const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
         const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
@@ -98,6 +100,8 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
           dateTaken: item.datetaken ? new Date(item.datetaken).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '2024',
           description: item.description?._content || 'Captured moment by Tal Malek.',
           tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Photography', 'Portfolio'],
+          nanoUrl,
+          smallUrl,
           thumbUrl,
           mediumUrl,
           largeUrl,
@@ -133,6 +137,8 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
           dateTaken: item.date_taken ? new Date(item.date_taken).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '2024',
           description: cleanDescription(item.description),
           tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Photography', 'Portfolio'],
+          nanoUrl: getFlickrImageUrl(mediaUrl, 'q'),
+          smallUrl: getFlickrImageUrl(mediaUrl, 'm'),
           thumbUrl: getFlickrImageUrl(mediaUrl, 'z'),
           mediumUrl: getFlickrImageUrl(mediaUrl, 'c'),
           largeUrl: getFlickrImageUrl(mediaUrl, 'b'),
@@ -171,6 +177,8 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
         const serverId = item.server;
         const secret = item.secret;
 
+        const nanoUrl = item.url_q || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_q.jpg`;
+        const smallUrl = item.url_s || item.url_m || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_m.jpg`;
         const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
         const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
         const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
@@ -185,6 +193,8 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
           dateTaken: item.datetaken ? new Date(item.datetaken).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '2024',
           description: item.description?._content || 'Album item from Tal Malek Flickr collection.',
           tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Album'],
+          nanoUrl,
+          smallUrl,
           thumbUrl,
           mediumUrl,
           largeUrl,
