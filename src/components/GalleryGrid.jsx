@@ -37,6 +37,15 @@ function StarfieldCanvas({ cursorX, cursorY }) {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
 
+    const handleResize = () => {
+      if (!canvas) return;
+      canvas.width = canvas.offsetWidth || (typeof window !== 'undefined' ? window.innerWidth : 1200);
+      canvas.height = canvas.offsetHeight || (typeof window !== 'undefined' ? window.innerHeight : 800);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     const count = darkMode ? 110 : 65;
     const stars = Array.from({ length: count }, () => ({
       x: Math.random(),
@@ -49,14 +58,12 @@ function StarfieldCanvas({ cursorX, cursorY }) {
     }));
 
     const render = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const cx = cursorX.get();
-      const cy = cursorY.get();
-      const mx = cx !== -9999 ? (cx / (window.innerWidth || 1200) - 0.5) * 18 : 0;
-      const my = cy !== -9999 ? (cy / (window.innerHeight || 800) - 0.5) * 18 : 0;
+      const cx = cursorX ? cursorX.get() : -9999;
+      const cy = cursorY ? cursorY.get() : -9999;
+      const mx = cx !== -9999 ? (cx / (canvas.width || 1200) - 0.5) * 18 : 0;
+      const my = cy !== -9999 ? (cy / (canvas.height || 800) - 0.5) * 18 : 0;
 
       stars.forEach((star) => {
         star.y -= star.speed;
@@ -82,7 +89,10 @@ function StarfieldCanvas({ cursorX, cursorY }) {
     };
 
     render();
-    return () => cancelAnimationFrame(animationFrameId);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+    };
   }, [cursorX, cursorY, darkMode]);
 
   return (
@@ -185,55 +195,18 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
 });
 
 /**
- * MatrixCard Component (Matrix View ONLY - Ultra-Fast 120 FPS Viewport-Gated Mouse Physics)
- * Uses lightweight image thumbnail for fast loading & viewport check to skip offscreen cards
+ * MatrixCard Component (Matrix View ONLY - Ultra-Fast 120 FPS Zero-Lag Component)
+ * Uses lightweight image thumbnail for instant loading & Framer hover physics
  */
-const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY, setActivePhoto }) {
-  const cardRef = useRef(null);
-
-  // Viewport-gated mouse displacement math: skips calculations if offscreen
-  const rawShiftX = useTransform(cursorX, (cx) => {
-    if (cx === -9999 || !cardRef.current) return 0;
-    const rect = cardRef.current.getBoundingClientRect();
-    if (rect.bottom < -100 || rect.top > (window.innerHeight || 800) + 100) return 0;
-
-    const cardCenterX = rect.left + rect.width / 2;
-    const dx = cardCenterX - cx;
-    const dy = (rect.top + rect.height / 2) - cursorY.get();
-    const dist = Math.hypot(dx, dy);
-
-    if (dist < 220 && dist > 0) {
-      return (dx / dist) * Math.pow(1 - dist / 220, 2) * 22;
-    }
-    return 0;
-  });
-
-  const rawShiftY = useTransform(cursorY, (cy) => {
-    if (cy === -9999 || !cardRef.current) return 0;
-    const rect = cardRef.current.getBoundingClientRect();
-    if (rect.bottom < -100 || rect.top > (window.innerHeight || 800) + 100) return 0;
-
-    const cardCenterY = rect.top + rect.height / 2;
-    const dx = (rect.left + rect.width / 2) - cursorX.get();
-    const dy = cardCenterY - cy;
-    const dist = Math.hypot(dx, dy);
-
-    if (dist < 220 && dist > 0) {
-      return (dy / dist) * Math.pow(1 - dist / 220, 2) * 22;
-    }
-    return 0;
-  });
-
-  const shiftX = useSpring(rawShiftX, { stiffness: 300, damping: 28 });
-  const shiftY = useSpring(rawShiftY, { stiffness: 300, damping: 28 });
-
+const MatrixCard = memo(function MatrixCard({ photo, globalIdx, setActivePhoto }) {
   return (
     <motion.div
-      ref={cardRef}
-      style={{ x: shiftX, y: shiftY }}
-      whileHover={{ scale: 1.05, zIndex: 30 }}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: Math.min((globalIdx % 12) * 0.03, 0.36) }}
+      whileHover={{ scale: 1.05, y: -4, zIndex: 30 }}
       onClick={() => setActivePhoto(photo)}
-      className="group relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer z-10 will-change-transform"
+      className="group relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer z-10"
     >
       <div
         className="w-full relative overflow-hidden flex items-center justify-center bg-neutral-200/40 dark:bg-neutral-800/40"
@@ -466,8 +439,6 @@ export default function GalleryGrid() {
                   key={`matrix-${photo.id}-${globalIdx}`}
                   photo={photo}
                   globalIdx={globalIdx}
-                  cursorX={cursorX}
-                  cursorY={cursorY}
                   setActivePhoto={setActivePhoto}
                 />
               ))}
