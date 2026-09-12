@@ -4,10 +4,14 @@ import { Sparkles, Search, ArrowDown } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 
 export default function Hero() {
-  const { photos, searchQuery, setSearchQuery, activeAlbum, albums, viewMode } = useFlickr();
+  const { photos, searchQuery, setSearchQuery, activeAlbum, albums, viewMode, pageSize, currentPage } = useFlickr();
 
   const marqueeItems = photos.slice(0, 8);
   const currentAlbum = albums.find(a => a.id === activeAlbum) || albums[0];
+
+  const activePageSize = pageSize || 200;
+  const startIdx = photos.length > 0 ? (currentPage - 1) * activePageSize + 1 : 0;
+  const endIdx = Math.min(photos.length, currentPage * activePageSize);
 
   return (
     <section className="pt-32 pb-10 px-4 max-w-7xl mx-auto flex flex-col items-center text-center">
@@ -114,7 +118,9 @@ export default function Hero() {
             {currentAlbum.title}
           </h2>
           <span className="text-xs font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-500/10 px-3 py-1 rounded-lg border border-amber-500/20">
-            Showing {photos.length} Photos
+            {photos.length > activePageSize
+              ? `Showing ${startIdx}–${endIdx} of ${photos.length} Photos`
+              : `Showing ${photos.length} Photos`}
           </span>
         </div>
 
