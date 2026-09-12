@@ -19,7 +19,7 @@ export function FlickrProvider({ children }) {
   const [activePhoto, setActivePhoto] = useState(null);
   const [viewMode, setViewModeState] = useState(() => {
     const saved = localStorage.getItem('flickr_view_mode');
-    return saved || 'grid';
+    return saved || 'masonry';
   });
   const [darkMode, setDarkModeState] = useState(() => localStorage.getItem('flickr_dark_mode') === 'true');
 

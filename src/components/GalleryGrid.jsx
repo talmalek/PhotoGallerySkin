@@ -37,26 +37,26 @@ function StarfieldCanvas({ cursorX, cursorY }) {
     const ctx = canvas.getContext('2d');
     let animationFrameId;
 
-    const count = darkMode ? 140 : 90;
+    const count = darkMode ? 130 : 80;
     const stars = Array.from({ length: count }, () => ({
       x: Math.random(),
       y: Math.random(),
-      size: Math.random() * (darkMode ? 2.5 : 1.8) + 0.6,
-      opacity: Math.random() * (darkMode ? 0.7 : 0.4) + (darkMode ? 0.2 : 0.1),
-      speed: Math.random() * 0.0004 + 0.0001,
+      size: Math.random() * (darkMode ? 2.4 : 1.6) + 0.6,
+      opacity: Math.random() * (darkMode ? 0.65 : 0.35) + (darkMode ? 0.2 : 0.1),
+      speed: Math.random() * 0.0003 + 0.0001,
       layer: Math.floor(Math.random() * 3) + 1,
-      isGold: Math.random() > 0.35
+      isGold: Math.random() > 0.4
     }));
 
     const render = () => {
-      canvas.width = canvas.offsetWidth || window.innerWidth;
-      canvas.height = canvas.offsetHeight || window.innerHeight;
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const cx = cursorX.get();
       const cy = cursorY.get();
-      const mx = cx !== -9999 ? (cx / (window.innerWidth || 1200) - 0.5) * 28 : 0;
-      const my = cy !== -9999 ? (cy / (window.innerHeight || 800) - 0.5) * 28 : 0;
+      const mx = cx !== -9999 ? (cx / (window.innerWidth || 1200) - 0.5) * 24 : 0;
+      const my = cy !== -9999 ? (cy / (window.innerHeight || 800) - 0.5) * 24 : 0;
 
       stars.forEach((star) => {
         star.y -= star.speed;
@@ -73,7 +73,7 @@ function StarfieldCanvas({ cursorX, cursorY }) {
             ? `rgba(251, 191, 36, ${star.opacity})`
             : `rgba(255, 255, 255, ${star.opacity * 1.3})`;
         } else {
-          ctx.fillStyle = `rgba(217, 119, 6, ${star.opacity * 0.75})`;
+          ctx.fillStyle = `rgba(217, 119, 6, ${star.opacity * 0.7})`;
         }
         ctx.fill();
       });
@@ -89,63 +89,160 @@ function StarfieldCanvas({ cursorX, cursorY }) {
     <canvas
       ref={canvasRef}
       className={`absolute inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-700 ${
-        darkMode ? 'opacity-80' : 'opacity-40'
+        darkMode ? 'opacity-80' : 'opacity-35'
       }`}
     />
   );
 }
 
 /**
- * Interactive Frame Component (Individual Starfield Mouse Displacement)
- * Pushes ONLY cards near the cursor aside by a few pixels with spring physics
+ * ZipperCard Component (Masonry View)
+ * Exact mfrports.com editorial photo card layout, 100% clean and fast
  */
-const InteractivePhotoCard = memo(function InteractivePhotoCard({ photo, globalIdx, cursorX, cursorY, setActivePhoto, isMatrix = false }) {
-  const cardRef = useRef(null);
+const ZipperCard = memo(function ZipperCard({ photo, globalIdx, setActivePhoto }) {
   const [exactAspectRatio, setExactAspectRatio] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
-  // Compute 2D radial displacement ONLY for this specific individual card relative to cursor position
+  const handleImageLoad = (e) => {
+    const { naturalWidth, naturalHeight } = e.target;
+    if (naturalWidth && naturalHeight) {
+      setExactAspectRatio(`${naturalWidth} / ${naturalHeight}`);
+    }
+    setLoaded(true);
+  };
+
+  return (
+    <div
+      onClick={() => setActivePhoto(photo)}
+      className="group relative rounded-3xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer"
+    >
+      <div
+        className="w-full relative overflow-hidden flex items-center justify-center bg-neutral-200/40 dark:bg-neutral-800/40"
+        style={{ aspectRatio: exactAspectRatio || '4/3' }}
+      >
+        <img
+          src={photo.mediumUrl || photo.thumbUrl}
+          alt={photo.title}
+          loading="lazy"
+          onLoad={handleImageLoad}
+          className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-out ${
+            loaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onError={(e) => {
+            e.target.src = photo.thumbUrl;
+            setLoaded(true);
+          }}
+        />
+
+        <div className="absolute inset-0 bg-neutral-950/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] p-6 flex flex-col justify-between z-10">
+          <div className="flex justify-between items-center">
+            <span className="px-3 py-1 rounded-full bg-white/90 text-neutral-900 text-xs font-mono font-bold shadow-md truncate max-w-[200px]">
+              {photo.title}
+            </span>
+            <div className="w-10 h-10 rounded-full bg-white text-neutral-950 flex items-center justify-center shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+              <Maximize2 className="w-4 h-4 text-neutral-900" />
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-white leading-snug line-clamp-2">
+              {photo.title}
+            </h3>
+            <div className="mt-2 flex items-center justify-between text-xs font-mono text-neutral-200">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-amber-300" />
+                {photo.dateTaken}
+              </span>
+              <a
+                href={photo.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="text-white hover:text-amber-300 p-1 flex items-center gap-1 bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-lg backdrop-blur-md transition-colors"
+                title="View on Flickr"
+              >
+                <span>Flickr</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+/**
+ * MatrixCard Component (Matrix View ONLY - Ultra-Fast 120 FPS Starfield Frame Displacement)
+ * Uses cached card center coordinates (updated on scroll/resize) to prevent layout thrashing
+ */
+const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY, setActivePhoto }) {
+  const cardRef = useRef(null);
+  const centerRef = useRef({ x: 0, y: 0 });
+  const [exactAspectRatio, setExactAspectRatio] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+
+  // Update cached bounding center position on scroll and resize (0 layout reflow during mouse movement!)
+  useEffect(() => {
+    const updateCenter = () => {
+      if (cardRef.current) {
+        const rect = cardRef.current.getBoundingClientRect();
+        centerRef.current = {
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2
+        };
+      }
+    };
+
+    updateCenter();
+    window.addEventListener('scroll', updateCenter, { passive: true });
+    window.addEventListener('resize', updateCenter, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', updateCenter);
+      window.removeEventListener('resize', updateCenter);
+    };
+  }, []);
+
+  // Butter-smooth 120 FPS Starfield displacement reading cached center coordinates
   const rawShiftX = useTransform(cursorX, (cx) => {
-    if (!cardRef.current || cx === -9999) return 0;
-    const rect = cardRef.current.getBoundingClientRect();
-    const cardCenterX = rect.left + rect.width / 2;
-    const cardCenterY = rect.top + rect.height / 2;
+    if (cx === -9999 || !centerRef.current.x) return 0;
+    const cardCenterX = centerRef.current.x;
+    const cardCenterY = centerRef.current.y;
     const cy = cursorY.get();
 
     const dx = cardCenterX - cx;
     const dy = cardCenterY - cy;
     const dist = Math.hypot(dx, dy);
-    const radius = isMatrix ? 260 : 320; // Proximity aura in pixels
+    const radius = 240; // Proximity aura in pixels
 
     if (dist < radius && dist > 0) {
-      const force = Math.pow(1 - dist / radius, 2) * (isMatrix ? 24 : 32); // max 24px/32px push
+      const force = Math.pow(1 - dist / radius, 2) * 24; // max 24px push
       return (dx / dist) * force;
     }
     return 0;
   });
 
   const rawShiftY = useTransform(cursorY, (cy) => {
-    if (!cardRef.current || cy === -9999) return 0;
-    const rect = cardRef.current.getBoundingClientRect();
-    const cardCenterX = rect.left + rect.width / 2;
-    const cardCenterY = rect.top + rect.height / 2;
+    if (cy === -9999 || !centerRef.current.y) return 0;
+    const cardCenterX = centerRef.current.x;
+    const cardCenterY = centerRef.current.y;
     const cx = cursorX.get();
 
     const dx = cardCenterX - cx;
     const dy = cardCenterY - cy;
     const dist = Math.hypot(dx, dy);
-    const radius = isMatrix ? 260 : 320;
+    const radius = 240;
 
     if (dist < radius && dist > 0) {
-      const force = Math.pow(1 - dist / radius, 2) * (isMatrix ? 24 : 32);
+      const force = Math.pow(1 - dist / radius, 2) * 24;
       return (dy / dist) * force;
     }
     return 0;
   });
 
   // Spring physics for responsive, butter-smooth movement & snap-back
-  const springShiftX = useSpring(rawShiftX, { stiffness: 240, damping: 24 });
-  const springShiftY = useSpring(rawShiftY, { stiffness: 240, damping: 24 });
+  const springShiftX = useSpring(rawShiftX, { stiffness: 220, damping: 22 });
+  const springShiftY = useSpring(rawShiftY, { stiffness: 220, damping: 22 });
 
   const handleImageLoad = (e) => {
     const { naturalWidth, naturalHeight } = e.target;
@@ -160,13 +257,11 @@ const InteractivePhotoCard = memo(function InteractivePhotoCard({ photo, globalI
       ref={cardRef}
       style={{ x: springShiftX, y: springShiftY }}
       onClick={() => setActivePhoto(photo)}
-      className={`group relative overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer z-10 will-change-transform ${
-        isMatrix ? 'rounded-2xl' : 'rounded-3xl'
-      }`}
+      className="group relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer z-10 will-change-transform"
     >
       <div
         className="w-full relative overflow-hidden flex items-center justify-center bg-neutral-200/40 dark:bg-neutral-800/40"
-        style={{ aspectRatio: exactAspectRatio || (isMatrix ? '4/3' : '4/3') }}
+        style={{ aspectRatio: exactAspectRatio || '4/3' }}
       >
         <img
           src={photo.mediumUrl || photo.thumbUrl}
@@ -182,33 +277,23 @@ const InteractivePhotoCard = memo(function InteractivePhotoCard({ photo, globalI
           }}
         />
 
-        <div className={`absolute inset-0 bg-neutral-950/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] flex flex-col justify-between z-10 text-left ${
-          isMatrix ? 'p-3.5' : 'p-6'
-        }`}>
+        <div className="absolute inset-0 bg-neutral-950/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] p-3.5 flex flex-col justify-between z-10 text-left">
           <div className="flex justify-between items-center">
-            <span className={`px-2.5 py-0.5 rounded-full bg-white/90 text-neutral-900 font-mono font-bold shadow-sm truncate ${
-              isMatrix ? 'text-[10px] max-w-[130px]' : 'text-xs max-w-[200px] px-3 py-1'
-            }`}>
+            <span className="px-2 py-0.5 rounded-full bg-white/90 text-neutral-900 text-[10px] font-mono font-bold shadow-sm truncate max-w-[130px]">
               {photo.title}
             </span>
-            <div className={`rounded-full bg-white text-neutral-950 flex items-center justify-center shadow-md transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300 ${
-              isMatrix ? 'w-7 h-7' : 'w-10 h-10'
-            }`}>
-              <Maximize2 className={isMatrix ? 'w-3.5 h-3.5 text-neutral-900' : 'w-4 h-4 text-neutral-900'} />
+            <div className="w-7 h-7 rounded-full bg-white text-neutral-950 flex items-center justify-center shadow-md transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+              <Maximize2 className="w-3.5 h-3.5 text-neutral-900" />
             </div>
           </div>
 
           <div>
-            <h4 className={`font-bold text-white leading-snug line-clamp-2 ${
-              isMatrix ? 'text-xs sm:text-sm' : 'text-base sm:text-lg'
-            }`}>
+            <h4 className="text-xs sm:text-sm font-bold text-white leading-snug line-clamp-2">
               {photo.title}
             </h4>
-            <div className={`mt-1 flex items-center justify-between font-mono text-neutral-300 ${
-              isMatrix ? 'text-[10px]' : 'text-xs mt-2'
-            }`}>
+            <div className="mt-1 flex items-center justify-between text-[10px] font-mono text-neutral-300">
               <span className="flex items-center gap-1">
-                <Calendar className={isMatrix ? 'w-3 h-3 text-amber-300' : 'w-3.5 h-3.5 text-amber-300'} />
+                <Calendar className="w-3 h-3 text-amber-300" />
                 {photo.dateTaken}
               </span>
               <a
@@ -216,11 +301,11 @@ const InteractivePhotoCard = memo(function InteractivePhotoCard({ photo, globalI
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="text-white hover:text-amber-300 flex items-center gap-0.5 bg-white/20 hover:bg-white/30 px-2 py-0.5 rounded backdrop-blur-md transition-colors"
+                className="text-white hover:text-amber-300 flex items-center gap-0.5 bg-white/20 hover:bg-white/30 px-1.5 py-0.5 rounded backdrop-blur-md transition-colors"
                 title="View on Flickr"
               >
                 <span>Flickr</span>
-                <ExternalLink className={isMatrix ? 'w-2.5 h-2.5' : 'w-3 h-3'} />
+                <ExternalLink className="w-2.5 h-2.5" />
               </a>
             </div>
           </div>
@@ -255,7 +340,7 @@ function MatrixColumnContainer({ colIdx, children, scrollYProgress }) {
 }
 
 /**
- * Column Parallax Container for Masonry View
+ * Column Parallax Container for Masonry View (Exact mfrports.com 3-column Zipper Parallax)
  */
 function ZipperColumnContainer({ colIdx, children, scrollYProgress }) {
   const offsets = [
@@ -290,29 +375,23 @@ export default function GalleryGrid() {
   const sentinelRef = useRef(null);
   const windowWidth = useWindowWidth();
 
-  // Global Cursor position motion values
+  // Motion values for Matrix View Starfield mouse displacement
   const cursorX = useMotionValue(-9999);
   const cursorY = useMotionValue(-9999);
 
-  // Global Pointer Listener for 100% fluid starfield mouse physics
-  useEffect(() => {
-    const handlePointerMove = (e) => {
+  const handleMouseMove = (e) => {
+    if (viewMode === 'grid') {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-    };
+    }
+  };
 
-    const handleMouseLeave = () => {
+  const handleMouseLeave = () => {
+    if (viewMode === 'grid') {
       cursorX.set(-9999);
       cursorY.set(-9999);
-    };
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    window.addEventListener('mouseleave', handleMouseLeave);
-    return () => {
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, [cursorX, cursorY]);
+    }
+  };
 
   // Single section scroll listener for 100% fluid performance
   const { scrollYProgress } = useScroll({
@@ -391,11 +470,13 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Matrix View (5 Columns with Starfield Particle Background & Frame Displacement)
+  // Render Matrix View (5 Columns with Starfield Particle Background & 120 FPS Frame Displacement)
   if (viewMode === 'grid') {
     return (
       <section
         ref={sectionRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden relative"
       >
         <StarfieldCanvas cursorX={cursorX} cursorY={cursorY} />
@@ -413,14 +494,13 @@ export default function GalleryGrid() {
               scrollYProgress={scrollYProgress}
             >
               {colItems.map(({ photo, globalIdx }) => (
-                <InteractivePhotoCard
+                <MatrixCard
                   key={`matrix-${photo.id}-${globalIdx}`}
                   photo={photo}
                   globalIdx={globalIdx}
                   cursorX={cursorX}
                   cursorY={cursorY}
                   setActivePhoto={setActivePhoto}
-                  isMatrix={true}
                 />
               ))}
             </MatrixColumnContainer>
@@ -432,7 +512,7 @@ export default function GalleryGrid() {
           {loadingMore && (
             <div className="flex items-center gap-3 text-amber-800 font-mono text-sm">
               <Loader2 className="w-5 h-5 animate-spin text-amber-700" />
-              <span>Fetching next photostream batch from Flickr...</span>
+              <span>Fetching next photostream batch...</span>
             </div>
           )}
           {!hasMore && photos.length > 0 && (
@@ -445,13 +525,11 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Masonry View (Gapless Column-based 3-Column Zipper Parallax with Interactive Starfield Physics)
+  // Render Masonry View (Exact mfrports.com 3-column Zipper Parallax - Clean, Fast & Pristine)
   return (
-    <section ref={sectionRef} className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden relative">
-      <StarfieldCanvas cursorX={cursorX} cursorY={cursorY} />
-
+    <section ref={sectionRef} className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden">
       <div
-        className="grid gap-8 lg:gap-10 items-start relative z-10"
+        className="grid gap-8 lg:gap-10 items-start"
         style={{
           gridTemplateColumns: `repeat(${masonryCols}, minmax(0, 1fr))`
         }}
@@ -463,14 +541,11 @@ export default function GalleryGrid() {
             scrollYProgress={scrollYProgress}
           >
             {colItems.map(({ photo, globalIdx }) => (
-              <InteractivePhotoCard
+              <ZipperCard
                 key={`zipper-${photo.id}-${globalIdx}`}
                 photo={photo}
                 globalIdx={globalIdx}
-                cursorX={cursorX}
-                cursorY={cursorY}
                 setActivePhoto={setActivePhoto}
-                isMatrix={false}
               />
             ))}
           </ZipperColumnContainer>
@@ -478,7 +553,7 @@ export default function GalleryGrid() {
       </div>
 
       {/* Sentinel for Infinite Lazy Scroll */}
-      <div ref={sentinelRef} className="py-20 flex items-center justify-center min-h-[120px] relative z-10">
+      <div ref={sentinelRef} className="py-20 flex items-center justify-center min-h-[120px]">
         {loadingMore && (
           <div className="flex items-center gap-3 text-amber-800 font-mono text-sm">
             <Loader2 className="w-5 h-5 animate-spin text-amber-700" />
