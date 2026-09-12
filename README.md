@@ -24,7 +24,11 @@
 - **🌐 Zero Local Storage**: All images, thumbnails, and metadata stream directly live from Flickr's global CDN (`live.staticflickr.com`).
 - **☀️/🌙 Clean Editorial White & Full-Page Night Mode**: Complete theme toggle with smooth transitions (`#ffffff` / `#09090b`).
 - **📱 Dual View Modes**:
-  - **Zipper Masonry View**: 3-column vertical column-packed masonry that preserves exact uncropped photo aspect ratios (`naturalWidth / naturalHeight`) and eliminates vertical black gaps.
+  - **⚡ Signature Zipper Masonry View**: 3-column editorial masonry gallery with continuous 2-way scrubbed entrance/exit physics:
+    - **Left Column (Column 0)**: Images arrive from the **Left** (`x: -125px` ➔ `0px`).
+    - **Middle Column (Column 1)**: Images **stay centered** (`x: 0px`) and glide up vertically (`y: +55px` ➔ `0px`).
+    - **Right Column (Column 2)**: Images arrive from the **Right** (`x: +125px` ➔ `0px`).
+    - **2-Way Continuous Scrub**: Scrolling DOWN aligns images smoothly into place; scrolling BACK UP reverses the animation and returns every image to its starting offscreen position.
   - **Matrix View**: 5-column grid featuring ambient starlight canvas particles and interactive starfield mouse frame displacement.
 - **✨ Starfield Mouse Physics**: Hovering over picture frames nudges nearby cards outward via a 240px radial proximity aura driven by Framer Motion spring physics (`stiffness: 220, damping: 22`).
 - **🏷️ Authentic Flickr Metadata**: Preserves real photo titles and original camera filenames (`DSC04892`, `IMG_2023...`).
