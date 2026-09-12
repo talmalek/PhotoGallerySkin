@@ -370,14 +370,72 @@ export default function GalleryGrid() {
   const sentinelRef = useRef(null);
   const windowWidth = useWindowWidth();
 
-  // Matrix View 200-Item Sliding Window Buffer State
-  const [matrixOffset, setMatrixOffset] = useState(0);
-  const MATRIX_BUFFER_SIZE = 200;
+  // Dynamic Scroll Window Buffer State for Matrix View (150 active photos max)
+  const DYNAMIC_WINDOW_SIZE = 150;
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: DYNAMIC_WINDOW_SIZE });
 
-  // Reset matrixOffset when album, search query, or view mode changes
+  // Reset window range when album or search query changes
   useEffect(() => {
-    setMatrixOffset(0);
+    setVisibleRange({ start: 0, end: DYNAMIC_WINDOW_SIZE });
   }, [activeAlbum, searchQuery, viewMode]);
+
+  // Dynamic Scroll Window & 80% Fetch Observer
+  useEffect(() => {
+    if (viewMode !== 'grid') return;
+
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!sectionRef.current) {
+            ticking = false;
+            return;
+          }
+
+          const rect = sectionRef.current.getBoundingClientRect();
+          const sectionHeight = rect.height;
+          const viewportHeight = window.innerHeight || 800;
+
+          // Compute scroll fraction inside section
+          const scrollDistance = Math.max(0, -rect.top);
+          const scrollFraction = sectionHeight > viewportHeight
+            ? Math.min(1, Math.max(0, scrollDistance / (sectionHeight - viewportHeight)))
+            : 0;
+
+          const totalPhotos = photos.length;
+          if (totalPhotos > 0) {
+            const centerIdx = Math.floor(scrollFraction * totalPhotos);
+            const halfWindow = Math.floor(DYNAMIC_WINDOW_SIZE / 2);
+
+            let newStart = Math.max(0, centerIdx - halfWindow);
+            let newEnd = Math.min(totalPhotos, newStart + DYNAMIC_WINDOW_SIZE);
+            if (newEnd - newStart < DYNAMIC_WINDOW_SIZE) {
+              newStart = Math.max(0, newEnd - DYNAMIC_WINDOW_SIZE);
+            }
+
+            setVisibleRange(prev => {
+              if (Math.abs(prev.start - newStart) >= 20 || prev.end !== newEnd) {
+                return { start: newStart, end: newEnd };
+              }
+              return prev;
+            });
+          }
+
+          // 80% Trigger: Automatically fetch next photostream batch from Flickr
+          if (scrollFraction >= 0.78 && hasMore && !loading && !loadingMore) {
+            loadNextPage();
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [viewMode, photos.length, hasMore, loading, loadingMore, loadNextPage]);
 
   // Scroll Progress relative to Gallery Section
   const { scrollYProgress } = useScroll({
@@ -418,20 +476,22 @@ export default function GalleryGrid() {
     return 1;
   }, [windowWidth]);
 
-  // Matrix View Active 50-Photo Window Slicing
+  // Dynamic Sliced Photos Buffer for Matrix View
   const activeMatrixPhotos = useMemo(() => {
-    return photos.slice(matrixOffset, matrixOffset + MATRIX_BUFFER_SIZE);
-  }, [photos, matrixOffset]);
+    const end = Math.min(photos.length, visibleRange.end);
+    const start = Math.min(visibleRange.start, Math.max(0, end - 1));
+    return photos.slice(start, end);
+  }, [photos, visibleRange]);
 
   // Memoized column photo distributions
   const matrixColumns = useMemo(() => {
     const cols = Array.from({ length: matrixCols }, () => []);
     activeMatrixPhotos.forEach((photo, idx) => {
-      const globalIdx = matrixOffset + idx;
+      const globalIdx = visibleRange.start + idx;
       cols[idx % matrixCols].push({ photo, globalIdx });
     });
     return cols;
-  }, [activeMatrixPhotos, matrixCols, matrixOffset]);
+  }, [activeMatrixPhotos, matrixCols, visibleRange.start]);
 
   const masonryColumns = useMemo(() => {
     const cols = Array.from({ length: masonryCols }, () => []);
@@ -441,61 +501,22 @@ export default function GalleryGrid() {
     return cols;
   }, [photos, masonryCols]);
 
-  // Batch navigation helpers
-  const totalBatches = Math.max(1, Math.ceil(photos.length / MATRIX_BUFFER_SIZE));
-  const currentBatch = Math.floor(matrixOffset / MATRIX_BUFFER_SIZE) + 1;
-  const startNum = photos.length > 0 ? matrixOffset + 1 : 0;
-  const endNum = Math.min(matrixOffset + MATRIX_BUFFER_SIZE, photos.length);
-
-  const handleNextBatch = () => {
-    if (matrixOffset + MATRIX_BUFFER_SIZE < photos.length) {
-      setMatrixOffset(prev => prev + MATRIX_BUFFER_SIZE);
-      if (sectionRef.current) {
-        sectionRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else if (hasMore && !loadingMore) {
-      loadNextPage();
-      setMatrixOffset(prev => prev + MATRIX_BUFFER_SIZE);
-      if (sectionRef.current) {
-        sectionRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
-
-  const handlePrevBatch = () => {
-    if (matrixOffset > 0) {
-      setMatrixOffset(prev => Math.max(0, prev - MATRIX_BUFFER_SIZE));
-      if (sectionRef.current) {
-        sectionRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
-
-  // Infinite Lazy Scroll Observer
+  // Infinite Lazy Scroll Observer for Masonry View
   useEffect(() => {
-    if (!sentinelRef.current) return;
+    if (!sentinelRef.current || viewMode !== 'masonry') return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !loading && !loadingMore) {
-          if (viewMode === 'grid') {
-            if (matrixOffset + MATRIX_BUFFER_SIZE < photos.length) {
-              // Auto-advance buffer when reaching bottom of current batch
-              setMatrixOffset(prev => prev + MATRIX_BUFFER_SIZE);
-            } else if (hasMore) {
-              loadNextPage();
-            }
-          } else if (hasMore) {
-            loadNextPage();
-          }
+        if (entries[0].isIntersecting && hasMore && !loading && !loadingMore) {
+          loadNextPage();
         }
       },
-      { rootMargin: '600px' }
+      { rootMargin: '800px' }
     );
 
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
-  }, [hasMore, loading, loadingMore, loadNextPage, viewMode, matrixOffset, photos.length]);
+  }, [hasMore, loading, loadingMore, loadNextPage, viewMode]);
 
   if (loading && photos.length === 0) {
     return (
@@ -519,8 +540,11 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Matrix View (Max 50 Active Photos in DOM Buffer, Low-Res Nano Thumbnails, 120 FPS Starfield Repulsion)
+  // Render Matrix View (Dynamic Scroll Buffer, Progressive Images, 120 FPS Starfield Repulsion)
   if (viewMode === 'grid') {
+    const displayStart = photos.length > 0 ? visibleRange.start + 1 : 0;
+    const displayEnd = Math.min(visibleRange.end, photos.length);
+
     return (
       <section
         ref={sectionRef}
@@ -530,34 +554,16 @@ export default function GalleryGrid() {
       >
         <StarfieldCanvas cursorX={cursorX} cursorY={cursorY} />
 
-        {/* Matrix Batch Header Control Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 py-3.5 px-5 rounded-2xl glass-panel border border-neutral-200/80 dark:border-neutral-800/80 mb-6 relative z-10 shadow-sm">
+        {/* Matrix Dynamic Buffer Header Info Badge */}
+        <div className="flex items-center justify-between py-3 px-5 rounded-2xl glass-panel border border-neutral-200/80 dark:border-neutral-800/80 mb-6 relative z-10 shadow-sm">
           <div className="flex items-center gap-2 text-xs font-mono text-neutral-600 dark:text-neutral-300">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-            <span>Matrix Active Buffer: <strong className="text-amber-700 dark:text-amber-400 font-bold">{startNum}–{endNum}</strong> of <strong>{photos.length}</strong> loaded</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Dynamic Scroll Buffer: Active frames <strong className="text-amber-700 dark:text-amber-400 font-bold">{displayStart}–{displayEnd}</strong> of <strong>{photos.length}</strong> loaded</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrevBatch}
-              disabled={matrixOffset === 0}
-              className="px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-neutral-900 hover:bg-amber-500/10 text-neutral-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-xs font-mono font-bold flex items-center gap-1"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-              <span>Prev 200</span>
-            </button>
-            <span className="px-2 text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
-              Batch {currentBatch} / {totalBatches}
-            </span>
-            <button
-              onClick={handleNextBatch}
-              disabled={matrixOffset + MATRIX_BUFFER_SIZE >= photos.length && !hasMore}
-              className="px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-neutral-900 hover:bg-amber-500/10 text-neutral-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-xs font-mono font-bold flex items-center gap-1"
-            >
-              <span>Next 200</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
+          <span className="text-[11px] font-mono text-neutral-400 hidden sm:inline">
+            Auto-Pruning Buffer &amp; 80% Stream Fetch Active
+          </span>
         </div>
 
         <div
@@ -586,34 +592,15 @@ export default function GalleryGrid() {
           ))}
         </div>
 
-        {/* Sentinel & Batch Footer Controls */}
+        {/* Sentinel & Dynamic Loading Indicator */}
         <div ref={sentinelRef} className="py-12 flex flex-col items-center justify-center gap-4 relative z-10">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handlePrevBatch}
-              disabled={matrixOffset === 0}
-              className="px-4 py-2 rounded-xl glass-panel hover:bg-amber-500/10 text-neutral-700 dark:text-neutral-300 border border-neutral-200/80 dark:border-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-xs font-mono font-bold flex items-center gap-1.5 shadow-sm"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              <span>Previous 200 Photos</span>
-            </button>
-            <button
-              onClick={handleNextBatch}
-              disabled={matrixOffset + MATRIX_BUFFER_SIZE >= photos.length && !hasMore}
-              className="px-4 py-2 rounded-xl glass-panel hover:bg-amber-500/10 text-neutral-700 dark:text-neutral-300 border border-neutral-200/80 dark:border-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer text-xs font-mono font-bold flex items-center gap-1.5 shadow-sm"
-            >
-              <span>Next 200 Photos</span>
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-
           {loadingMore && (
             <div className="flex items-center gap-3 text-amber-800 dark:text-amber-300 font-mono text-sm">
               <Loader2 className="w-5 h-5 animate-spin text-amber-700 dark:text-amber-400" />
-              <span>Fetching next photostream batch from Flickr...</span>
+              <span>Streaming next photostream batch from Flickr...</span>
             </div>
           )}
-          {!hasMore && matrixOffset + MATRIX_BUFFER_SIZE >= photos.length && photos.length > 0 && (
+          {!hasMore && photos.length > 0 && (
             <span className="text-xs font-mono text-neutral-400 uppercase tracking-widest">
               — End of Flickr Collection ({photos.length} photos loaded) —
             </span>
