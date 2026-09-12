@@ -16,43 +16,38 @@ export default function Hero() {
 
   return (
     <section className="pt-32 pb-10 px-4 max-w-7xl mx-auto flex flex-col items-center text-center">
-      {/* Badge */}
+      {/* Category Tag */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-mono mb-6 shadow-sm"
+        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] font-mono tracking-widest uppercase mb-4"
       >
         <img
           src={FLICKR_CONFIG.AVATAR_URL}
           alt="Tal Malek"
-          className="w-5 h-5 rounded-full object-cover border border-amber-500/40 shrink-0"
+          className="w-4 h-4 rounded-full object-cover border border-amber-500/40 shrink-0"
         />
-        <span>Tal Malek Photography</span>
-        <span className="w-1 h-1 rounded-full bg-amber-500"></span>
-        <span className="text-neutral-600 dark:text-neutral-400">Official Portfolio</span>
+        <span>Portfolio</span>
       </motion.div>
 
       {/* Main Headline */}
       <motion.h1
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.1 }}
-        className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 max-w-4xl leading-[1.15]"
+        className="text-3xl sm:text-5xl font-serif font-light tracking-wide text-neutral-900 dark:text-neutral-100 max-w-3xl leading-tight"
       >
-        TAL MALEK PHOTOGRAPHY <br className="hidden sm:inline" />
-        <span className="font-serif-italic font-normal text-amber-700 dark:text-amber-300 underline decoration-amber-500/30 decoration-wavy underline-offset-8">
-          Authentic Frames &amp; Cinematic Portfolio
-        </span>
+        Tal Malek Photography
       </motion.h1>
 
       <motion.p
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.2 }}
-        className="mt-6 text-neutral-600 dark:text-neutral-400 text-base sm:text-lg max-w-2xl font-light leading-relaxed"
+        className="mt-3 text-neutral-500 dark:text-neutral-400 text-sm sm:text-base max-w-xl font-light leading-relaxed"
       >
-        Discover high-resolution photostream and album collections dynamically pulled live from Tal Malek's Flickr portfolio. Pure visual luxury with zero local storage.
+        Authentic frames, architectural studies, and visual collections.
       </motion.p>
 
       {/* Search Input */}
