@@ -195,8 +195,9 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
 });
 
 /**
- * MatrixCard Component (Matrix View - Progressive Image Loading & Starfield Proximity Repulsion)
- * Loads fast, aspect-ratio-preserving 320px (_n) image instantly, upgrading to 640px (_z) HD on hover
+ * MatrixCard Component (Matrix View - Native Engine Offscreen Pruning, Progressive Loading & Starfield Repulsion)
+ * Uses content-visibility: auto for instant browser offscreen pruning, preserving zero GPU memory bloat.
+ * Loads fast, aspect-ratio-preserving 320px (_n) image instantly, upgrading to 640px (_z) HD on hover.
  */
 const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY, setActivePhoto }) {
   const cardRef = useRef(null);
@@ -253,7 +254,12 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: Math.min((globalIdx % 12) * 0.03, 0.36) }}
-      style={{ x: shiftX, y: shiftY }}
+      style={{
+        x: shiftX,
+        y: shiftY,
+        contentVisibility: 'auto',
+        containIntrinsicSize: '1px 240px'
+      }}
       whileHover={{ scale: 1.05, zIndex: 30 }}
       onMouseEnter={() => setIsHovered(true)}
       onClick={() => setActivePhoto(photo)}
@@ -361,81 +367,12 @@ export default function GalleryGrid() {
     loadNextPage,
     hasMore,
     setActivePhoto,
-    viewMode,
-    activeAlbum,
-    searchQuery
+    viewMode
   } = useFlickr();
 
   const sectionRef = useRef(null);
   const sentinelRef = useRef(null);
   const windowWidth = useWindowWidth();
-
-  // Dynamic Scroll Window Buffer State for Matrix View (150 active photos max)
-  const DYNAMIC_WINDOW_SIZE = 150;
-  const [visibleRange, setVisibleRange] = useState({ start: 0, end: DYNAMIC_WINDOW_SIZE });
-
-  // Reset window range when album or search query changes
-  useEffect(() => {
-    setVisibleRange({ start: 0, end: DYNAMIC_WINDOW_SIZE });
-  }, [activeAlbum, searchQuery, viewMode]);
-
-  // Dynamic Scroll Window & 80% Fetch Observer
-  useEffect(() => {
-    if (viewMode !== 'grid') return;
-
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (!sectionRef.current) {
-            ticking = false;
-            return;
-          }
-
-          const rect = sectionRef.current.getBoundingClientRect();
-          const sectionHeight = rect.height;
-          const viewportHeight = window.innerHeight || 800;
-
-          // Compute scroll fraction inside section
-          const scrollDistance = Math.max(0, -rect.top);
-          const scrollFraction = sectionHeight > viewportHeight
-            ? Math.min(1, Math.max(0, scrollDistance / (sectionHeight - viewportHeight)))
-            : 0;
-
-          const totalPhotos = photos.length;
-          if (totalPhotos > 0) {
-            const centerIdx = Math.floor(scrollFraction * totalPhotos);
-            const halfWindow = Math.floor(DYNAMIC_WINDOW_SIZE / 2);
-
-            let newStart = Math.max(0, centerIdx - halfWindow);
-            let newEnd = Math.min(totalPhotos, newStart + DYNAMIC_WINDOW_SIZE);
-            if (newEnd - newStart < DYNAMIC_WINDOW_SIZE) {
-              newStart = Math.max(0, newEnd - DYNAMIC_WINDOW_SIZE);
-            }
-
-            setVisibleRange(prev => {
-              if (Math.abs(prev.start - newStart) >= 20 || prev.end !== newEnd) {
-                return { start: newStart, end: newEnd };
-              }
-              return prev;
-            });
-          }
-
-          // 80% Trigger: Automatically fetch next photostream batch from Flickr
-          if (scrollFraction >= 0.78 && hasMore && !loading && !loadingMore) {
-            loadNextPage();
-          }
-
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [viewMode, photos.length, hasMore, loading, loadingMore, loadNextPage]);
 
   // Scroll Progress relative to Gallery Section
   const { scrollYProgress } = useScroll({
@@ -476,22 +413,14 @@ export default function GalleryGrid() {
     return 1;
   }, [windowWidth]);
 
-  // Dynamic Sliced Photos Buffer for Matrix View
-  const activeMatrixPhotos = useMemo(() => {
-    const end = Math.min(photos.length, visibleRange.end);
-    const start = Math.min(visibleRange.start, Math.max(0, end - 1));
-    return photos.slice(start, end);
-  }, [photos, visibleRange]);
-
-  // Memoized column photo distributions
+  // Stable column photo distributions
   const matrixColumns = useMemo(() => {
     const cols = Array.from({ length: matrixCols }, () => []);
-    activeMatrixPhotos.forEach((photo, idx) => {
-      const globalIdx = visibleRange.start + idx;
-      cols[idx % matrixCols].push({ photo, globalIdx });
+    photos.forEach((photo, globalIdx) => {
+      cols[globalIdx % matrixCols].push({ photo, globalIdx });
     });
     return cols;
-  }, [activeMatrixPhotos, matrixCols, visibleRange.start]);
+  }, [photos, matrixCols]);
 
   const masonryColumns = useMemo(() => {
     const cols = Array.from({ length: masonryCols }, () => []);
@@ -501,9 +430,9 @@ export default function GalleryGrid() {
     return cols;
   }, [photos, masonryCols]);
 
-  // Infinite Lazy Scroll Observer for Masonry View
+  // Infinite Lazy Scroll Observer (Triggers stream fetch when scrolling to ~80% of gallery height)
   useEffect(() => {
-    if (!sentinelRef.current || viewMode !== 'masonry') return;
+    if (!sentinelRef.current) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -511,12 +440,12 @@ export default function GalleryGrid() {
           loadNextPage();
         }
       },
-      { rootMargin: '800px' }
+      { rootMargin: '600px' }
     );
 
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
-  }, [hasMore, loading, loadingMore, loadNextPage, viewMode]);
+  }, [hasMore, loading, loadingMore, loadNextPage]);
 
   if (loading && photos.length === 0) {
     return (
@@ -540,11 +469,8 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Matrix View (Dynamic Scroll Buffer, Progressive Images, 120 FPS Starfield Repulsion)
+  // Render Matrix View (Native Engine Offscreen Pruning, Progressive Loading & 120 FPS Starfield Repulsion)
   if (viewMode === 'grid') {
-    const displayStart = photos.length > 0 ? visibleRange.start + 1 : 0;
-    const displayEnd = Math.min(visibleRange.end, photos.length);
-
     return (
       <section
         ref={sectionRef}
@@ -553,18 +479,6 @@ export default function GalleryGrid() {
         className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden relative min-h-screen"
       >
         <StarfieldCanvas cursorX={cursorX} cursorY={cursorY} />
-
-        {/* Matrix Dynamic Buffer Header Info Badge */}
-        <div className="flex items-center justify-between py-3 px-5 rounded-2xl glass-panel border border-neutral-200/80 dark:border-neutral-800/80 mb-6 relative z-10 shadow-sm">
-          <div className="flex items-center gap-2 text-xs font-mono text-neutral-600 dark:text-neutral-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Dynamic Scroll Buffer: Active frames <strong className="text-amber-700 dark:text-amber-400 font-bold">{displayStart}–{displayEnd}</strong> of <strong>{photos.length}</strong> loaded</span>
-          </div>
-
-          <span className="text-[11px] font-mono text-neutral-400 hidden sm:inline">
-            Auto-Pruning Buffer &amp; 80% Stream Fetch Active
-          </span>
-        </div>
 
         <div
           className="grid gap-4 sm:gap-5 items-start relative z-10"
@@ -593,7 +507,7 @@ export default function GalleryGrid() {
         </div>
 
         {/* Sentinel & Dynamic Loading Indicator */}
-        <div ref={sentinelRef} className="py-12 flex flex-col items-center justify-center gap-4 relative z-10">
+        <div ref={sentinelRef} className="py-16 flex flex-col items-center justify-center gap-4 relative z-10">
           {loadingMore && (
             <div className="flex items-center gap-3 text-amber-800 dark:text-amber-300 font-mono text-sm">
               <Loader2 className="w-5 h-5 animate-spin text-amber-700 dark:text-amber-400" />
