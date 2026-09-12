@@ -97,17 +97,27 @@ function StarfieldCanvas({ cursorX, cursorY }) {
 
 /**
  * ZipperCard Component (Masonry View)
- * Exact mfrports.com editorial photo card layout
+ * Features scroll-triggered entrance reveals flying in from Left & Right and aligning to position
  */
 const ZipperCard = memo(function ZipperCard({ photo, globalIdx, setActivePhoto }) {
   const isPortrait = globalIdx % 3 === 0;
   const isWide = globalIdx % 5 === 0;
   const aspectStyle = isPortrait ? '3/4' : isWide ? '16/9' : '4/3';
 
+  // Alternate entrance slide direction: Left (-70px) vs Right (+70px)
+  const slideDirection = (globalIdx % 2 === 0) ? -75 : 75;
+
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, x: slideDirection, y: 35 }}
+      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{
+        duration: 0.75,
+        ease: [0.16, 1, 0.3, 1],
+        delay: (globalIdx % 4) * 0.07
+      }}
+      whileHover={{ scale: 1.03 }}
       onClick={() => setActivePhoto(photo)}
       className="group relative rounded-3xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer"
     >
@@ -165,7 +175,6 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, setActivePhoto }
 
 /**
  * MatrixCard Component (Matrix View ONLY - Starfield Mouse Displacement)
- * Nudges nearby cards aside by a few pixels when moving mouse near them in Matrix View
  */
 const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY, setActivePhoto }) {
   const cardRef = useRef(null);
@@ -204,6 +213,9 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
   return (
     <motion.div
       ref={cardRef}
+      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
       style={{ x: shiftX, y: shiftY }}
       whileHover={{ scale: 1.04, zIndex: 30 }}
       onClick={() => setActivePhoto(photo)}
@@ -285,13 +297,12 @@ function MatrixColumnContainer({ colIdx, children, scrollYProgress }) {
 
 /**
  * Column Parallax Container for Masonry View (Exact mfrports.com 3-column Zipper Parallax)
- * Column 0 & 2 slide UP while Column 1 slides DOWN in opposite directions as you scroll down
  */
 function ZipperColumnContainer({ colIdx, children, scrollYProgress }) {
   const parallaxRanges = [
-    [0, -180], // Column 0 slides UP
-    [0, 180],  // Column 1 slides DOWN (Opposite Zipper Motion)
-    [0, -140]  // Column 2 slides UP
+    [0, -180],
+    [0, 180],
+    [0, -140]
   ];
   const range = parallaxRanges[colIdx % parallaxRanges.length];
   const y = useTransform(scrollYProgress, [0, 1], range);
@@ -318,7 +329,7 @@ export default function GalleryGrid() {
   const sentinelRef = useRef(null);
   const windowWidth = useWindowWidth();
 
-  // Scroll Progress relative to Gallery Section (Hardware-accelerated)
+  // Scroll Progress relative to Gallery Section
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start end', 'end start']
@@ -468,7 +479,7 @@ export default function GalleryGrid() {
     );
   }
 
-  // Render Masonry View (Exact mfrports.com 3-column Zipper Parallax)
+  // Render Masonry View (Exact mfrports.com 3-column Zipper Parallax with Left/Right Entrance Reveals)
   return (
     <section ref={sectionRef} className="max-w-[1600px] mx-auto px-4 sm:px-8 py-8 overflow-hidden min-h-screen">
       <div
