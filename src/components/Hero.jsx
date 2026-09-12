@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Search, ArrowDown } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
+import { FLICKR_CONFIG } from '../services/flickrService';
 
 export default function Hero() {
   const { photos, searchQuery, setSearchQuery, activeAlbum, albums, viewMode, pageSize, currentPage } = useFlickr();
@@ -20,9 +21,13 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-mono mb-6"
+        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-mono mb-6 shadow-sm"
       >
-        <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+        <img
+          src={FLICKR_CONFIG.AVATAR_URL}
+          alt="Tal Malek"
+          className="w-5 h-5 rounded-full object-cover border border-amber-500/40 shrink-0"
+        />
         <span>Flickr Live Portfolio Skin</span>
         <span className="w-1 h-1 rounded-full bg-amber-500"></span>
         <span className="text-neutral-600 dark:text-neutral-400">mfrports-Inspired Design</span>

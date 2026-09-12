@@ -28,8 +28,15 @@ export default function Navbar() {
           href="/"
           className="flex items-center gap-3 group focus:outline-none"
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform duration-300">
-            <Camera className="w-4 h-4 text-white font-bold" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden border border-amber-500/30 shadow-md shadow-amber-500/10 group-hover:scale-105 transition-transform duration-300 bg-neutral-200 shrink-0">
+            <img
+              src={FLICKR_CONFIG.AVATAR_URL}
+              alt="Tal Malek"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
           </div>
 
           <div className="flex flex-col">

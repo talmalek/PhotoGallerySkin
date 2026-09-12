@@ -8,6 +8,7 @@ export const FLICKR_CONFIG = {
   USERNAME: 'talmalek',
   USER_NSID: '126120136@N05',
   PROFILE_URL: 'https://www.flickr.com/photos/talmalek/',
+  AVATAR_URL: 'https://live.staticflickr.com/7408/buddyicons/126120136@N05_r.jpg?1422715756#126120136@N05',
   DEFAULT_API_KEY: '91a030f14207084fb9583d5b1f4416aa' // Live Flickr REST key
 };
 

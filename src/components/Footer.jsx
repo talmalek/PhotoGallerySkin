@@ -12,8 +12,15 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Left */}
         <div className="flex items-center gap-3 text-left">
-          <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center border border-amber-500/20">
-            <Camera className="w-4 h-4" />
+          <div className="w-9 h-9 rounded-xl overflow-hidden border border-amber-500/30 shadow-md shadow-amber-500/10 bg-neutral-200 shrink-0">
+            <img
+              src={FLICKR_CONFIG.AVATAR_URL}
+              alt="Tal Malek"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
           </div>
           <div>
             <h4 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">PhotoGallerySkin</h4>
