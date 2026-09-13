@@ -5,7 +5,7 @@ import { useFlickr } from '../context/FlickrContext';
 import { FLICKR_CONFIG } from '../services/flickrService';
 
 export default function Hero() {
-  const { photos, searchQuery, setSearchQuery, activeAlbum, albums, viewMode, pageSize, currentPage } = useFlickr();
+  const { photos, searchQuery, setSearchQuery, activeAlbum, albums, viewMode, pageSize, currentPage, setIsAboutModalOpen } = useFlickr();
 
   const marqueeItems = photos.slice(0, 8);
   const currentAlbum = albums.find(a => a.id === activeAlbum) || albums[0];
@@ -16,27 +16,31 @@ export default function Hero() {
 
   return (
     <section className="pt-32 pb-10 px-4 max-w-7xl mx-auto flex flex-col items-center text-center">
-      {/* Category Tag */}
-      <motion.div
+      {/* Category Tag / About Trigger */}
+      <motion.button
+        onClick={() => setIsAboutModalOpen(true)}
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] font-mono tracking-widest uppercase mb-4"
+        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] font-mono tracking-widest uppercase mb-4 transition-all cursor-pointer shadow-sm"
+        title="About Photographer"
       >
         <img
           src={FLICKR_CONFIG.AVATAR_URL}
           alt="Tal Malek"
           className="w-4 h-4 rounded-full object-cover border border-amber-500/40 shrink-0"
         />
-        <span>Portfolio</span>
-      </motion.div>
+        <span>About Photographer</span>
+      </motion.button>
 
       {/* Main Headline */}
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.1 }}
-        className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 max-w-3xl leading-tight"
+        onClick={() => setIsAboutModalOpen(true)}
+        className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 max-w-3xl leading-tight hover:text-amber-700 dark:hover:text-amber-300 transition-colors cursor-pointer"
+        title="Click to view photographer bio"
       >
         Tal Malek Photography
       </motion.h1>

@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import GalleryGrid from './components/GalleryGrid';
 import LightboxModal from './components/LightboxModal';
 import FlickrAuthModal from './components/FlickrAuthModal';
+import AboutModal from './components/AboutModal';
 import Footer from './components/Footer';
 
 class ErrorBoundary extends React.Component {
@@ -63,6 +64,7 @@ function MainContent() {
         <GalleryGrid />
       </main>
       <LightboxModal />
+      <AboutModal />
       <FlickrAuthModal />
       <Footer />
     </div>

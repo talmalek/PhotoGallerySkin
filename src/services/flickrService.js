@@ -9,7 +9,7 @@ export const FLICKR_CONFIG = {
   USER_NSID: '126120136@N05',
   PROFILE_URL: 'https://www.flickr.com/photos/talmalek/',
   AVATAR_URL: 'https://live.staticflickr.com/7408/buddyicons/126120136@N05_r.jpg?1422715756#126120136@N05',
-  DEFAULT_API_KEY: '91a030f14207084fb9583d5b1f4416aa' // Live Flickr REST key
+  DEFAULT_API_KEY: 'e251fe9db3b276faf51d474b5e0dc7e5' // Active Live Flickr REST key
 };
 
 export const DEFAULT_ALBUMS = [
@@ -66,59 +66,70 @@ function fetchFlickrPublicFeed(nsid) {
   });
 }
 
+const FALLBACK_KEYS = [
+  'e251fe9db3b276faf51d474b5e0dc7e5'
+];
+
+function getCandidateKeys(customApiKey = '') {
+  const list = [customApiKey, FLICKR_CONFIG.DEFAULT_API_KEY, ...FALLBACK_KEYS].filter(Boolean);
+  return [...new Set(list)];
+}
+
 /**
  * Fetch Photostream Batch via Flickr REST API with fallback to JSONP Public Feed
  */
 export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
-  const apiKey = customApiKey || FLICKR_CONFIG.DEFAULT_API_KEY;
+  const keysToTry = getCandidateKeys(customApiKey);
 
   // 1. Try Direct Flickr REST API (flickr.people.getPublicPhotos) - per_page=500
-  try {
-    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,o_dims,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500&page=${page}`;
-    const res = await fetch(apiUrl);
-    const data = await res.json();
+  for (const apiKey of keysToTry) {
+    try {
+      const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,o_dims,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500&page=${page}`;
+      const res = await fetch(apiUrl);
+      const data = await res.json();
 
-    if (data.stat === 'ok' && data.photos && data.photos.photo && data.photos.photo.length > 0) {
-      console.log(`[Flickr REST API] Successfully fetched ${data.photos.photo.length} photostream photos (page ${page})`);
-      return data.photos.photo.map((item) => {
-        const photoId = item.id;
-        const serverId = item.server;
-        const secret = item.secret;
+      if (data.stat === 'ok' && data.photos && data.photos.photo && data.photos.photo.length > 0) {
+        console.log(`[Flickr REST API] Successfully fetched ${data.photos.photo.length} photostream photos (page ${page})`);
+        return data.photos.photo.map((item) => {
+          const photoId = item.id;
+          const serverId = item.server;
+          const secret = item.secret;
 
-        const nanoUrl = item.url_q || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_q.jpg`;
-        const smallUrl = item.url_s || item.url_m || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_m.jpg`;
-        const small320Url = item.url_n || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_n.jpg`;
-        const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
-        const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
-        const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
+          const nanoUrl = item.url_q || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_q.jpg`;
+          const smallUrl = item.url_s || item.url_m || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_m.jpg`;
+          const small320Url = item.url_n || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_n.jpg`;
+          const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
+          const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
+          const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
 
-        const w = parseInt(item.width_z || item.width_c || item.width_b || item.width_n || item.width_o || 0, 10);
-        const h = parseInt(item.height_z || item.height_c || item.height_b || item.height_n || item.height_o || 0, 10);
-        const aspectRatio = (w > 0 && h > 0) ? `${w}/${h}` : '4/3';
+          const w = parseInt(item.width_z || item.width_c || item.width_b || item.width_n || item.width_o || 0, 10);
+          const h = parseInt(item.height_z || item.height_c || item.height_b || item.height_n || item.height_o || 0, 10);
+          const aspectRatio = (w > 0 && h > 0) ? `${w}/${h}` : '4/3';
 
-        return {
-          id: photoId,
-          serverId,
-          secret,
-          title: item.title && item.title.trim() ? item.title.trim().replace(/\.(jpg|png|jpeg|gif)$/i, '') : `DSC_${photoId.slice(-5)}`,
-          link: `https://www.flickr.com/photos/${FLICKR_CONFIG.USER_NSID}/${photoId}`,
-          author: 'Tal Malek',
-          dateTaken: item.datetaken ? new Date(item.datetaken).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '2024',
-          description: item.description?._content || 'Captured moment by Tal Malek.',
-          tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Photography', 'Portfolio'],
-          nanoUrl,
-          smallUrl,
-          small320Url,
-          thumbUrl,
-          mediumUrl,
-          largeUrl,
-          fullUrl: item.url_k || largeUrl,
-          aspectRatio
-        };
-      });
+          return {
+            id: photoId,
+            serverId,
+            secret,
+            title: item.title && item.title.trim() ? item.title.trim().replace(/\.(jpg|png|jpeg|gif)$/i, '') : `DSC_${photoId.slice(-5)}`,
+            link: `https://www.flickr.com/photos/${FLICKR_CONFIG.USER_NSID}/${photoId}`,
+            author: 'Tal Malek',
+            dateTaken: item.datetaken ? new Date(item.datetaken).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '2024',
+            description: item.description?._content || 'Captured moment by Tal Malek.',
+            tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Photography', 'Portfolio'],
+            nanoUrl,
+            smallUrl,
+            small320Url,
+            thumbUrl,
+            mediumUrl,
+            largeUrl,
+            fullUrl: item.url_k || largeUrl,
+            aspectRatio
+          };
+        });
+      }
+    } catch (err) {
+      console.warn(`[Flickr REST API] Photostream query error for key ${apiKey.slice(0, 6)}:`, err);
     }
-  } catch (err) {
-    console.warn('[Flickr REST API] Photostream query error:', err);
   }
 
   // 2. Fallback to Flickr Public JSONP Feed if REST API fails
@@ -170,55 +181,57 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
     return await fetchPublicPhotostream(1, customApiKey);
   }
 
-  const apiKey = customApiKey || FLICKR_CONFIG.DEFAULT_API_KEY;
+  const keysToTry = getCandidateKeys(customApiKey);
 
   // 1. REST API Album Query (flickr.photosets.getPhotos)
-  try {
-    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,o_dims,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500`;
-    const res = await fetch(apiUrl);
-    const data = await res.json();
+  for (const apiKey of keysToTry) {
+    try {
+      const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,o_dims,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500`;
+      const res = await fetch(apiUrl);
+      const data = await res.json();
 
-    if (data.stat === 'ok' && data.photoset && data.photoset.photo && data.photoset.photo.length > 0) {
-      console.log(`[Flickr REST API] Loaded ${data.photoset.photo.length} photos for album ${albumId}`);
-      return data.photoset.photo.map((item) => {
-        const photoId = item.id;
-        const serverId = item.server;
-        const secret = item.secret;
+      if (data.stat === 'ok' && data.photoset && data.photoset.photo && data.photoset.photo.length > 0) {
+        console.log(`[Flickr REST API] Loaded ${data.photoset.photo.length} photos for album ${albumId}`);
+        return data.photoset.photo.map((item) => {
+          const photoId = item.id;
+          const serverId = item.server;
+          const secret = item.secret;
 
-        const nanoUrl = item.url_q || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_q.jpg`;
-        const smallUrl = item.url_s || item.url_m || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_m.jpg`;
-        const small320Url = item.url_n || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_n.jpg`;
-        const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
-        const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
-        const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
+          const nanoUrl = item.url_q || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_q.jpg`;
+          const smallUrl = item.url_s || item.url_m || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_m.jpg`;
+          const small320Url = item.url_n || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_n.jpg`;
+          const thumbUrl = item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_z.jpg`;
+          const mediumUrl = item.url_c || item.url_z || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_c.jpg`;
+          const largeUrl = item.url_b || item.url_k || `https://live.staticflickr.com/${serverId}/${photoId}_${secret}_b.jpg`;
 
-        const w = parseInt(item.width_z || item.width_c || item.width_b || item.width_n || item.width_o || 0, 10);
-        const h = parseInt(item.height_z || item.height_c || item.height_b || item.height_n || item.height_o || 0, 10);
-        const aspectRatio = (w > 0 && h > 0) ? `${w}/${h}` : '4/3';
+          const w = parseInt(item.width_z || item.width_c || item.width_b || item.width_n || item.width_o || 0, 10);
+          const h = parseInt(item.height_z || item.height_c || item.height_b || item.height_n || item.height_o || 0, 10);
+          const aspectRatio = (w > 0 && h > 0) ? `${w}/${h}` : '4/3';
 
-        return {
-          id: photoId,
-          serverId,
-          secret,
-          title: item.title && item.title.trim() ? item.title.trim().replace(/\.(jpg|png|jpeg|gif)$/i, '') : `DSC_${photoId.slice(-5)}`,
-          link: `https://www.flickr.com/photos/${FLICKR_CONFIG.USER_NSID}/${photoId}`,
-          author: 'Tal Malek',
-          dateTaken: item.datetaken ? new Date(item.datetaken).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '2024',
-          description: item.description?._content || 'Album item from Tal Malek Flickr collection.',
-          tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Album'],
-          nanoUrl,
-          smallUrl,
-          small320Url,
-          thumbUrl,
-          mediumUrl,
-          largeUrl,
-          fullUrl: item.url_k || largeUrl,
-          aspectRatio
-        };
-      });
+          return {
+            id: photoId,
+            serverId,
+            secret,
+            title: item.title && item.title.trim() ? item.title.trim().replace(/\.(jpg|png|jpeg|gif)$/i, '') : `DSC_${photoId.slice(-5)}`,
+            link: `https://www.flickr.com/photos/${FLICKR_CONFIG.USER_NSID}/${photoId}`,
+            author: 'Tal Malek',
+            dateTaken: item.datetaken ? new Date(item.datetaken).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '2024',
+            description: item.description?._content || 'Album item from Tal Malek Flickr collection.',
+            tags: item.tags ? item.tags.split(' ').filter(Boolean) : ['Album'],
+            nanoUrl,
+            smallUrl,
+            small320Url,
+            thumbUrl,
+            mediumUrl,
+            largeUrl,
+            fullUrl: item.url_k || largeUrl,
+            aspectRatio
+          };
+        });
+      }
+    } catch (err) {
+      console.warn(`[Flickr REST API] Album query failed for key ${apiKey.slice(0, 6)}:`, err);
     }
-  } catch (err) {
-    console.warn(`[Flickr REST API] Album query error for set ${albumId}:`, err);
   }
 
   return [];

@@ -14,6 +14,7 @@ export function FlickrProvider({ children }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [apiKey, setApiKey] = useState(() => localStorage.getItem('flickr_api_key') || '');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   
   // Lightbox & UI States - Default to CLEAN WHITE THEME (darkMode = false)
   const [activePhoto, setActivePhoto] = useState(null);
@@ -171,6 +172,8 @@ export function FlickrProvider({ children }) {
         setDarkMode,
         isAuthModalOpen,
         setIsAuthModalOpen,
+        isAboutModalOpen,
+        setIsAboutModalOpen,
         searchQuery,
         setSearchQuery,
         pageSize,

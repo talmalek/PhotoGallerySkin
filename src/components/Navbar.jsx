@@ -11,8 +11,7 @@ export default function Navbar() {
     setViewMode,
     darkMode,
     setDarkMode,
-    setIsAuthModalOpen,
-    allPhotosCount
+    setIsAboutModalOpen
   } = useFlickr();
 
   return (
@@ -24,9 +23,10 @@ export default function Navbar() {
         className="glass-panel rounded-2xl px-5 py-3 flex items-center justify-between shadow-lg border border-gray-200/80 dark:border-neutral-800/80"
       >
         {/* Brand Logo */}
-        <a
-          href="/"
-          className="flex items-center gap-3 group focus:outline-none"
+        <button
+          onClick={() => setIsAboutModalOpen(true)}
+          className="flex items-center gap-3 group focus:outline-none cursor-pointer text-left"
+          title="About Tal Malek Photography"
         >
           <div className="w-9 h-9 rounded-xl overflow-hidden border border-amber-500/30 shadow-md shadow-amber-500/10 group-hover:scale-105 transition-transform duration-300 bg-neutral-200 shrink-0">
             <img
@@ -45,14 +45,14 @@ export default function Navbar() {
                 Tal Malek Photography
               </span>
               <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
-                PORTFOLIO
+                ABOUT
               </span>
             </div>
             <span className="text-[11px] font-mono text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
               Flickr Stream <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             </span>
           </div>
-        </a>
+        </button>
 
         {/* Center / Album Selector Dropdown */}
         <div className="hidden md:flex items-center gap-3">
@@ -85,15 +85,6 @@ export default function Navbar() {
               <span className="hidden xl:inline text-[11px] font-mono">Matrix</span>
             </button>
           </div>
-
-          {/* Flickr Sync Settings Modal */}
-          <button
-            onClick={() => setIsAuthModalOpen(true)}
-            title="Flickr Sync Settings"
-            className="p-2 rounded-xl glass-panel hover:bg-gray-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-amber-700 border border-gray-200 dark:border-neutral-700/50 transition-colors cursor-pointer"
-          >
-            <Key className="w-4 h-4" />
-          </button>
 
           {/* Direct Flickr Link */}
           <a
