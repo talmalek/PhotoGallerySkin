@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Camera, LayoutGrid, Grid, Moon, Sun, Key, ExternalLink } from 'lucide-react';
+import { Camera, LayoutGrid, Grid, Moon, Sun, ExternalLink } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 import AlbumDropdown from './AlbumDropdown';
 import { FLICKR_CONFIG } from '../services/flickrService';
@@ -11,8 +11,7 @@ export default function Navbar() {
     setViewMode,
     darkMode,
     setDarkMode,
-    setIsAboutModalOpen,
-    setIsAuthModalOpen
+    setIsAboutModalOpen
   } = useFlickr();
 
   return (
@@ -86,15 +85,6 @@ export default function Navbar() {
               <span className="hidden xl:inline text-[11px] font-mono">Matrix</span>
             </button>
           </div>
-
-          {/* Flickr Key Connection Modal Trigger */}
-          <button
-            onClick={() => setIsAuthModalOpen(true)}
-            title="Flickr API Key Settings"
-            className="p-2 rounded-xl glass-panel hover:bg-gray-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-amber-700 border border-gray-200 dark:border-neutral-700/50 transition-colors cursor-pointer"
-          >
-            <Key className="w-4 h-4" />
-          </button>
 
           {/* Direct Flickr Link */}
           <a
