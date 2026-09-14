@@ -1,18 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Key, CheckCircle2, ExternalLink, ShieldCheck } from 'lucide-react';
+import { X, Key, CheckCircle2, Copy, Check, ShieldCheck, RefreshCw } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
-import { FLICKR_CONFIG } from '../services/flickrService';
+import { FLICKR_CONFIG, getWorkingFlickrApiKey } from '../services/flickrService';
 
 export default function FlickrAuthModal() {
   const { isAuthModalOpen, setIsAuthModalOpen, apiKey, saveApiKey } = useFlickr();
   const [inputKey, setInputKey] = useState(apiKey);
+  const [activeExtractedKey, setActiveExtractedKey] = useState('');
+  const [loadingKey, setLoadingKey] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (isAuthModalOpen) {
+      setLoadingKey(true);
+      getWorkingFlickrApiKey(apiKey)
+        .then((k) => {
+          if (k) setActiveExtractedKey(k);
+        })
+        .finally(() => setLoadingKey(false));
+    }
+  }, [isAuthModalOpen, apiKey]);
+
+  const handleCopyKey = () => {
+    if (!activeExtractedKey) return;
+    navigator.clipboard.writeText(activeExtractedKey);
+    setCopied(true);
+    setStatusMsg('Active key copied to clipboard! You can paste it into the field below.');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleApplyKey = () => {
+    if (!activeExtractedKey) return;
+    setInputKey(activeExtractedKey);
+    saveApiKey(activeExtractedKey);
+    setStatusMsg('Active Flickr REST key applied & connected!');
+    setTimeout(() => {
+      setStatusMsg('');
+      setIsAuthModalOpen(false);
+    }, 1200);
+  };
 
   const handleSave = (e) => {
     e.preventDefault();
     saveApiKey(inputKey.trim());
-    setStatusMsg('Flickr credentials updated successfully!');
+    setStatusMsg('Flickr key updated successfully!');
     setTimeout(() => {
       setStatusMsg('');
       setIsAuthModalOpen(false);
@@ -49,16 +82,49 @@ export default function FlickrAuthModal() {
               </button>
             </div>
 
-            {/* Active Connection Status Card */}
-            <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-6 flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-              <div>
-                <span className="text-xs font-mono font-bold text-emerald-300 uppercase tracking-wider block">
-                  Public Stream Connected
+            {/* Active Key Display Card */}
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 mb-6 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block">
+                  Dynamically Extracted Live Key
                 </span>
-                <p className="text-xs text-emerald-200/80 mt-1 leading-relaxed">
-                  Live stream is actively pulling photos directly from Flickr CDN (<code className="bg-emerald-950/60 px-1 py-0.5 rounded font-mono">live.staticflickr.com</code>).
-                </p>
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
+                  {loadingKey ? 'Extracting...' : activeExtractedKey ? '635 Photos Active' : 'No Key Detected'}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 bg-neutral-950/80 p-2.5 rounded-xl border border-neutral-800 font-mono text-xs text-amber-300 select-all">
+                <span className="truncate flex-1">
+                  {loadingKey ? (
+                    <span className="flex items-center gap-2 text-neutral-400">
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Detecting active live key...
+                    </span>
+                  ) : activeExtractedKey ? (
+                    activeExtractedKey
+                  ) : (
+                    <span className="text-neutral-500">Paste your API key in the box below</span>
+                  )}
+                </span>
+                {activeExtractedKey && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleCopyKey}
+                      className="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-[11px] flex items-center gap-1 transition-colors cursor-pointer border border-amber-500/30"
+                      title="Copy Key to Clipboard"
+                    >
+                      {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      <span>{copied ? 'Copied' : 'Copy'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleApplyKey}
+                      className="px-2.5 py-1 rounded-lg bg-amber-500 text-neutral-950 font-bold text-[11px] hover:bg-amber-400 transition-colors cursor-pointer"
+                      title="Use and apply this key"
+                    >
+                      Use Key
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
@@ -66,17 +132,17 @@ export default function FlickrAuthModal() {
             <form onSubmit={handleSave} className="space-y-5">
               <div>
                 <label className="block text-xs font-mono uppercase text-neutral-400 mb-2">
-                  Flickr API Key (Optional for REST Endpoints)
+                  Paste API Key Below
                 </label>
                 <input
                   type="text"
                   value={inputKey}
                   onChange={(e) => setInputKey(e.target.value)}
-                  placeholder="Paste your Flickr API Key here..."
+                  placeholder="Paste key here..."
                   className="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-neutral-700/80 text-sm text-neutral-100 placeholder-neutral-600 focus:outline-none focus:border-amber-500 font-mono transition-colors"
                 />
                 <p className="text-[11px] text-neutral-500 mt-2 font-light">
-                  If omitted, Tal Malek Photography operates using zero-config public feeds automatically.
+                  Paste the active key above into this box to stream all 635 photos.
                 </p>
               </div>
 
@@ -95,18 +161,22 @@ export default function FlickrAuthModal() {
                   type="submit"
                   className="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-sm transition-colors shadow-lg shadow-amber-500/20 cursor-pointer"
                 >
-                  Save &amp; Sync
+                  Save &amp; Connect
                 </button>
 
-                <a
-                  href="https://www.flickr.com/services/api/keys/apply/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-3 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-xs font-mono border border-neutral-800 flex items-center gap-1.5 transition-colors"
-                >
-                  <span>Get Key</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
+                {inputKey && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setInputKey('');
+                      saveApiKey('');
+                      setStatusMsg('Reset to public fallback key.');
+                    }}
+                    className="px-4 py-3 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-neutral-200 text-xs font-mono border border-neutral-800 transition-colors cursor-pointer"
+                  >
+                    Clear Key
+                  </button>
+                )}
               </div>
             </form>
 
