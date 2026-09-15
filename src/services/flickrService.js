@@ -73,6 +73,8 @@ const CORS_PROXIES = [
 ];
 
 let cachedWorkingKey = null;
+let keyTimestamp = null;
+const KEY_VALIDITY_HOURS = 6; // Flickr API keys expire, assume 6-hour validity window
 
 async function testApiKey(k) {
   if (!k || typeof k !== 'string' || k.length !== 32) return false;
@@ -87,35 +89,86 @@ async function testApiKey(k) {
 }
 
 /**
- * Dynamic Flickr API Key Resolver:
+ * Check if cached key has expired based on timestamp
+ */
+function isKeyExpired() {
+  if (!keyTimestamp) return true;
+  const now = Date.now();
+  const ageHours = (now - keyTimestamp) / (1000 * 60 * 60);
+  return ageHours > KEY_VALIDITY_HOURS;
+}
+
+/**
+ * Dynamic Flickr API Key Resolver with Expiration Tracking:
  * 1. Checks user custom key (if entered in modal).
- * 2. Checks browser local/session storage.
- * 3. Dynamically scrapes active live key from Flickr profile via CORS proxy pool.
- * 4. Resilient fallback to active guest key if proxy scraping fails in browser.
+ * 2. Checks if cached key is still valid (not expired).
+ * 3. Checks browser local/session storage (with expiration check).
+ * 4. Dynamically scrapes active live key from Flickr profile via CORS proxy pool.
+ * 5. Resilient fallback to active guest key if proxy scraping fails in browser.
  */
 const PRIMARY_LIVE_KEY = 'e776850bbaefc08cd1838dd2e9d24eff';
 
 export async function getWorkingFlickrApiKey(customApiKey = '') {
   // 1. Try user custom key (if entered in modal)
-  if (customApiKey && await testApiKey(customApiKey)) return customApiKey;
+  if (customApiKey && await testApiKey(customApiKey)) {
+    console.log('[Flickr Key Engine] Using custom user-provided API key');
+    cachedWorkingKey = customApiKey;
+    keyTimestamp = Date.now();
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('flickr_live_key', customApiKey);
+      localStorage.setItem('flickr_key_timestamp', keyTimestamp.toString());
+    }
+    return customApiKey;
+  }
 
-  // 2. Try primary active REST key (Instant 20ms response, zero proxy hangs)
+  // 2. Check if cached key is still valid (not expired)
+  if (cachedWorkingKey && !isKeyExpired() && await testApiKey(cachedWorkingKey)) {
+    console.log('[Flickr Key Engine] Using cached key (still valid)');
+    return cachedWorkingKey;
+  }
+
+  // If cached key is expired, invalidate it
+  if (cachedWorkingKey && isKeyExpired()) {
+    console.log('[Flickr Key Engine] Cached key expired, fetching fresh key...');
+    cachedWorkingKey = null;
+    keyTimestamp = null;
+  }
+
+  // 3. Try persistent browser storage (check expiration)
+  const localSavedKey = typeof localStorage !== 'undefined' ? localStorage.getItem('flickr_live_key') : null;
+  const localTimestamp = typeof localStorage !== 'undefined' ? localStorage.getItem('flickr_key_timestamp') : null;
+  
+  if (localSavedKey) {
+    const keyAge = localTimestamp ? (Date.now() - parseInt(localTimestamp, 10)) / (1000 * 60 * 60) : KEY_VALIDITY_HOURS + 1;
+    if (keyAge <= KEY_VALIDITY_HOURS && await testApiKey(localSavedKey)) {
+      console.log('[Flickr Key Engine] Using localStorage key (still valid)');
+      cachedWorkingKey = localSavedKey;
+      keyTimestamp = parseInt(localTimestamp, 10);
+      return localSavedKey;
+    }
+  }
+
+  const sessionSavedKey = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('flickr_live_key') : null;
+  if (sessionSavedKey && await testApiKey(sessionSavedKey)) {
+    console.log('[Flickr Key Engine] Using sessionStorage key');
+    cachedWorkingKey = sessionSavedKey;
+    keyTimestamp = Date.now();
+    return sessionSavedKey;
+  }
+
+  // 4. Try primary live key
   if (await testApiKey(PRIMARY_LIVE_KEY)) {
+    console.log('[Flickr Key Engine] Primary live key validated');
     cachedWorkingKey = PRIMARY_LIVE_KEY;
-    if (typeof localStorage !== 'undefined') localStorage.setItem('flickr_live_key', PRIMARY_LIVE_KEY);
+    keyTimestamp = Date.now();
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('flickr_live_key', PRIMARY_LIVE_KEY);
+      localStorage.setItem('flickr_key_timestamp', keyTimestamp.toString());
+    }
     return PRIMARY_LIVE_KEY;
   }
 
-  // 3. Try persistent browser storage
-  const localSavedKey = typeof localStorage !== 'undefined' ? localStorage.getItem('flickr_live_key') : null;
-  if (localSavedKey && await testApiKey(localSavedKey)) return localSavedKey;
-
-  const sessionSavedKey = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('flickr_live_key') : null;
-  if (sessionSavedKey && await testApiKey(sessionSavedKey)) return sessionSavedKey;
-
-  if (cachedWorkingKey && await testApiKey(cachedWorkingKey)) return cachedWorkingKey;
-
-  // 4. Dynamic Proxy Scraper (Only executed as emergency fallback with fast 2.5s timeout)
+  // 5. Dynamic Proxy Scraper (Emergency fallback with fast 2.5s timeout)
   const targetProfileUrl = `https://www.flickr.com/photos/${FLICKR_CONFIG.USERNAME}/`;
   for (const buildProxyUrl of CORS_PROXIES) {
     try {
@@ -132,9 +185,13 @@ export async function getWorkingFlickrApiKey(customApiKey = '') {
 
         for (const k of candidates) {
           if (await testApiKey(k)) {
-            console.log(`[Flickr Key Engine] Dynamically extracted live key from web: ${k}`);
+            console.log(`[Flickr Key Engine] Dynamically extracted fresh live key from web: ${k}`);
             cachedWorkingKey = k;
-            if (typeof localStorage !== 'undefined') localStorage.setItem('flickr_live_key', k);
+            keyTimestamp = Date.now();
+            if (typeof localStorage !== 'undefined') {
+              localStorage.setItem('flickr_live_key', k);
+              localStorage.setItem('flickr_key_timestamp', keyTimestamp.toString());
+            }
             return k;
           }
         }
@@ -144,6 +201,7 @@ export async function getWorkingFlickrApiKey(customApiKey = '') {
     }
   }
 
+  console.warn('[Flickr Key Engine] All key sources exhausted, using primary key');
   return PRIMARY_LIVE_KEY;
 }
 
@@ -155,7 +213,7 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
 
   // 1. Try Direct Flickr REST API (flickr.people.getPublicPhotos) - per_page=500
   try {
-    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,o_dims,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500&page=${page}`;
+    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,url_q,url_s,url_m,url_n&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500&page=${page}`;
     const res = await fetch(apiUrl);
     const data = await res.json();
 
@@ -255,7 +313,7 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
 
   // 1. REST API Album Query (flickr.photosets.getPhotos)
   try {
-    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,o_dims,date_taken,description,tags&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500`;
+    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,url_q,url_s,url_m,url_n&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500`;
     const res = await fetch(apiUrl);
     const data = await res.json();
 
