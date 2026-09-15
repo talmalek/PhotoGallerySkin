@@ -15,14 +15,16 @@ import {
   Disc,
   Clock,
   Sparkles,
-  Layers
+  Layers,
+  ZoomIn,
+  ZoomOut
 } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 import { fetchPhotoExif } from '../services/flickrService';
 
 export default function LightboxModal() {
   const { activePhoto, setActivePhoto, navigateLightbox, photos, apiKey } = useFlickr();
-  const [zoom, setZoom] = useState(1);
+  const [isZoomed, setIsZoomed] = useState(false);
   const [showMetadata, setShowMetadata] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [exifData, setExifData] = useState(null);
@@ -32,7 +34,7 @@ export default function LightboxModal() {
   useEffect(() => {
     if (!activePhoto) return;
     setImageLoaded(false);
-    setZoom(1);
+    setIsZoomed(false);
 
     let isMounted = true;
     setExifLoading(true);
@@ -53,24 +55,35 @@ export default function LightboxModal() {
   useEffect(() => {
     function handleKeyDown(e) {
       if (!activePhoto) return;
-      if (e.key === 'Escape') setActivePhoto(null);
+      if (e.key === 'Escape') {
+        if (isZoomed) {
+          setIsZoomed(false);
+        } else {
+          setActivePhoto(null);
+        }
+      }
       if (e.key === 'ArrowRight') {
         navigateLightbox('next');
-        setZoom(1);
+        setIsZoomed(false);
       }
       if (e.key === 'ArrowLeft') {
         navigateLightbox('prev');
-        setZoom(1);
+        setIsZoomed(false);
       }
     }
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activePhoto, navigateLightbox, setActivePhoto]);
+  }, [activePhoto, isZoomed, navigateLightbox, setActivePhoto]);
 
   if (!activePhoto) return null;
 
   const currentIndex = photos.findIndex(p => p.id === activePhoto.id);
   const totalPhotos = photos.length;
+
+  const toggleZoom = (e) => {
+    e.stopPropagation();
+    setIsZoomed(!isZoomed);
+  };
 
   return (
     <AnimatePresence>
@@ -79,8 +92,16 @@ export default function LightboxModal() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={() => setActivePhoto(null)}
-        className="fixed inset-0 z-50 bg-neutral-950/75 backdrop-blur-3xl flex items-center justify-center p-4 sm:p-8 overflow-hidden cursor-zoom-out"
+        onClick={() => {
+          if (isZoomed) {
+            setIsZoomed(false);
+          } else {
+            setActivePhoto(null);
+          }
+        }}
+        className={`fixed inset-0 z-50 bg-neutral-950/85 backdrop-blur-3xl flex items-center justify-center p-4 sm:p-8 overflow-auto transition-all ${
+          isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
+        }`}
       >
         {/* Top Control Header */}
         <div
@@ -97,6 +118,25 @@ export default function LightboxModal() {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Magnifier Zoom Button: Shows (+) when fit-screen, (-) when full-screen */}
+            <button
+              onClick={toggleZoom}
+              title={isZoomed ? 'Zoom Out to Original Fit Size' : 'Zoom In to Full Browser Screen'}
+              className="p-2.5 rounded-2xl bg-white/90 hover:bg-white text-neutral-900 border border-white/40 shadow-lg transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono font-bold"
+            >
+              {isZoomed ? (
+                <>
+                  <ZoomOut className="w-4 h-4 text-amber-600 stroke-[2.5]" />
+                  <span className="hidden sm:inline">Fit Screen (-)</span>
+                </>
+              ) : (
+                <>
+                  <ZoomIn className="w-4 h-4 text-amber-600 stroke-[2.5]" />
+                  <span className="hidden sm:inline">Full Screen (+)</span>
+                </>
+              )}
+            </button>
+
             <button
               onClick={() => setShowMetadata(!showMetadata)}
               title="Toggle Detailed EXIF Camera Data"
@@ -132,11 +172,11 @@ export default function LightboxModal() {
           onClick={(e) => e.stopPropagation()}
           className="relative max-w-full max-h-full flex items-center justify-center pointer-events-auto"
         >
-          {currentIndex > 0 && (
+          {currentIndex > 0 && !isZoomed && (
             <button
               onClick={() => {
                 navigateLightbox('prev');
-                setZoom(1);
+                setIsZoomed(false);
               }}
               className="absolute -left-16 sm:-left-20 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 hover:bg-white text-neutral-900 border border-white/60 shadow-xl transition-all cursor-pointer backdrop-blur-md"
             >
@@ -144,11 +184,11 @@ export default function LightboxModal() {
             </button>
           )}
 
-          {currentIndex < totalPhotos - 1 && (
+          {currentIndex < totalPhotos - 1 && !isZoomed && (
             <button
               onClick={() => {
                 navigateLightbox('next');
-                setZoom(1);
+                setIsZoomed(false);
               }}
               className="absolute -right-16 sm:-right-20 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 hover:bg-white text-neutral-900 border border-white/60 shadow-xl transition-all cursor-pointer backdrop-blur-md"
             >
@@ -157,11 +197,16 @@ export default function LightboxModal() {
           )}
 
           <motion.div
-            initial={{ scale: 0.75, opacity: 0, y: 30 }}
-            animate={{ scale: zoom, opacity: 1, y: 0 }}
-            exit={{ scale: 0.75, opacity: 0, y: 30 }}
+            initial={{ scale: 0.85, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.85, opacity: 0, y: 20 }}
             transition={{ type: 'spring', stiffness: 280, damping: 26 }}
-            className="relative rounded-3xl overflow-hidden shadow-2xl bg-neutral-900 border border-white/20 max-h-[85vh] max-w-[85vw] flex items-center justify-center"
+            className={`relative rounded-3xl overflow-hidden shadow-2xl bg-neutral-900 border border-white/20 flex items-center justify-center transition-all duration-300 ${
+              isZoomed
+                ? 'w-screen h-screen max-w-none max-h-none rounded-none border-none p-0 cursor-zoom-out'
+                : 'max-h-[85vh] max-w-[85vw] cursor-zoom-in'
+            }`}
+            onClick={toggleZoom}
           >
             {!imageLoaded && (
               <div className="absolute inset-0 flex items-center justify-center bg-neutral-900 min-h-[300px] min-w-[300px]">
@@ -170,10 +215,14 @@ export default function LightboxModal() {
             )}
 
             <img
-              src={activePhoto.largeUrl || activePhoto.mediumUrl}
+              src={isZoomed ? (activePhoto.fullUrl || activePhoto.largeUrl) : (activePhoto.largeUrl || activePhoto.mediumUrl)}
               alt={activePhoto.title}
               onLoad={() => setImageLoaded(true)}
-              className="max-h-[82vh] max-w-[85vw] object-contain rounded-2xl shadow-2xl transition-transform duration-300"
+              className={`object-contain transition-all duration-300 ${
+                isZoomed
+                  ? 'w-full h-full max-w-none max-h-none rounded-none'
+                  : 'max-h-[82vh] max-w-[85vw] rounded-2xl shadow-2xl'
+              }`}
             />
           </motion.div>
         </div>
