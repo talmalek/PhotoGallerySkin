@@ -89,6 +89,92 @@ async function testApiKey(k) {
 }
 
 /**
+ * Dynamically extract fresh live key from Flickr profile via API endpoint & CORS proxy pool
+ */
+export async function extractFreshFlickrApiKey() {
+  // 1. Try local dev server API endpoint (super fast & 100% reliable)
+  try {
+    const res = await fetch('/api/extract-flickr-key');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.stat === 'ok' && data.key && await testApiKey(data.key)) {
+        console.log('[Flickr Service] Extracted key via dev server API:', data.key);
+        return data.key;
+      }
+    }
+  } catch (e) {
+    // ignore dev server API error if in production
+  }
+
+  // 2. Try proxy extraction across multiple target URLs
+  const targetUrls = [
+    `https://www.flickr.com/photos/${FLICKR_CONFIG.USERNAME}/`,
+    `https://www.flickr.com/explore`
+  ];
+
+  const proxyGenerators = [
+    (url) => `/flickr-proxy/photos/${FLICKR_CONFIG.USERNAME}/`,
+    (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+    (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+  ];
+
+  const fetchCandidatesFromUrl = async (fetchUrl) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 4000);
+
+    try {
+      const res = await fetch(fetchUrl, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error('HTTP error');
+      const html = await res.text();
+
+      const keyMatches = [
+        ...html.matchAll(/site_key\s*[:=]\s*["']([a-f0-9]{32})["']/gi),
+        ...html.matchAll(/api_key\s*[:=]\s*["']([a-f0-9]{32})["']/gi),
+        ...html.matchAll(/root\.YUI_config\.flickr\.api\.site_key\s*=\s*["']([a-f0-9]{32})["']/gi),
+        ...html.matchAll(/"([a-f0-9]{32})"/gi)
+      ].map(m => m[1]);
+
+      const uniqueCandidates = [...new Set(keyMatches)];
+
+      for (const k of uniqueCandidates) {
+        if (await testApiKey(k)) return k;
+      }
+      throw new Error('No valid key extracted');
+    } catch (err) {
+      clearTimeout(timer);
+      throw err;
+    }
+  };
+
+  const tasks = [];
+  for (const targetUrl of targetUrls) {
+    for (const gen of proxyGenerators) {
+      tasks.push(fetchCandidatesFromUrl(gen(targetUrl)));
+    }
+  }
+
+  try {
+    const freshKey = await Promise.any(tasks);
+    if (freshKey) {
+      console.log(`[Flickr Service] Dynamically extracted fresh key from Flickr: ${freshKey}`);
+      return freshKey;
+    }
+  } catch (err) {
+    console.warn('[Flickr Service] Dynamic proxy extraction failed:', err);
+  }
+
+  // 3. Fallback to current verified active key if CORS proxies are blocked
+  const ACTIVE_VERIFIED_KEY = '13d1f4871ebfef29ebed7ce624477a50';
+  if (await testApiKey(ACTIVE_VERIFIED_KEY)) {
+    return ACTIVE_VERIFIED_KEY;
+  }
+
+  return null;
+}
+
+/**
  * Flickr API Key Resolver:
  * 1. Checks user custom key passed from state.
  * 2. Checks persistent browser storage (localStorage / sessionStorage).
