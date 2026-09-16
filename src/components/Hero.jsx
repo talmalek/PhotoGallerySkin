@@ -5,10 +5,13 @@ import { useFlickr } from '../context/FlickrContext';
 import { FLICKR_CONFIG } from '../services/flickrService';
 
 export default function Hero() {
-  const { photos, searchQuery, setSearchQuery, activeAlbum, albums, viewMode, pageSize, currentPage, setIsAboutModalOpen } = useFlickr();
+  const { photos, searchQuery, setSearchQuery, activeAlbum, albums, googleAlbums, viewMode, pageSize, currentPage, setIsAboutModalOpen } = useFlickr();
 
   const marqueeItems = photos.slice(0, 8);
-  const currentAlbum = albums.find(a => a.id === activeAlbum) || albums[0];
+  const currentAlbum = 
+    albums.find(a => a.id === activeAlbum) || 
+    googleAlbums?.find(a => a.id === activeAlbum) || 
+    albums[0];
 
   const activePageSize = pageSize || 200;
   const startIdx = photos.length > 0 ? (currentPage - 1) * activePageSize + 1 : 0;
@@ -102,6 +105,7 @@ export default function Hero() {
                   src={photo.thumbUrl}
                   alt={photo.title}
                   loading="lazy"
+                  referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-3 flex flex-col justify-end text-left">
@@ -117,11 +121,20 @@ export default function Hero() {
       {/* Active Album Title & Exact Total Count Badge */}
       <div className="mt-12 flex items-center justify-between w-full border-b border-gray-200 dark:border-neutral-800 pb-4">
         <div className="flex items-center gap-3">
-          <span className="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+          <span className={`w-2.5 h-2.5 rounded-full ${
+            currentAlbum.source === 'google' || currentAlbum.id?.startsWith('google_') ? 'bg-emerald-500' : 'bg-amber-600'
+          }`}></span>
           <h2 className="text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
             {currentAlbum.title}
           </h2>
-          <span className="text-xs font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-500/10 px-3 py-1 rounded-lg border border-amber-500/20">
+          <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md uppercase tracking-wider border ${
+            currentAlbum.source === 'google' || currentAlbum.id?.startsWith('google_')
+              ? 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border-emerald-500/20'
+              : 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/20'
+          }`}>
+            {currentAlbum.source === 'google' || currentAlbum.id?.startsWith('google_') ? 'Google' : 'Flickr'}
+          </span>
+          <span className="text-xs font-mono font-bold text-neutral-600 dark:text-neutral-400 bg-gray-100 dark:bg-neutral-800 px-3 py-1 rounded-lg border border-gray-200 dark:border-neutral-700">
             {photos.length > activePageSize
               ? `Showing ${startIdx}–${endIdx} of ${photos.length} Photos`
               : `Showing ${photos.length} Photos`}

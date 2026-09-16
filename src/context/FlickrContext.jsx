@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { fetchPublicPhotostream, fetchAlbumPhotos, DEFAULT_ALBUMS } from '../services/flickrService';
+import { getSavedGoogleAlbums, saveGoogleAlbumsToStorage, fetchGoogleSharedAlbum } from '../services/googlePhotosService';
 
 const FlickrContext = createContext();
 
 export function FlickrProvider({ children }) {
   const [photos, setPhotos] = useState([]);
   const [albums, setAlbums] = useState(DEFAULT_ALBUMS);
+  const [googleAlbums, setGoogleAlbumsState] = useState(() => getSavedGoogleAlbums());
   const [activeAlbum, setActiveAlbum] = useState('all');
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -15,6 +17,12 @@ export function FlickrProvider({ children }) {
   const [apiKey, setApiKey] = useState(() => localStorage.getItem('flickr_api_key') || '');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
+
+  const setGoogleAlbums = (newAlbums) => {
+    setGoogleAlbumsState(newAlbums);
+    saveGoogleAlbumsToStorage(newAlbums);
+  };
   
   // Lightbox & UI States - Default to CLEAN WHITE THEME (darkMode = false)
   const [activePhoto, setActivePhoto] = useState(null);
@@ -70,7 +78,18 @@ export function FlickrProvider({ children }) {
 
     try {
       let fetched = [];
-      if (albumId === 'all') {
+
+      // Check if this is a Google Photos album
+      const isGoogle = albumId?.startsWith('google_') || googleAlbums.some(a => a.id === albumId);
+      if (isGoogle) {
+        const targetGoogleAlbum = googleAlbums.find(a => a.id === albumId);
+        if (targetGoogleAlbum) {
+          const albumData = await fetchGoogleSharedAlbum(targetGoogleAlbum.shareUrl);
+          if (albumData && albumData.photos) {
+            fetched = albumData.photos;
+          }
+        }
+      } else if (albumId === 'all') {
         // Fetch full photostream in parallel batches (635 photos total)
         const [batch1, batch2] = await Promise.all([
           fetchPublicPhotostream(1, apiKey),
@@ -94,7 +113,7 @@ export function FlickrProvider({ children }) {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [apiKey]);
+  }, [apiKey, googleAlbums]);
 
   // Initial load
   useEffect(() => {
@@ -144,11 +163,10 @@ export function FlickrProvider({ children }) {
   const filteredPhotos = photos.filter(photo => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
-    return (
-      photo.title.toLowerCase().includes(query) ||
-      photo.tags.some(t => t.toLowerCase().includes(query)) ||
-      photo.description.toLowerCase().includes(query)
-    );
+    const titleMatch = (photo.title || '').toLowerCase().includes(query);
+    const tagMatch = Array.isArray(photo.tags) && photo.tags.some(t => t.toLowerCase().includes(query));
+    const descMatch = (photo.description || '').toLowerCase().includes(query);
+    return titleMatch || tagMatch || descMatch;
   });
 
   return (
@@ -157,7 +175,10 @@ export function FlickrProvider({ children }) {
         photos: filteredPhotos,
         allPhotosCount: photos.length,
         albums,
+        googleAlbums,
+        setGoogleAlbums,
         activeAlbum,
+        setActiveAlbum,
         selectAlbum,
         loading,
         loadingMore,
@@ -172,6 +193,8 @@ export function FlickrProvider({ children }) {
         setDarkMode,
         isAuthModalOpen,
         setIsAuthModalOpen,
+        isGoogleModalOpen,
+        setIsGoogleModalOpen,
         isAboutModalOpen,
         setIsAboutModalOpen,
         searchQuery,

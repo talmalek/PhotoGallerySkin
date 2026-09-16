@@ -161,6 +161,7 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
           src={photo.mediumUrl || photo.thumbUrl}
           alt={photo.title}
           loading="lazy"
+          referrerPolicy="no-referrer"
           onLoad={handleImageLoad}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           onError={(e) => {
@@ -312,6 +313,7 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
           alt={photo.title}
           loading="lazy"
           decoding="async"
+          referrerPolicy="no-referrer"
           onLoad={handleImageLoad}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           onError={(e) => {

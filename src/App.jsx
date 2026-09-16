@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import GalleryGrid from './components/GalleryGrid';
 import LightboxModal from './components/LightboxModal';
 import FlickrAuthModal from './components/FlickrAuthModal';
+import GooglePhotosSettingsModal from './components/GooglePhotosSettingsModal';
 import AboutModal from './components/AboutModal';
 import Footer from './components/Footer';
 
@@ -66,6 +67,7 @@ function MainContent() {
       <LightboxModal />
       <AboutModal />
       <FlickrAuthModal />
+      <GooglePhotosSettingsModal />
       <Footer />
     </div>
   );

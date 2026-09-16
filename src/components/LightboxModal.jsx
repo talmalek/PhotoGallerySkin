@@ -217,6 +217,7 @@ export default function LightboxModal() {
             <img
               src={isZoomed ? (activePhoto.fullUrl || activePhoto.largeUrl) : (activePhoto.largeUrl || activePhoto.mediumUrl)}
               alt={activePhoto.title}
+              referrerPolicy="no-referrer"
               onLoad={() => setImageLoaded(true)}
               className={`object-contain transition-all duration-300 ${
                 isZoomed

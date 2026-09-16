@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Camera, LayoutGrid, Grid, Moon, Sun, Key, ExternalLink } from 'lucide-react';
+import { Camera, LayoutGrid, Grid, Moon, Sun, Key, Images, ExternalLink } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 import AlbumDropdown from './AlbumDropdown';
 import { FLICKR_CONFIG } from '../services/flickrService';
@@ -12,8 +12,12 @@ export default function Navbar() {
     darkMode,
     setDarkMode,
     setIsAboutModalOpen,
-    setIsAuthModalOpen
+    setIsAuthModalOpen,
+    setIsGoogleModalOpen,
+    activeAlbum
   } = useFlickr();
+
+  const isGoogleActive = activeAlbum?.startsWith('google_');
 
   return (
     <header className="fixed top-5 left-0 right-0 z-50 px-4 max-w-6xl mx-auto">
@@ -50,7 +54,15 @@ export default function Navbar() {
               </span>
             </div>
             <span className="text-[11px] font-mono text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
-              Flickr Stream <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              {isGoogleActive ? (
+                <>
+                  Google Photos <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                </>
+              ) : (
+                <>
+                  Flickr Stream <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                </>
+              )}
             </span>
           </div>
         </button>
@@ -94,6 +106,15 @@ export default function Navbar() {
             className="p-2 rounded-xl glass-panel hover:bg-gray-100 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-amber-700 border border-gray-200 dark:border-neutral-700/50 transition-colors cursor-pointer"
           >
             <Key className="w-4 h-4" />
+          </button>
+
+          {/* Google Photos Albums Modal Trigger */}
+          <button
+            onClick={() => setIsGoogleModalOpen(true)}
+            title="Google Photos Albums Settings"
+            className="p-2 rounded-xl glass-panel hover:bg-emerald-500/10 hover:border-emerald-500/40 text-neutral-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 border border-gray-200 dark:border-neutral-700/50 transition-colors cursor-pointer"
+          >
+            <Images className="w-4 h-4" />
           </button>
 
           {/* Direct Flickr Link */}
