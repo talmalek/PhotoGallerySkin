@@ -17,7 +17,9 @@ import {
   Sparkles,
   Layers,
   ZoomIn,
-  ZoomOut
+  ZoomOut,
+  Play,
+  Video
 } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 import { fetchPhotoExif } from '../services/flickrService';
@@ -109,8 +111,14 @@ export default function LightboxModal() {
           className="absolute top-6 left-6 right-6 z-50 flex items-center justify-between pointer-events-auto"
         >
           <div className="flex items-center gap-3">
-            <span className="px-3.5 py-1.5 rounded-full bg-white/90 text-neutral-900 text-xs font-mono font-bold shadow-lg border border-white/40">
-              {currentIndex >= 0 ? `${currentIndex + 1} / ${totalPhotos}` : 'Flickr Frame'}
+            <span className="px-3.5 py-1.5 rounded-full bg-white/90 text-neutral-900 text-xs font-mono font-bold shadow-lg border border-white/40 flex items-center gap-1.5">
+              <span>{currentIndex >= 0 ? `${currentIndex + 1} / ${totalPhotos}` : 'Media'}</span>
+              {activePhoto.isVideo && (
+                <span className="ml-1 px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                  <Play className="w-2.5 h-2.5 fill-white text-white" />
+                  <span>{activePhoto.duration || 'VIDEO'}</span>
+                </span>
+              )}
             </span>
             <h2 className="text-sm sm:text-base font-bold text-white truncate max-w-md hidden sm:block">
               {activePhoto.title}
@@ -118,24 +126,26 @@ export default function LightboxModal() {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Magnifier Zoom Button: Shows (+) when fit-screen, (-) when full-screen */}
-            <button
-              onClick={toggleZoom}
-              title={isZoomed ? 'Zoom Out to Original Fit Size' : 'Zoom In to Full Browser Screen'}
-              className="p-2.5 rounded-2xl bg-white/90 hover:bg-white text-neutral-900 border border-white/40 shadow-lg transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono font-bold"
-            >
-              {isZoomed ? (
-                <>
-                  <ZoomOut className="w-4 h-4 text-amber-600 stroke-[2.5]" />
-                  <span className="hidden sm:inline">Fit Screen (-)</span>
-                </>
-              ) : (
-                <>
-                  <ZoomIn className="w-4 h-4 text-amber-600 stroke-[2.5]" />
-                  <span className="hidden sm:inline">Full Screen (+)</span>
-                </>
-              )}
-            </button>
+            {/* Magnifier Zoom Button (Images Only) */}
+            {!activePhoto.isVideo && (
+              <button
+                onClick={toggleZoom}
+                title={isZoomed ? 'Zoom Out to Original Fit Size' : 'Zoom In to Full Browser Screen'}
+                className="p-2.5 rounded-2xl bg-white/90 hover:bg-white text-neutral-900 border border-white/40 shadow-lg transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono font-bold"
+              >
+                {isZoomed ? (
+                  <>
+                    <ZoomOut className="w-4 h-4 text-amber-600 stroke-[2.5]" />
+                    <span className="hidden sm:inline">Fit Screen (-)</span>
+                  </>
+                ) : (
+                  <>
+                    <ZoomIn className="w-4 h-4 text-amber-600 stroke-[2.5]" />
+                    <span className="hidden sm:inline">Full Screen (+)</span>
+                  </>
+                )}
+              </button>
+            )}
 
             <button
               onClick={() => setShowMetadata(!showMetadata)}
@@ -196,36 +206,71 @@ export default function LightboxModal() {
             </button>
           )}
 
-          <motion.div
-            initial={{ scale: 0.85, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.85, opacity: 0, y: 20 }}
-            transition={{ type: 'spring', stiffness: 280, damping: 26 }}
-            className={`relative rounded-3xl overflow-hidden shadow-2xl bg-neutral-900 border border-white/20 flex items-center justify-center transition-all duration-300 ${
-              isZoomed
-                ? 'w-screen h-screen max-w-none max-h-none rounded-none border-none p-0 cursor-zoom-out'
-                : 'max-h-[85vh] max-w-[85vw] cursor-zoom-in'
-            }`}
-            onClick={toggleZoom}
-          >
-            {!imageLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-neutral-900 min-h-[300px] min-w-[300px]">
-                <div className="w-12 h-12 rounded-full border-3 border-amber-400 border-t-transparent animate-spin" />
-              </div>
-            )}
+          {activePhoto.isVideo ? (
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 26 }}
+              className="relative rounded-3xl overflow-hidden shadow-2xl bg-black border border-white/20 flex items-center justify-center max-h-[85vh] max-w-[85vw]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {!imageLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black min-h-[300px] min-w-[300px] z-10 pointer-events-none">
+                  <div className="w-12 h-12 rounded-full border-3 border-emerald-400 border-t-transparent animate-spin" />
+                </div>
+              )}
 
-            <img
-              src={isZoomed ? (activePhoto.fullUrl || activePhoto.largeUrl) : (activePhoto.largeUrl || activePhoto.mediumUrl)}
-              alt={activePhoto.title}
-              referrerPolicy="no-referrer"
-              onLoad={() => setImageLoaded(true)}
-              className={`object-contain transition-all duration-300 ${
+              <video
+                key={activePhoto.videoUrl}
+                src={activePhoto.videoUrl}
+                poster={activePhoto.largeUrl || activePhoto.mediumUrl || activePhoto.thumbUrl}
+                controls
+                autoPlay
+                loop
+                playsInline
+                referrerPolicy="no-referrer"
+                onLoadedData={() => setImageLoaded(true)}
+                onError={(e) => {
+                  if (activePhoto.videoFallbackUrl && e.target.src !== activePhoto.videoFallbackUrl) {
+                    e.target.src = activePhoto.videoFallbackUrl;
+                  }
+                }}
+                className="max-h-[82vh] max-w-[85vw] rounded-2xl shadow-2xl bg-black object-contain"
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 26 }}
+              className={`relative rounded-3xl overflow-hidden shadow-2xl bg-neutral-900 border border-white/20 flex items-center justify-center transition-all duration-300 ${
                 isZoomed
-                  ? 'w-full h-full max-w-none max-h-none rounded-none'
-                  : 'max-h-[82vh] max-w-[85vw] rounded-2xl shadow-2xl'
+                  ? 'w-screen h-screen max-w-none max-h-none rounded-none border-none p-0 cursor-zoom-out'
+                  : 'max-h-[85vh] max-w-[85vw] cursor-zoom-in'
               }`}
-            />
-          </motion.div>
+              onClick={toggleZoom}
+            >
+              {!imageLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-neutral-900 min-h-[300px] min-w-[300px]">
+                  <div className="w-12 h-12 rounded-full border-3 border-amber-400 border-t-transparent animate-spin" />
+                </div>
+              )}
+
+              <img
+                src={isZoomed ? (activePhoto.fullUrl || activePhoto.largeUrl) : (activePhoto.largeUrl || activePhoto.mediumUrl)}
+                alt={activePhoto.title}
+                referrerPolicy="no-referrer"
+                onLoad={() => setImageLoaded(true)}
+                className={`object-contain transition-all duration-300 ${
+                  isZoomed
+                    ? 'w-full h-full max-w-none max-h-none rounded-none'
+                    : 'max-h-[82vh] max-w-[85vw] rounded-2xl shadow-2xl'
+                }`}
+              />
+            </motion.div>
+          )}
         </div>
 
         {/* Detailed EXIF Metadata Sidebar Drawer */}
@@ -244,7 +289,7 @@ export default function LightboxModal() {
                 <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-4">
                   <span className="text-xs font-mono uppercase tracking-widest text-amber-700 font-bold flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-amber-600" />
-                    Flickr EXIF Camera Specs
+                    {activePhoto.isVideo ? 'Video Media Specs' : 'EXIF Camera Specs'}
                   </span>
                   <button
                     onClick={() => setShowMetadata(false)}
@@ -261,8 +306,43 @@ export default function LightboxModal() {
                   {activePhoto.description || 'Captured moment by Tal Malek.'}
                 </p>
 
+                {/* Video Media Specs Section */}
+                {activePhoto.isVideo && (
+                  <div className="space-y-3 mb-6">
+                    <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800">
+                      <span className="text-[10px] font-mono uppercase text-emerald-700 dark:text-emerald-400 font-bold block mb-1">
+                        Playback Stream
+                      </span>
+                      <div className="flex items-center gap-2 text-sm font-bold text-emerald-900 dark:text-emerald-200">
+                        <Video className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span>720p HD MP4 (H.264)</span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 text-xs font-mono">
+                      <div className="p-3 rounded-xl bg-neutral-100 border border-neutral-200">
+                        <span className="text-neutral-500 block text-[10px] flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-emerald-600" /> DURATION
+                        </span>
+                        <span className="text-neutral-900 font-bold mt-1 block">
+                          {activePhoto.duration || '0:06'}
+                        </span>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-neutral-100 border border-neutral-200">
+                        <span className="text-neutral-500 block text-[10px] flex items-center gap-1">
+                          <Play className="w-3 h-3 text-emerald-600" /> MODE
+                        </span>
+                        <span className="text-neutral-900 font-bold mt-1 block">
+                          Autoplay Loop
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Detailed EXIF Grid */}
-                {exifData && (
+                {!activePhoto.isVideo && exifData && (
                   <div className="space-y-4">
                     {/* Camera Body */}
                     <div className="p-3.5 rounded-2xl bg-neutral-100 border border-neutral-200">

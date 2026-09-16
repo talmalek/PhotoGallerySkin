@@ -61,6 +61,31 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
           title = rawTitle.replace(/·.*$/, '').replace(/📸.*$/, '').trim();
         }
 
+        // Extract video metadata (Google Photos embeds video format and duration under 76647426)
+        const videoMetaMap = new Map();
+        const rawItemMatches = [...text.matchAll(/\["(https:\/\/lh3\.googleusercontent\.com\/pw\/[a-zA-Z0-9_\-]+)",\s*(\d+),\s*(\d+)/g)];
+        rawItemMatches.forEach(m => {
+          const url = m[1];
+          const width = parseInt(m[2], 10);
+          const height = parseInt(m[3], 10);
+          const startIdx = m.index;
+          const chunk = text.substring(startIdx, startIdx + 800);
+          const videoMetaMatch = chunk.match(/"76647426":\s*\[(\d+)/);
+          if (videoMetaMatch) {
+            const durationMs = parseInt(videoMetaMatch[1], 10);
+            const totalSec = Math.round(durationMs / 1000);
+            const mins = Math.floor(totalSec / 60);
+            const secs = totalSec % 60;
+            videoMetaMap.set(url, {
+              isVideo: true,
+              durationMs,
+              duration: `${mins}:${secs < 10 ? '0' : ''}${secs}`,
+              width,
+              height
+            });
+          }
+        });
+
         // Extract image base URLs
         const matches = [...text.matchAll(/(https:\/\/lh3\.googleusercontent\.com\/pw\/[a-zA-Z0-9_\-]+)/g)].map(m => m[1]);
         const uniqueUrls = [...new Set(matches)];
@@ -73,6 +98,8 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
             const mediumUrl = `${baseUrl}=w1200-h900`;
             const largeUrl = `${baseUrl}=w1600`;
             const fullUrl = `${baseUrl}=w2048`;
+            const videoInfo = videoMetaMap.get(baseUrl);
+            const isVideo = !!videoInfo;
 
             return {
               id: photoId,
@@ -96,7 +123,13 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
               description: `Captured moment from Google Photos album: ${title}`,
               tags: ['Google Photos', title],
               source: 'google',
-              albumTitle: title
+              albumTitle: title,
+              isVideo,
+              mediaType: isVideo ? 'video' : 'photo',
+              videoUrl: isVideo ? `${baseUrl}=m22` : null,
+              videoFallbackUrl: isVideo ? `${baseUrl}=m18` : null,
+              duration: videoInfo ? videoInfo.duration : null,
+              durationMs: videoInfo ? videoInfo.durationMs : null
             };
           });
 
@@ -134,8 +167,10 @@ export function getSavedGoogleAlbums() {
           if (existingIdx === -1) {
             merged.push(defaultAlbum);
           } else {
-            // If default album has more photos, upgrade the stored entry!
-            if ((defaultAlbum.photos?.length || 0) > (merged[existingIdx].photos?.length || 0)) {
+            // If default album has more photos or has newly tagged videos, upgrade the stored entry!
+            const defaultHasMore = (defaultAlbum.photos?.length || 0) > (merged[existingIdx].photos?.length || 0);
+            const defaultHasVideos = defaultAlbum.photos?.some(p => p.isVideo) && !merged[existingIdx].photos?.some(p => p.isVideo);
+            if (defaultHasMore || defaultHasVideos) {
               merged[existingIdx] = {
                 ...merged[existingIdx],
                 count: defaultAlbum.photos.length,

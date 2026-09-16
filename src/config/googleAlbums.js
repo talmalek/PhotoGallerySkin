@@ -1,7 +1,6 @@
 /**
- * Google Photos Shared Albums Configuration
- * Pre-cached photos allow 100% reliable instant loading on GitHub Pages
- * without relying on external CORS proxies or 30-image truncations.
+ * Pre-cached Google Photos Albums
+ * Contains public Google Photos shared albums
  */
 
 export const DEFAULT_GOOGLE_ALBUMS = [
@@ -500,7 +499,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -527,7 +526,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -554,7 +553,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -581,7 +580,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -608,7 +607,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -635,7 +634,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -662,7 +661,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -689,7 +688,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -716,7 +715,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -743,7 +742,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -770,7 +769,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -797,7 +796,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -824,7 +823,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -851,7 +850,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -878,7 +877,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -905,7 +904,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -932,7 +931,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -959,7 +958,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -986,7 +985,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1013,7 +1012,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1040,7 +1039,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1067,7 +1066,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1094,7 +1093,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1121,7 +1120,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1148,7 +1147,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1175,7 +1174,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1202,7 +1201,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1229,7 +1228,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1256,7 +1255,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1283,7 +1282,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1310,7 +1309,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1337,7 +1336,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1364,7 +1363,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1391,7 +1390,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1418,7 +1417,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1445,7 +1444,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1472,7 +1471,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1499,7 +1498,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1526,7 +1525,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1553,7 +1552,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1580,7 +1579,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1607,7 +1606,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1634,7 +1633,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1661,7 +1660,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1688,7 +1687,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1715,7 +1714,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1742,7 +1741,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1769,7 +1768,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1796,7 +1795,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1823,7 +1822,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1850,7 +1849,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1877,7 +1876,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1904,7 +1903,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1931,7 +1930,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1958,7 +1957,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -1985,7 +1984,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2012,7 +2011,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2039,7 +2038,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2066,7 +2065,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2093,7 +2092,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2120,7 +2119,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2147,7 +2146,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2174,7 +2173,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2201,7 +2200,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2228,7 +2227,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2255,7 +2254,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2282,7 +2281,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2309,7 +2308,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2336,7 +2335,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2363,7 +2362,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2390,7 +2389,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2417,7 +2416,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2444,7 +2443,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2471,7 +2470,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2498,7 +2497,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2525,7 +2524,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2552,7 +2551,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2579,7 +2578,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2606,7 +2605,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2633,7 +2632,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2660,7 +2659,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2687,7 +2686,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2714,7 +2713,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2741,7 +2740,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2768,7 +2767,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2795,7 +2794,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2822,7 +2821,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2849,7 +2848,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2876,7 +2875,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2903,7 +2902,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2930,7 +2929,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2957,7 +2956,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -2984,7 +2983,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3011,7 +3010,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3038,7 +3037,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3065,7 +3064,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3092,7 +3091,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3119,7 +3118,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3146,7 +3145,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3173,7 +3172,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3200,7 +3199,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3227,7 +3226,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3254,7 +3253,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3281,7 +3280,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3308,7 +3307,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3335,7 +3334,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3362,7 +3361,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3389,7 +3388,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3416,7 +3415,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3443,7 +3442,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3470,7 +3469,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3497,7 +3496,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3524,7 +3523,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3551,7 +3550,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3578,7 +3577,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3605,7 +3604,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3632,7 +3631,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3659,7 +3658,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3686,7 +3685,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3713,7 +3712,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3740,7 +3739,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3767,7 +3766,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3794,7 +3793,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3821,7 +3820,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3848,7 +3847,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3875,7 +3874,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3902,7 +3901,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3929,7 +3928,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3956,7 +3955,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -3983,7 +3982,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4010,7 +4009,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4037,7 +4036,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4064,7 +4063,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4091,7 +4090,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4118,7 +4117,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4145,7 +4144,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4172,7 +4171,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4199,7 +4198,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4226,7 +4225,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4253,7 +4252,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4280,7 +4279,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4307,7 +4306,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4334,7 +4333,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4361,7 +4360,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4388,7 +4387,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4415,7 +4414,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4442,7 +4441,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4469,7 +4468,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4496,7 +4495,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4523,7 +4522,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4550,7 +4549,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4577,7 +4576,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4604,7 +4603,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4631,7 +4630,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4658,7 +4657,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4685,7 +4684,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4712,7 +4711,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4739,7 +4738,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4766,7 +4765,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4793,7 +4792,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4820,7 +4819,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4847,7 +4846,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4874,14 +4873,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczO7nQBeAiqSfdqjgZxUPVaelIvrAvhB42bA2441VANsbLE4qMmtJUiJnxtfv_tOzhhZsVA3q7kynJDIBHJR5l4VRsegwR5cAZGs6ceRPcKixhdwjB9n=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczO7nQBeAiqSfdqjgZxUPVaelIvrAvhB42bA2441VANsbLE4qMmtJUiJnxtfv_tOzhhZsVA3q7kynJDIBHJR5l4VRsegwR5cAZGs6ceRPcKixhdwjB9n=m18",
+        "duration": "0:08",
+        "durationMs": 7999
       },
       {
         "id": "gphoto_ai_163",
@@ -4901,7 +4906,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4928,7 +4933,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4955,7 +4960,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -4982,7 +4987,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5009,7 +5014,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5036,7 +5041,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5063,7 +5068,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5090,7 +5095,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5117,7 +5122,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5144,7 +5149,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5171,7 +5176,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5198,7 +5203,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5225,7 +5230,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5252,7 +5257,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5279,7 +5284,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5306,7 +5311,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5333,7 +5338,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5360,7 +5365,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5387,7 +5392,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5414,7 +5419,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5441,7 +5446,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5468,7 +5473,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5495,7 +5500,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5522,7 +5527,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5549,7 +5554,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5576,7 +5581,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5603,7 +5608,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5630,7 +5635,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5657,7 +5662,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5684,7 +5689,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5711,7 +5716,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5738,7 +5743,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5765,7 +5770,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5792,7 +5797,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5819,7 +5824,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5846,7 +5851,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5873,7 +5878,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5900,7 +5905,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5927,7 +5932,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5954,7 +5959,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -5981,7 +5986,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6008,7 +6013,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6035,7 +6040,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6062,7 +6067,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6089,7 +6094,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6116,7 +6121,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6143,7 +6148,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6170,14 +6175,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczN7j7v7VrmSBj2B4rwKO7G6LndVWz3h6agnBduLL7o4iOA6KaJ_Xn9CaXvqbCDL6VFeu8avi1NT4MvUEdw8v-cRck9pvlTvFqGjLMVFpAX_iaEakS8_=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczN7j7v7VrmSBj2B4rwKO7G6LndVWz3h6agnBduLL7o4iOA6KaJ_Xn9CaXvqbCDL6VFeu8avi1NT4MvUEdw8v-cRck9pvlTvFqGjLMVFpAX_iaEakS8_=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_211",
@@ -6197,14 +6208,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczNkTIuQN6WcyT8fSzfRY9q1qWyHMEFnJsn7D5LUaSWsie893D2nBOHW4It2EdJSBf__uoMOnIl0RqgxDzfPGRr8xoEdbZM_XkLczsE8AGCrWqmzlxKK=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczNkTIuQN6WcyT8fSzfRY9q1qWyHMEFnJsn7D5LUaSWsie893D2nBOHW4It2EdJSBf__uoMOnIl0RqgxDzfPGRr8xoEdbZM_XkLczsE8AGCrWqmzlxKK=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_212",
@@ -6224,14 +6241,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczPfb9ybLmOIF9q71Hfp2fmNnA3SDD8kitMWEpqteARrT3ePgdD0JsljyPHB1NazsV-c8p7fMABg2KzSqggBgQOvkn5fIiJkxwFWRdchHEvt0-95dr-m=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczPfb9ybLmOIF9q71Hfp2fmNnA3SDD8kitMWEpqteARrT3ePgdD0JsljyPHB1NazsV-c8p7fMABg2KzSqggBgQOvkn5fIiJkxwFWRdchHEvt0-95dr-m=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_213",
@@ -6251,7 +6274,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6278,7 +6301,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6305,7 +6328,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6332,7 +6355,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6359,7 +6382,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6386,7 +6409,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6413,7 +6436,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6440,7 +6463,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6467,7 +6490,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6494,7 +6517,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6521,7 +6544,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6548,7 +6571,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6575,7 +6598,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6602,14 +6625,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczPLFbxN22v8_LMK4YPh6tJSN92WiguOjvpwfxT_1tyehSoRwd1IJXVY3lfUG2VDHGeWwj_qpbjYJKtvuCAhpsOmTzIBc0Bb2-tW6IQ1rWPkn3niEexQ=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczPLFbxN22v8_LMK4YPh6tJSN92WiguOjvpwfxT_1tyehSoRwd1IJXVY3lfUG2VDHGeWwj_qpbjYJKtvuCAhpsOmTzIBc0Bb2-tW6IQ1rWPkn3niEexQ=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_227",
@@ -6629,14 +6658,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczPVSpB5wP7qczYcdBGOUpz5wy7TRTYIXIjVy0TLizbsq9dMffnL2ojPJ1ho9qtLQM5YCzsS109Ul-hGOFVU8-dJU4ntkK79XofpiPu7GCk-uyy-Ziu5=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczPVSpB5wP7qczYcdBGOUpz5wy7TRTYIXIjVy0TLizbsq9dMffnL2ojPJ1ho9qtLQM5YCzsS109Ul-hGOFVU8-dJU4ntkK79XofpiPu7GCk-uyy-Ziu5=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_228",
@@ -6656,14 +6691,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczNTfP7PbKIXbnfq8gm4aVlcJ_oTAHw7o4PyoYEVbAhpSjMWfwKZkIo655-cktvGWvPPSlyncwExQYihCq0EPr5iCtqsuZbQK2W4XVa-vDijeWOX_w4g=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczNTfP7PbKIXbnfq8gm4aVlcJ_oTAHw7o4PyoYEVbAhpSjMWfwKZkIo655-cktvGWvPPSlyncwExQYihCq0EPr5iCtqsuZbQK2W4XVa-vDijeWOX_w4g=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_229",
@@ -6683,14 +6724,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczOAa714F8uUqdQWw2J82MJQd15aonN8BqIKVDzl4gM_UeKEC2ARO8XyRjbUB84I36qo7Tq19TMpPdTdYVT67FYOgsfL5G5camZQcCPcNtM3D0NBPp5v=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczOAa714F8uUqdQWw2J82MJQd15aonN8BqIKVDzl4gM_UeKEC2ARO8XyRjbUB84I36qo7Tq19TMpPdTdYVT67FYOgsfL5G5camZQcCPcNtM3D0NBPp5v=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_230",
@@ -6710,7 +6757,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6737,7 +6784,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6764,7 +6811,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6791,7 +6838,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6818,7 +6865,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6845,14 +6892,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczNuUnAY8hgpZEmrIO0j2uMaUZ3_SfaYcrGk45OPmRfLcx0fDPVus5X78Ybo1X6eUkLhp2LMOzWWLk8ryLo1GfcF-QkyF1-tIu0GpbfMadqlUi8tdMO3=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczNuUnAY8hgpZEmrIO0j2uMaUZ3_SfaYcrGk45OPmRfLcx0fDPVus5X78Ybo1X6eUkLhp2LMOzWWLk8ryLo1GfcF-QkyF1-tIu0GpbfMadqlUi8tdMO3=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_236",
@@ -6872,7 +6925,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6899,7 +6952,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6926,7 +6979,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6953,7 +7006,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -6980,7 +7033,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7007,7 +7060,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7034,7 +7087,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7061,7 +7114,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7088,7 +7141,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7115,7 +7168,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7142,7 +7195,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7169,7 +7222,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7196,7 +7249,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7223,14 +7276,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczMBU636CWJzAw-Xz-lgi8JFrzoKsAi7xMckthF2V9pOxTDSHJCr6AT4e_dg7S2Dn-e7EBvUun0fA4fxa09g18S5FFRxJWRWldgH_IsjfagHFPHPgCRR=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczMBU636CWJzAw-Xz-lgi8JFrzoKsAi7xMckthF2V9pOxTDSHJCr6AT4e_dg7S2Dn-e7EBvUun0fA4fxa09g18S5FFRxJWRWldgH_IsjfagHFPHPgCRR=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_250",
@@ -7250,7 +7309,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7277,7 +7336,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7304,7 +7363,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7331,7 +7390,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7358,7 +7417,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7385,7 +7444,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7412,7 +7471,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7439,7 +7498,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7466,7 +7525,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7493,7 +7552,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7520,7 +7579,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7547,7 +7606,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7574,7 +7633,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7601,7 +7660,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7628,7 +7687,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7655,7 +7714,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7682,7 +7741,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7709,7 +7768,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7736,7 +7795,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7763,7 +7822,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7790,7 +7849,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7817,7 +7876,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7844,7 +7903,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7871,7 +7930,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7898,7 +7957,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7925,7 +7984,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7952,7 +8011,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -7979,7 +8038,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8006,7 +8065,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8033,7 +8092,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8060,7 +8119,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8087,7 +8146,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8114,7 +8173,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8141,7 +8200,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8168,7 +8227,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8195,14 +8254,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczMr06fTDMZKcgiA6CcJnDSliNJGTQGe5rfUacUSnpkokNhZphq7ttZTz1y1ofIQDlklGZYtl8WLJzOQksZcKaohXRRfelNlP-ONnoaWmuM65C5dy-Dw=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczMr06fTDMZKcgiA6CcJnDSliNJGTQGe5rfUacUSnpkokNhZphq7ttZTz1y1ofIQDlklGZYtl8WLJzOQksZcKaohXRRfelNlP-ONnoaWmuM65C5dy-Dw=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_286",
@@ -8222,14 +8287,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczNNq50ED0RUtTPmcrAW3dNN5Yh_tYxRZ3K3bDNl-ysNuP6YQVkDD4xTIGSKF44Z5OATfXR05KLSb5Pbb45-E6gHBV1mp12bj2aO2zJVH3sCC85rQ7LU=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczNNq50ED0RUtTPmcrAW3dNN5Yh_tYxRZ3K3bDNl-ysNuP6YQVkDD4xTIGSKF44Z5OATfXR05KLSb5Pbb45-E6gHBV1mp12bj2aO2zJVH3sCC85rQ7LU=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_287",
@@ -8249,14 +8320,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczMT0fwjSQtHUc1ZYau1vvoPHvTQGzf6LQzi2iC-y-8F90nSqvxeIAJjhW6DVURKScK1U00MuzPpbynIN4wGuAseJazqe00PMlZ690Nbi7JzbOQ7wHLx=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczMT0fwjSQtHUc1ZYau1vvoPHvTQGzf6LQzi2iC-y-8F90nSqvxeIAJjhW6DVURKScK1U00MuzPpbynIN4wGuAseJazqe00PMlZ690Nbi7JzbOQ7wHLx=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_288",
@@ -8276,14 +8353,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczMp8YwCFo-UeviMYu9YbROc2Ti2q3LZeaDurP-iT3h_FH1UXfz7GWS1b3cNt-CgToQXJtzt59PIeifGeHZ21ljEnWQtVqXMZoxFdwfBZOJuiakRVRxs=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczMp8YwCFo-UeviMYu9YbROc2Ti2q3LZeaDurP-iT3h_FH1UXfz7GWS1b3cNt-CgToQXJtzt59PIeifGeHZ21ljEnWQtVqXMZoxFdwfBZOJuiakRVRxs=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_289",
@@ -8303,14 +8386,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczP_Z98_kxZs29pdrSlvEps72ljPIf7RS7iWvWyG_Yt1vk9oMLH2Bfcz2zMIwd1G5f_Qbr35rOUg5ycy0g6hP7xNCN6fHIGwkbWn9f1UpF5Oi2u6pwrB=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczP_Z98_kxZs29pdrSlvEps72ljPIf7RS7iWvWyG_Yt1vk9oMLH2Bfcz2zMIwd1G5f_Qbr35rOUg5ycy0g6hP7xNCN6fHIGwkbWn9f1UpF5Oi2u6pwrB=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_290",
@@ -8330,14 +8419,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczOx54qLfivJbTYx3mdDTpACRfXlHEaoZJ9chDW3QaZ60BHDb5qVvGRtlPe9D_jdIb2yNW2kXqlKkObCczBlGv0l6HizVZ9Qzi_RLZM-ZVz6SXN9HySc=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczOx54qLfivJbTYx3mdDTpACRfXlHEaoZJ9chDW3QaZ60BHDb5qVvGRtlPe9D_jdIb2yNW2kXqlKkObCczBlGv0l6HizVZ9Qzi_RLZM-ZVz6SXN9HySc=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_291",
@@ -8357,14 +8452,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczPl5q2sEFS1snR-YZ6I0u_eMIKDNSE7GJXLgUMA1Oxculn45dlUuWV_NNhjZs1KbhtEE41KCyvzTCGqgGBsig90qSzQFyo4cOBv6BhLwS2CIdO2-3f1=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczPl5q2sEFS1snR-YZ6I0u_eMIKDNSE7GJXLgUMA1Oxculn45dlUuWV_NNhjZs1KbhtEE41KCyvzTCGqgGBsig90qSzQFyo4cOBv6BhLwS2CIdO2-3f1=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_292",
@@ -8384,7 +8485,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8411,14 +8512,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczP-iDafV-aEdgweeJ6kBnupIxWdMozbv7mTVpS9z7jTW4EdWaARpSmgh80XlJEPeLBhJtKiPhP1hKOrkgJ9DSQKNyrITHq9lfqkZIRJBsnomj_cUh1r=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczP-iDafV-aEdgweeJ6kBnupIxWdMozbv7mTVpS9z7jTW4EdWaARpSmgh80XlJEPeLBhJtKiPhP1hKOrkgJ9DSQKNyrITHq9lfqkZIRJBsnomj_cUh1r=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_294",
@@ -8438,14 +8545,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczP5ClY_9fURWGlj7DVc2TalG93YRpWOmYO2RigqsCmJBFfkOsbmQRZ7XF2LkT5ZwuLJ_Sj64aAuBstE6eCBISZCcRVg05lQBUd1lcMOsVo5gpA3MLI1=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczP5ClY_9fURWGlj7DVc2TalG93YRpWOmYO2RigqsCmJBFfkOsbmQRZ7XF2LkT5ZwuLJ_Sj64aAuBstE6eCBISZCcRVg05lQBUd1lcMOsVo5gpA3MLI1=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_295",
@@ -8465,14 +8578,20 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
           "AI Generated Images"
         ],
         "source": "google",
-        "albumTitle": "AI Generated Images"
+        "albumTitle": "AI Generated Images",
+        "isVideo": true,
+        "mediaType": "video",
+        "videoUrl": "https://lh3.googleusercontent.com/pw/AP1GczNDuYMmkoKMBVWCotPXS_lHZmQE5y-XJ_Apljno8Vu-KDRwl067b9toy8R6BsiOmNP-DMhEevq8WQYwHtLJUsO4k01KTo26HVowiHrIbRnEcPHJdEb2=m22",
+        "videoFallbackUrl": "https://lh3.googleusercontent.com/pw/AP1GczNDuYMmkoKMBVWCotPXS_lHZmQE5y-XJ_Apljno8Vu-KDRwl067b9toy8R6BsiOmNP-DMhEevq8WQYwHtLJUsO4k01KTo26HVowiHrIbRnEcPHJdEb2=m18",
+        "duration": "0:06",
+        "durationMs": 6041
       },
       {
         "id": "gphoto_ai_296",
@@ -8492,7 +8611,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8519,7 +8638,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8546,7 +8665,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",
@@ -8573,7 +8692,7 @@ export const DEFAULT_GOOGLE_ALBUMS = [
         "aspectRatio": "4/3",
         "link": "https://photos.app.goo.gl/MyT55URYoNjHd92V8",
         "author": "Tal Malek",
-        "dateTaken": "2025\u20132026",
+        "dateTaken": "2025–2026",
         "description": "Captured moment from Google Photos album: AI Generated Images",
         "tags": [
           "Google Photos",

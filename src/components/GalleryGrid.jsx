@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo, memo } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useInView } from 'framer-motion';
-import { Eye, ExternalLink, Calendar, Maximize2, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Eye, ExternalLink, Calendar, Maximize2, Loader2, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 
 /**
@@ -169,13 +169,25 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
           }}
         />
 
+        {/* Video Pill Badge */}
+        {photo.isVideo && (
+          <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-xs font-mono font-bold shadow-lg border border-white/20">
+            <Play className="w-3 h-3 fill-white text-white" />
+            <span>{photo.duration || 'VIDEO'}</span>
+          </div>
+        )}
+
         <div className="absolute inset-0 bg-neutral-950/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] p-6 flex flex-col justify-between z-10 text-left">
           <div className="flex justify-between items-center">
             <span className="px-3 py-1 rounded-full bg-white/90 text-neutral-900 text-xs font-mono font-bold shadow-md truncate max-w-[200px]">
               {photo.title}
             </span>
             <div className="w-10 h-10 rounded-full bg-white text-neutral-950 flex items-center justify-center shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-              <Maximize2 className="w-4 h-4 text-neutral-900" />
+              {photo.isVideo ? (
+                <Play className="w-4 h-4 text-neutral-900 fill-neutral-900 ml-0.5" />
+              ) : (
+                <Maximize2 className="w-4 h-4 text-neutral-900" />
+              )}
             </div>
           </div>
 
@@ -321,13 +333,25 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
           }}
         />
 
+        {/* Video Pill Badge */}
+        {photo.isVideo && (
+          <div className="absolute top-2.5 left-2.5 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/65 backdrop-blur-md text-white text-[10px] font-mono font-bold shadow-md border border-white/20">
+            <Play className="w-2.5 h-2.5 fill-white text-white" />
+            <span>{photo.duration || 'VIDEO'}</span>
+          </div>
+        )}
+
         <div className="absolute inset-0 bg-neutral-950/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] p-3.5 flex flex-col justify-between z-10 text-left">
           <div className="flex justify-between items-center">
             <span className="px-2 py-0.5 rounded-full bg-white/90 text-neutral-900 text-[10px] font-mono font-bold shadow-sm truncate max-w-[130px]">
               {photo.title}
             </span>
             <div className="w-7 h-7 rounded-full bg-white text-neutral-950 flex items-center justify-center shadow-md transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-              <Maximize2 className="w-3.5 h-3.5 text-neutral-900" />
+              {photo.isVideo ? (
+                <Play className="w-3 h-3 text-neutral-900 fill-neutral-900 ml-0.5" />
+              ) : (
+                <Maximize2 className="w-3.5 h-3.5 text-neutral-900" />
+              )}
             </div>
           </div>
 
