@@ -26,9 +26,10 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
     console.warn('[GooglePhotosService] Dev server endpoint error, trying proxy fallback:', err);
   }
 
-  // 2. Fallback to CORS proxy pool for production / static environments
+  // 2. Fallback to CORS proxy pool for production / static environments (GitHub Pages)
   const cleanUrl = shareUrl.includes('?') ? `${shareUrl}&_imcp=1` : `${shareUrl}?_imcp=1`;
   const proxies = [
+    `https://r.jina.ai/${shareUrl}`,
     `https://api.allorigins.win/raw?url=${encodeURIComponent(cleanUrl)}`,
     `https://corsproxy.io/?${encodeURIComponent(cleanUrl)}`
   ];
@@ -36,22 +37,24 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
   for (const proxyUrl of proxies) {
     try {
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 6000);
+      const timer = setTimeout(() => controller.abort(), 10000);
       const res = await fetch(proxyUrl, { signal: controller.signal });
       clearTimeout(timer);
 
       if (res.ok) {
-        const html = await res.text();
+        const text = await res.text();
 
-        // Extract album title
+        // Extract album title (handles both Jina "Title: ..." and HTML og:title)
         let title = 'Google Photos Album';
-        const ogTitleMatch = html.match(/<meta property=["']og:title["'] content=["']([^"']+)["']/i);
-        if (ogTitleMatch && ogTitleMatch[1]) {
-          title = ogTitleMatch[1].replace(/·.*$/, '').replace(/📸.*$/, '').trim();
+        const jinaTitleMatch = text.match(/^Title:\s*([^\n\r]+)/m);
+        const ogTitleMatch = text.match(/<meta property=["']og:title["'] content=["']([^"']+)["']/i);
+        const rawTitle = jinaTitleMatch ? jinaTitleMatch[1] : (ogTitleMatch ? ogTitleMatch[1] : '');
+        if (rawTitle) {
+          title = rawTitle.replace(/·.*$/, '').replace(/📸.*$/, '').trim();
         }
 
         // Extract image base URLs
-        const matches = [...html.matchAll(/(https:\/\/lh3\.googleusercontent\.com\/pw\/[a-zA-Z0-9_\-]+)/g)].map(m => m[1]);
+        const matches = [...text.matchAll(/(https:\/\/lh3\.googleusercontent\.com\/pw\/[a-zA-Z0-9_\-]+)/g)].map(m => m[1]);
         const uniqueUrls = [...new Set(matches)];
 
         if (uniqueUrls.length > 0) {
