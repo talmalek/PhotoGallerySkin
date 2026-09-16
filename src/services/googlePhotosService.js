@@ -29,16 +29,24 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
   // 2. Fallback to CORS proxy pool for production / static environments (GitHub Pages)
   const cleanUrl = shareUrl.includes('?') ? `${shareUrl}&_imcp=1` : `${shareUrl}?_imcp=1`;
   const proxies = [
-    `https://r.jina.ai/${shareUrl}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(cleanUrl)}`,
-    `https://corsproxy.io/?${encodeURIComponent(cleanUrl)}`
+    {
+      url: `https://r.jina.ai/${shareUrl}`,
+      headers: { 'X-Return-Format': 'html' }
+    },
+    {
+      url: `https://api.allorigins.win/raw?url=${encodeURIComponent(cleanUrl)}`,
+      headers: {}
+    }
   ];
 
-  for (const proxyUrl of proxies) {
+  for (const proxy of proxies) {
     try {
       const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 10000);
-      const res = await fetch(proxyUrl, { signal: controller.signal });
+      const timer = setTimeout(() => controller.abort(), 12000);
+      const res = await fetch(proxy.url, {
+        signal: controller.signal,
+        headers: proxy.headers || {}
+      });
       clearTimeout(timer);
 
       if (res.ok) {
@@ -119,7 +127,24 @@ export function getSavedGoogleAlbums() {
     if (saved) {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+        // Merge with DEFAULT_GOOGLE_ALBUMS so default albums always keep full photos count
+        const merged = [...parsed];
+        for (const defaultAlbum of DEFAULT_GOOGLE_ALBUMS) {
+          const existingIdx = merged.findIndex(a => a.id === defaultAlbum.id || a.shareUrl === defaultAlbum.shareUrl);
+          if (existingIdx === -1) {
+            merged.push(defaultAlbum);
+          } else {
+            // If default album has more photos, upgrade the stored entry!
+            if ((defaultAlbum.photos?.length || 0) > (merged[existingIdx].photos?.length || 0)) {
+              merged[existingIdx] = {
+                ...merged[existingIdx],
+                count: defaultAlbum.photos.length,
+                photos: defaultAlbum.photos
+              };
+            }
+          }
+        }
+        return merged;
       }
     }
   } catch (e) {
