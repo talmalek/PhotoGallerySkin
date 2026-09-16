@@ -385,7 +385,7 @@ function MatrixColumnContainer({ colIdx, children, scrollYProgress }) {
  * Responsive Page Pagination Controls Component (50 / 100 / 200 photos per page)
  */
 function PaginationBar({ currentPage, totalPages, pageSize, setPageSize, setCurrentPage, sectionRef, totalPhotos }) {
-  if (totalPhotos === 0 || totalPages <= 1) return null;
+  if (totalPhotos <= 50) return null;
 
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages || newPage === currentPage) return;
@@ -433,41 +433,43 @@ function PaginationBar({ currentPage, totalPages, pageSize, setPageSize, setCurr
       </div>
 
       {/* Page Navigation Buttons */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="p-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm flex items-center gap-1 text-xs font-mono font-bold"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          <span>Prev</span>
-        </button>
+      {totalPages > 1 && (
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="p-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm flex items-center gap-1 text-xs font-mono font-bold"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span>Prev</span>
+          </button>
 
-        <div className="flex items-center gap-1">
-          {pages.map((p) => (
-            <button
-              key={p}
-              onClick={() => handlePageChange(p)}
-              className={`w-8 h-8 rounded-xl text-xs font-mono font-bold transition-all ${
-                currentPage === p
-                  ? 'bg-amber-600 text-white shadow-md'
-                  : 'bg-white/50 dark:bg-neutral-800/50 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700'
-              }`}
-            >
-              {p}
-            </button>
-          ))}
+          <div className="flex items-center gap-1">
+            {pages.map((p) => (
+              <button
+                key={p}
+                onClick={() => handlePageChange(p)}
+                className={`w-8 h-8 rounded-xl text-xs font-mono font-bold transition-all ${
+                  currentPage === p
+                    ? 'bg-amber-600 text-white shadow-md'
+                    : 'bg-white/50 dark:bg-neutral-800/50 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700'
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="p-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm flex items-center gap-1 text-xs font-mono font-bold"
+          >
+            <span>Next</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
-
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="p-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm flex items-center gap-1 text-xs font-mono font-bold"
-        >
-          <span>Next</span>
-          <ChevronRight className="w-4 h-4" />
-        </button>
-      </div>
+      )}
     </div>
   );
 }
