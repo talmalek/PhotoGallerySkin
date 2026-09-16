@@ -43,8 +43,9 @@ export default function GooglePhotosSettingsModal() {
           title: albumData.title || 'Google Photos Album',
           shareUrl: cleanUrl,
           count: albumData.count || albumData.photos.length,
-          coverUrl: albumData.coverUrl || albumData.photos[0].url_s,
-          source: 'google'
+          coverUrl: albumData.coverUrl || albumData.photos[0].thumbUrl || albumData.photos[0].url_s,
+          source: 'google',
+          photos: albumData.photos
         };
 
         const updated = [...googleAlbums.filter(a => a.shareUrl !== cleanUrl), newAlbum];

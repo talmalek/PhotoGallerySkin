@@ -84,9 +84,13 @@ export function FlickrProvider({ children }) {
       if (isGoogle) {
         const targetGoogleAlbum = googleAlbums.find(a => a.id === albumId);
         if (targetGoogleAlbum) {
-          const albumData = await fetchGoogleSharedAlbum(targetGoogleAlbum.shareUrl);
-          if (albumData && albumData.photos) {
-            fetched = albumData.photos;
+          if (targetGoogleAlbum.photos && targetGoogleAlbum.photos.length > 0) {
+            fetched = targetGoogleAlbum.photos;
+          } else {
+            const albumData = await fetchGoogleSharedAlbum(targetGoogleAlbum.shareUrl);
+            if (albumData && albumData.photos) {
+              fetched = albumData.photos;
+            }
           }
         }
       } else if (albumId === 'all') {
