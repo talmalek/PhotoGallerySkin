@@ -1,6 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { fetchPublicPhotostream, fetchAlbumPhotos, DEFAULT_ALBUMS } from '../services/flickrService';
-import { getSavedGoogleAlbums, saveGoogleAlbumsToStorage, fetchGoogleSharedAlbum } from '../services/googlePhotosService';
+import {
+  getSavedGoogleAlbums,
+  saveGoogleAlbumsToStorage,
+  fetchGoogleSharedAlbum,
+  fetchCentralGoogleAlbums,
+  saveCentralGoogleAlbums
+} from '../services/googlePhotosService';
 
 const FlickrContext = createContext();
 
@@ -19,17 +25,24 @@ export function FlickrProvider({ children }) {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
 
+  // Sync with central cloud store on startup so every device sees the latest albums
+  useEffect(() => {
+    fetchCentralGoogleAlbums().then((remoteAlbums) => {
+      if (remoteAlbums && Array.isArray(remoteAlbums)) {
+        setGoogleAlbumsState(remoteAlbums);
+        saveGoogleAlbumsToStorage(remoteAlbums);
+      }
+    });
+  }, []);
+
   const setGoogleAlbums = (newAlbums) => {
     setGoogleAlbumsState(newAlbums);
-    saveGoogleAlbumsToStorage(newAlbums);
+    saveCentralGoogleAlbums(newAlbums);
   };
   
-  // Lightbox & UI States - Default to CLEAN WHITE THEME (darkMode = false)
+  // Lightbox & UI States - Default to CLEAN WHITE THEME (darkMode = false) and MASONRY view mode
   const [activePhoto, setActivePhoto] = useState(null);
-  const [viewMode, setViewModeState] = useState(() => {
-    const saved = localStorage.getItem('flickr_view_mode');
-    return saved || 'masonry';
-  });
+  const [viewMode, setViewModeState] = useState('masonry');
   const [darkMode, setDarkModeState] = useState(() => localStorage.getItem('flickr_dark_mode') === 'true');
 
   const setDarkMode = (val) => {

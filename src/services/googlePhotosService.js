@@ -150,6 +150,60 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
   return null;
 }
 
+// Centralized cloud store endpoint for cross-device album synchronization
+const CENTRAL_STORAGE_URL = 'https://kvdb.io/6NWVNGFdq5TnAtvXyZzRKb/google_albums';
+
+/**
+ * Fetch centralized Google Photos albums (shared across all devices)
+ */
+export async function fetchCentralGoogleAlbums() {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    const res = await fetch(CENTRAL_STORAGE_URL, {
+      signal: controller.signal,
+      cache: 'no-store'
+    });
+    clearTimeout(timer);
+
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        return data;
+      }
+    }
+  } catch (e) {
+    console.warn('[GooglePhotosService] Could not fetch central albums from cloud store:', e);
+  }
+  return null;
+}
+
+/**
+ * Save centralized Google Photos albums to cloud store (syncs to all devices)
+ */
+export async function saveCentralGoogleAlbums(albums) {
+  // Always save to localStorage immediately for instant local persistence
+  saveGoogleAlbumsToStorage(albums);
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(CENTRAL_STORAGE_URL, {
+      method: 'POST',
+      body: JSON.stringify(albums),
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    clearTimeout(timer);
+    return res.ok;
+  } catch (e) {
+    console.warn('[GooglePhotosService] Failed to sync albums to central cloud store:', e);
+    return false;
+  }
+}
+
 /**
  * Get active configured Google Photos albums (merges default config + localStorage)
  */
@@ -159,27 +213,8 @@ export function getSavedGoogleAlbums() {
     const saved = localStorage.getItem('google_photos_albums');
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        // Merge with DEFAULT_GOOGLE_ALBUMS so default albums always keep full photos count
-        const merged = [...parsed];
-        for (const defaultAlbum of DEFAULT_GOOGLE_ALBUMS) {
-          const existingIdx = merged.findIndex(a => a.id === defaultAlbum.id || a.shareUrl === defaultAlbum.shareUrl);
-          if (existingIdx === -1) {
-            merged.push(defaultAlbum);
-          } else {
-            // If default album has more photos or has newly tagged videos, upgrade the stored entry!
-            const defaultHasMore = (defaultAlbum.photos?.length || 0) > (merged[existingIdx].photos?.length || 0);
-            const defaultHasVideos = defaultAlbum.photos?.some(p => p.isVideo) && !merged[existingIdx].photos?.some(p => p.isVideo);
-            if (defaultHasMore || defaultHasVideos) {
-              merged[existingIdx] = {
-                ...merged[existingIdx],
-                count: defaultAlbum.photos.length,
-                photos: defaultAlbum.photos
-              };
-            }
-          }
-        }
-        return merged;
+      if (Array.isArray(parsed)) {
+        return parsed;
       }
     }
   } catch (e) {

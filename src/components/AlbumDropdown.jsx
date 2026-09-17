@@ -4,7 +4,7 @@ import { ChevronDown, Folder, Check, Sparkles, Layers } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 
 export default function AlbumDropdown() {
-  const { albums, googleAlbums, activeAlbum, selectAlbum, setIsGoogleModalOpen } = useFlickr();
+  const { albums, googleAlbums, activeAlbum, selectAlbum } = useFlickr();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -147,20 +147,6 @@ export default function AlbumDropdown() {
                   </motion.button>
                 );
               })}
-            </div>
-
-            {/* Quick Manage Google Albums Button */}
-            <div className="mt-2 pt-2 border-t border-gray-100 dark:border-neutral-800">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsOpen(false);
-                  setIsGoogleModalOpen(true);
-                }}
-                className="w-full py-1.5 px-3 rounded-xl bg-gray-50 dark:bg-neutral-800 hover:bg-emerald-500/10 text-neutral-600 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-dashed border-gray-200 dark:border-neutral-700"
-              >
-                <span>⚙️ Manage Google Photos Albums</span>
-              </button>
             </div>
           </motion.div>
         )}
