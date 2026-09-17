@@ -106,27 +106,37 @@ export async function extractFreshFlickrApiKey() {
     // ignore dev server API error if in production
   }
 
-  // 2. Try proxy extraction across multiple target URLs
-  const targetUrls = [
-    `https://www.flickr.com/photos/${FLICKR_CONFIG.USERNAME}/`,
-    `https://www.flickr.com/explore`
+  // 2. Try live dynamic extraction across multiple reliable Flickr profile sources
+  const sources = [
+    {
+      url: `https://r.jina.ai/https://www.flickr.com/photos/${FLICKR_CONFIG.USERNAME}/`,
+      headers: { 'X-Return-Format': 'html' }
+    },
+    {
+      url: `https://r.jina.ai/https://www.flickr.com/explore`,
+      headers: { 'X-Return-Format': 'html' }
+    },
+    {
+      url: `/flickr-proxy/photos/${FLICKR_CONFIG.USERNAME}/`,
+      headers: {}
+    },
+    {
+      url: `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.flickr.com/photos/${FLICKR_CONFIG.USERNAME}/`)}`,
+      headers: {}
+    }
   ];
 
-  const proxyGenerators = [
-    (url) => `/flickr-proxy/photos/${FLICKR_CONFIG.USERNAME}/`,
-    (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-    (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-    (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
-  ];
-
-  const fetchCandidatesFromUrl = async (fetchUrl) => {
+  const fetchCandidatesFromSource = async (source) => {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 4000);
+    const timer = setTimeout(() => controller.abort(), 10000);
 
     try {
-      const res = await fetch(fetchUrl, { signal: controller.signal });
+      const res = await fetch(source.url, {
+        signal: controller.signal,
+        headers: source.headers || {}
+      });
       clearTimeout(timer);
-      if (!res.ok) throw new Error('HTTP error');
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       const html = await res.text();
 
       const keyMatches = [
@@ -141,19 +151,14 @@ export async function extractFreshFlickrApiKey() {
       for (const k of uniqueCandidates) {
         if (await testApiKey(k)) return k;
       }
-      throw new Error('No valid key extracted');
+      throw new Error('No valid key extracted from source');
     } catch (err) {
       clearTimeout(timer);
       throw err;
     }
   };
 
-  const tasks = [];
-  for (const targetUrl of targetUrls) {
-    for (const gen of proxyGenerators) {
-      tasks.push(fetchCandidatesFromUrl(gen(targetUrl)));
-    }
-  }
+  const tasks = sources.map(source => fetchCandidatesFromSource(source));
 
   try {
     const freshKey = await Promise.any(tasks);
@@ -166,7 +171,7 @@ export async function extractFreshFlickrApiKey() {
   }
 
   // 3. Fallback to current verified active key if CORS proxies are blocked
-  const ACTIVE_VERIFIED_KEY = '13d1f4871ebfef29ebed7ce624477a50';
+  const ACTIVE_VERIFIED_KEY = '332a3f4b87a52356989d947c1093f517';
   if (await testApiKey(ACTIVE_VERIFIED_KEY)) {
     return ACTIVE_VERIFIED_KEY;
   }
@@ -192,6 +197,18 @@ export async function getWorkingFlickrApiKey(customApiKey = '') {
   if (sessionSavedKey && await testApiKey(sessionSavedKey)) return sessionSavedKey;
 
   if (cachedWorkingKey && await testApiKey(cachedWorkingKey)) return cachedWorkingKey;
+
+  // 3. Automatically extract fresh live key if none is saved or saved key expired
+  try {
+    const fresh = await extractFreshFlickrApiKey();
+    if (fresh) {
+      cachedWorkingKey = fresh;
+      if (typeof localStorage !== 'undefined') localStorage.setItem('flickr_live_key', fresh);
+      return fresh;
+    }
+  } catch (e) {
+    // ignore extraction failure and proceed
+  }
 
   return '';
 }
