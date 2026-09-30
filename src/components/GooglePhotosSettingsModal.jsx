@@ -281,6 +281,9 @@ export default function GooglePhotosSettingsModal() {
                   <span className="text-[11px] text-slate-400 block mt-2">
                     Open any album in Google Photos &rarr; click <strong>Share</strong> &rarr; <strong>Create link</strong>.
                   </span>
+                  <span className="text-[10px] text-emerald-400/80 block mt-1">
+                    💡 Albums with &gt;300 photos: Add locally on dev server to auto-paginate all images, then copy code config.
+                  </span>
                 </form>
 
                 {/* Status Message */}
