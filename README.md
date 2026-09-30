@@ -92,26 +92,6 @@
 
 ---
 
-## 📸 Google Photos Albums & Large Album (>300 Photos) Workflow
-
-Google Photos shared albums stream high-resolution media directly from Google CDN (`lh3.googleusercontent.com`) with zero storage footprint.
-
-### How Google Photos Pagination Works:
-1. **Initial Batch (302 Photos)**: Google's server renders an initial batch of ~300 photos in the page HTML.
-2. **Dynamic Continuation (Remaining Photos)**: Google requires private RPC continuation requests (`snAcKc` via `batchexecute`) with pagination tokens to stream additional photos.
-
-### Adding Albums:
-- **Small to Medium Albums (< 300 photos)**: Can be added dynamically directly from the website UI via the **Google Photos Albums Manager** (PIN `4032`).
-- **Large Albums (> 300 photos, e.g. 1,600+ photos)**:
-  1. Run the project locally (`npm run dev`) at `http://localhost:3000`.
-  2. Open the **Google Photos Albums Manager** (PIN `4032`) and paste the shared link.
-  3. The local Node.js Vite middleware automatically executes the Google `batchexecute` pagination loop, fetching all photos (e.g. all 1,699 photos) in ~2.5 seconds.
-  4. Click **"Copy Code Config"** inside the modal.
-  5. Paste the generated JSON into [`src/config/googleAlbums.js`](file:///Users/talmalek/Projects/PhotoGallerySkin/src/config/googleAlbums.js).
-  6. Commit and push to GitHub. GitHub Pages will build and serve all photos instantly to all visitors with zero latency.
-
----
-
 ## ⚙️ Flickr Profile Configuration
 
 The target Flickr profile configuration is defined in [`src/services/flickrService.js`](file:///Users/talmalek/Projects/PhotoGallerySkin/src/services/flickrService.js):
