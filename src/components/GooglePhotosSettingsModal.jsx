@@ -14,7 +14,9 @@ import {
   Lock,
   Unlock,
   KeyRound,
-  Globe
+  Globe,
+  Github,
+  RefreshCw
 } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 import { fetchGoogleSharedAlbum } from '../services/googlePhotosService';
@@ -38,8 +40,21 @@ export default function GooglePhotosSettingsModal() {
 
   const [inputUrl, setInputUrl] = useState('');
   const [fetching, setFetching] = useState(false);
+  const [ghSyncing, setGhSyncing] = useState(false);
   const [statusMsg, setStatusMsg] = useState({ text: '', isError: false });
   const [copied, setCopied] = useState(false);
+  const [showTokenInput, setShowTokenInput] = useState(false);
+  const [ghToken, setGhToken] = useState(() => {
+    return typeof localStorage !== 'undefined' ? localStorage.getItem('gh_sync_token') || '' : '';
+  });
+
+  const saveGhToken = (token) => {
+    setGhToken(token);
+    if (typeof localStorage !== 'undefined') {
+      if (token) localStorage.setItem('gh_sync_token', token);
+      else localStorage.removeItem('gh_sync_token');
+    }
+  };
 
   const handlePinSubmit = (e) => {
     if (e) e.preventDefault();
@@ -64,6 +79,65 @@ export default function GooglePhotosSettingsModal() {
     setPinInput('');
     setPinError(false);
     setStatusMsg({ text: 'Management window locked.', isError: false });
+  };
+
+  // Trigger GitHub Actions workflow dispatch to paginate and deploy on GitHub Pages
+  const triggerGitHubActionSync = async (action, targetUrl) => {
+    if (!ghToken) {
+      setShowTokenInput(true);
+      setStatusMsg({
+        text: 'Please provide a GitHub Personal Access Token (PAT) to trigger the automated cloud pagination.',
+        isError: true
+      });
+      return false;
+    }
+
+    setGhSyncing(true);
+    setStatusMsg({
+      text: `🚀 Dispatching GitHub Action to paginate all photos and deploy to GitHub Pages...`,
+      isError: false
+    });
+
+    try {
+      const res = await fetch('https://api.github.com/repos/talmalek/PhotoGallerySkin/actions/workflows/sync-google-album.yml/dispatches', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': `Bearer ${ghToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ref: 'main',
+          inputs: {
+            action: action, // 'add' or 'remove'
+            target: targetUrl
+          }
+        })
+      });
+
+      if (res.status === 204 || res.ok) {
+        setStatusMsg({
+          text: `✓ GitHub Action triggered successfully! GitHub is now extracting all images and updating the site (~30s).`,
+          isError: false
+        });
+        return true;
+      } else {
+        const errJson = await res.json().catch(() => ({}));
+        setStatusMsg({
+          text: `GitHub API error (${res.status}): ${errJson.message || 'Check PAT token permissions (requires workflow / repo write)'}`,
+          isError: true
+        });
+        return false;
+      }
+    } catch (err) {
+      setStatusMsg({
+        text: `Failed to contact GitHub API: ${err.message}`,
+        isError: true
+      });
+      return false;
+    } finally {
+      setGhSyncing(false);
+    }
   };
 
   const handleAddAlbum = async (e) => {
@@ -99,10 +173,19 @@ export default function GooglePhotosSettingsModal() {
         const updated = [...googleAlbums.filter(a => a.shareUrl !== cleanUrl), newAlbum];
         setGoogleAlbums(updated);
         setInputUrl('');
-        setStatusMsg({
-          text: `✓ Added "${newAlbum.title}" (${newAlbum.count} photos)!`,
-          isError: false
-        });
+
+        if (newAlbum.count >= 300 && ghToken) {
+          setStatusMsg({
+            text: `✓ Added "${newAlbum.title}" (${newAlbum.count} photos). Triggering GitHub cloud sync...`,
+            isError: false
+          });
+          triggerGitHubActionSync('add', cleanUrl);
+        } else {
+          setStatusMsg({
+            text: `✓ Added "${newAlbum.title}" (${newAlbum.count} photos)!`,
+            isError: false
+          });
+        }
 
         // Automatically switch to the newly added album
         setActiveAlbum(newAlbum.id);
@@ -123,9 +206,15 @@ export default function GooglePhotosSettingsModal() {
   };
 
   const handleRemoveAlbum = (idToRemove) => {
+    const targetAlbum = googleAlbums.find(a => a.id === idToRemove);
     const updated = googleAlbums.filter(a => a.id !== idToRemove);
     setGoogleAlbums(updated);
     setStatusMsg({ text: 'Album removed from gallery.', isError: false });
+
+    // Also trigger cloud sync removal if GitHub Token is available
+    if (targetAlbum && ghToken) {
+      triggerGitHubActionSync('remove', targetAlbum.shareUrl);
+    }
   };
 
   const handleCopyConfig = () => {
@@ -370,6 +459,59 @@ export default function GooglePhotosSettingsModal() {
                           </button>
                         </div>
                       ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* GitHub Actions Cloud Sync Config */}
+                <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-slate-200 font-bold font-mono">
+                      <Github className="w-4 h-4 text-emerald-400" />
+                      <span>GitHub Cloud Automation (Albums &gt; 300 photos)</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowTokenInput(!showTokenInput)}
+                      className="text-[11px] font-mono text-emerald-400 hover:text-emerald-300 underline cursor-pointer"
+                    >
+                      {ghToken ? (showTokenInput ? 'Hide Token' : 'Edit GitHub Token') : 'Set GitHub Token'}
+                    </button>
+                  </div>
+
+                  {showTokenInput && (
+                    <div className="space-y-2 pt-2 border-t border-slate-800/80">
+                      <label className="text-[11px] text-slate-400 block font-mono">
+                        GitHub Personal Access Token (PAT) with <code className="text-emerald-300">workflow</code> / <code className="text-emerald-300">repo</code> write:
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="password"
+                          value={ghToken}
+                          onChange={(e) => saveGhToken(e.target.value)}
+                          placeholder="ghp_..."
+                          className="flex-1 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-emerald-300 text-xs font-mono focus:outline-none focus:border-emerald-400"
+                        />
+                        {ghToken && (
+                          <button
+                            type="button"
+                            onClick={() => saveGhToken('')}
+                            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-950/50 hover:text-rose-400 text-slate-400 text-xs font-mono cursor-pointer"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                      <span className="text-[10px] text-slate-500 block">
+                        Saved in your browser only. When adding or removing albums &gt;300 photos on the live site, this triggers GitHub Actions to extract all pages and deploy.
+                      </span>
+                    </div>
+                  )}
+
+                  {ghSyncing && (
+                    <div className="flex items-center gap-2 text-emerald-300 font-mono text-xs pt-1">
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Dispatching GitHub cloud extractor workflow...</span>
                     </div>
                   )}
                 </div>
