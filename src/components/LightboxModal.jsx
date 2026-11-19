@@ -27,14 +27,17 @@ import { fetchPhotoExif } from '../services/flickrService';
 export default function LightboxModal() {
   const { activePhoto, setActivePhoto, navigateLightbox, photos, apiKey } = useFlickr();
   const [isZoomed, setIsZoomed] = useState(false);
-  const [showMetadata, setShowMetadata] = useState(true);
+  const [showMetadata, setShowMetadata] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [exifData, setExifData] = useState(null);
   const [exifLoading, setExifLoading] = useState(false);
 
   // Load EXIF data whenever activePhoto changes
   useEffect(() => {
-    if (!activePhoto) return;
+    if (!activePhoto) {
+      setShowMetadata(false);
+      return;
+    }
     setImageLoaded(false);
     setIsZoomed(false);
 
@@ -81,6 +84,12 @@ export default function LightboxModal() {
 
   const currentIndex = photos.findIndex(p => p.id === activePhoto.id);
   const totalPhotos = photos.length;
+  const isGooglePhoto =
+    activePhoto.source === 'google' ||
+    activePhoto.id?.startsWith('gphoto_') ||
+    (activePhoto.link || '').includes('google') ||
+    (activePhoto.link || '').includes('goo.gl');
+  const openSourceLabel = isGooglePhoto ? 'Open on Google Photos' : 'Open on Flickr';
 
   const toggleZoom = (e) => {
     e.stopPropagation();
@@ -162,7 +171,7 @@ export default function LightboxModal() {
               href={activePhoto.link}
               target="_blank"
               rel="noopener noreferrer"
-              title="Open on Flickr"
+              title={openSourceLabel}
               className="p-2.5 rounded-2xl bg-white/90 text-neutral-800 hover:text-amber-800 border border-white/40 shadow-lg transition-all"
             >
               <ExternalLink className="w-4 h-4" />
@@ -451,7 +460,7 @@ export default function LightboxModal() {
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-sm transition-colors shadow-lg"
                 >
-                  <span>View Full EXIF on Flickr</span>
+                  <span>{openSourceLabel}</span>
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </div>

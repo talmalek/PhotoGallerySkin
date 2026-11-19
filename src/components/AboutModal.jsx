@@ -1,18 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Camera, Layers, MapPin, Sparkles } from 'lucide-react';
+import { X, ExternalLink, Camera, ArrowUpRight } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 import { FLICKR_CONFIG, DEFAULT_ALBUMS } from '../services/flickrService';
 
 export default function AboutModal() {
-  const { isAboutModalOpen, setIsAboutModalOpen, photos } = useFlickr();
+  const { isAboutModalOpen, setIsAboutModalOpen, photos, selectAlbum } = useFlickr();
 
   const totalPhotosCount = photos.length > 0 ? photos.length : 635;
+
+  useEffect(() => {
+    if (!isAboutModalOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setIsAboutModalOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAboutModalOpen, setIsAboutModalOpen]);
+
+  const handleSelectCollection = (albumId) => {
+    selectAlbum(albumId);
+    setIsAboutModalOpen(false);
+  };
 
   return (
     <AnimatePresence>
       {isAboutModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-lg overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-xl overflow-y-auto">
           {/* Overlay Backdrop Click */}
           <div
             className="fixed inset-0 cursor-pointer"
@@ -20,128 +34,163 @@ export default function AboutModal() {
           />
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, y: 25 }}
+            initial={{ opacity: 0, scale: 0.96, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 25 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-2xl rounded-3xl glass-panel p-6 sm:p-10 border border-gray-200 dark:border-neutral-800 shadow-2xl relative overflow-hidden my-auto z-10 bg-white/95 dark:bg-neutral-950/95 text-neutral-900 dark:text-neutral-100"
+            exit={{ opacity: 0, scale: 0.96, y: 20 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full max-w-5xl rounded-3xl border border-neutral-200/80 dark:border-neutral-800 shadow-2xl relative overflow-hidden my-auto z-10 bg-white dark:bg-[#0d0d10] text-neutral-900 dark:text-neutral-100 grid grid-cols-1 md:grid-cols-12"
           >
-            {/* Top Close Button */}
+            {/* Top-Right Close Button */}
             <button
               onClick={() => setIsAboutModalOpen(false)}
-              className="absolute top-5 right-5 p-2 rounded-2xl bg-neutral-100 dark:bg-neutral-900 text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
-              title="Close About Page"
+              className="absolute top-4 right-4 z-30 p-2.5 rounded-full bg-black/55 hover:bg-black/80 text-white/90 hover:text-white backdrop-blur-md border border-white/15 transition-all cursor-pointer shadow-lg"
+              title="Close Portfolio"
+              aria-label="Close Portfolio"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
-            {/* Profile Header */}
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-8 border-b border-gray-200 dark:border-neutral-800">
-              <div className="relative group shrink-0">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border-2 border-amber-500/40 shadow-xl bg-neutral-200">
-                  <img
-                    src={FLICKR_CONFIG.AVATAR_URL}
-                    alt="Tal Malek"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <span className="absolute -bottom-2 -right-2 px-2 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-mono font-bold shadow-md border-2 border-white dark:border-neutral-950 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                  ACTIVE
-                </span>
-              </div>
-
-              <div className="flex flex-col text-center sm:text-left">
-                <div className="inline-flex items-center justify-center sm:justify-start gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs font-mono uppercase tracking-widest mb-2 w-fit mx-auto sm:mx-0">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>PHOTOGRAPHER &amp; CREATOR</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
-                  Tal Malek
-                </h2>
-                <p className="text-xs font-mono text-neutral-500 dark:text-neutral-400 mt-1 flex items-center justify-center sm:justify-start gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Flickr Profile: @{FLICKR_CONFIG.USERNAME}</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Bio & Philosophy Section */}
-            <div className="py-6 space-y-4">
-              <h3 className="text-lg font-serif font-medium text-amber-800 dark:text-amber-300 italic">
-                "Capturing authentic frames where light, geometry, and visual harmony converge."
-              </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-light">
-                Welcome to my official photography portfolio. My work explores urban architecture, natural landscapes, plant and animal life, and fine art visual compositions.
-              </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-light">
-                This digital gallery stream is dynamically integrated directly with Flickr's high-resolution global CDN, delivering an uncompressed, authentic viewing experience.
-              </p>
-            </div>
-
-            {/* Portfolio Highlights / Stats */}
-            <div className="grid grid-cols-3 gap-3 py-4 border-y border-gray-200 dark:border-neutral-800 my-2 text-center">
-              <div className="p-3 rounded-2xl bg-neutral-100/80 dark:bg-neutral-900/60 border border-gray-200/60 dark:border-neutral-800">
-                <span className="block text-xl font-bold text-neutral-900 dark:text-neutral-100 font-mono">
-                  {totalPhotosCount}+
-                </span>
-                <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-mono uppercase tracking-wider">
-                  Photos
-                </span>
-              </div>
-              <div className="p-3 rounded-2xl bg-neutral-100/80 dark:bg-neutral-900/60 border border-gray-200/60 dark:border-neutral-800">
-                <span className="block text-xl font-bold text-neutral-900 dark:text-neutral-100 font-mono">
-                  {DEFAULT_ALBUMS.length - 1}
-                </span>
-                <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-mono uppercase tracking-wider">
-                  Collections
-                </span>
-              </div>
-              <div className="p-3 rounded-2xl bg-neutral-100/80 dark:bg-neutral-900/60 border border-gray-200/60 dark:border-neutral-800">
-                <span className="block text-xl font-bold text-neutral-900 dark:text-neutral-100 font-mono">
-                  100%
-                </span>
-                <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-mono uppercase tracking-wider">
-                  Authentic
-                </span>
-              </div>
-            </div>
-
-            {/* Featured Collections Badges */}
-            <div className="pt-4 pb-2">
-              <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 block mb-3">
-                Featured Themes
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {DEFAULT_ALBUMS.slice(1).map(album => (
-                  <span
-                    key={album.id}
-                    className="px-3 py-1 rounded-xl text-xs font-mono bg-gray-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-800"
-                  >
-                    {album.title} ({album.count})
+            {/* Left Column: Editorial Portfolio Content */}
+            <div className="md:col-span-7 p-7 sm:p-10 lg:p-12 flex flex-col justify-between order-2 md:order-1">
+              <div>
+                {/* Eyebrow */}
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="w-8 h-[1.5px] bg-amber-600 dark:bg-amber-400" />
+                  <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-amber-700 dark:text-amber-400 font-semibold">
+                    Photographer &amp; Visual Artist
                   </span>
-                ))}
+                </div>
+
+                {/* Display Name & Handle */}
+                <div className="mb-6">
+                  <h2 className="text-4xl sm:text-5xl font-serif font-semibold tracking-tight text-neutral-950 dark:text-white leading-[1.05]">
+                    Tal Malek
+                  </h2>
+                  <p className="mt-2.5 text-xs font-mono text-neutral-500 dark:text-neutral-400 flex items-center gap-2">
+                    <Camera className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <span>@{FLICKR_CONFIG.USERNAME}</span>
+                    <span className="text-neutral-300 dark:text-neutral-700">•</span>
+                    <span className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Live Portfolio Stream
+                    </span>
+                  </p>
+                </div>
+
+                {/* Artist Statement Quote */}
+                <blockquote className="border-l-2 border-amber-500/70 pl-4 py-0.5 mb-5">
+                  <p className="text-base sm:text-lg font-serif-italic text-neutral-800 dark:text-neutral-200 leading-relaxed">
+                    &ldquo;Capturing authentic frames where light, geometry, and visual harmony converge.&rdquo;
+                  </p>
+                </blockquote>
+
+                {/* Concise Bio */}
+                <div className="space-y-3 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-light">
+                  <p>
+                    Welcome to my official photography portfolio. My work explores urban architecture, natural landscapes, botanical and wildlife studies, and fine art visual compositions.
+                  </p>
+                  <p>
+                    Every frame streams directly from high-resolution Flickr and Google Photos collections for an uncompressed, authentic viewing experience.
+                  </p>
+                </div>
+
+                {/* Metrics Strip */}
+                <div className="grid grid-cols-3 gap-4 py-5 my-6 border-y border-neutral-200/80 dark:border-neutral-800/90">
+                  <div>
+                    <span className="block text-2xl font-bold tracking-tight text-neutral-950 dark:text-white font-mono">
+                      {totalPhotosCount}+
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400">
+                      Published Works
+                    </span>
+                  </div>
+                  <div className="border-x border-neutral-200/80 dark:border-neutral-800/90 px-4">
+                    <span className="block text-2xl font-bold tracking-tight text-neutral-950 dark:text-white font-mono">
+                      {DEFAULT_ALBUMS.length - 1}
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400">
+                      Curated Series
+                    </span>
+                  </div>
+                  <div className="pl-1">
+                    <span className="block text-2xl font-bold tracking-tight text-neutral-950 dark:text-white font-mono">
+                      100%
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400">
+                      Authentic EXIF
+                    </span>
+                  </div>
+                </div>
+
+                {/* Curated Collections */}
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-neutral-400 dark:text-neutral-500 block mb-2.5">
+                    Selected Series
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {DEFAULT_ALBUMS.slice(1).map((album) => (
+                      <button
+                        key={album.id}
+                        type="button"
+                        onClick={() => handleSelectCollection(album.id)}
+                        className="group inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-mono bg-neutral-100 dark:bg-neutral-900 hover:bg-amber-500/15 dark:hover:bg-amber-500/15 text-neutral-700 dark:text-neutral-300 hover:text-amber-800 dark:hover:text-amber-300 border border-neutral-200/80 dark:border-neutral-800 hover:border-amber-500/30 transition-all cursor-pointer"
+                      >
+                        <span>{album.title}</span>
+                        <span className="text-neutral-400 dark:text-neutral-500 text-[10px]">({album.count})</span>
+                        <ArrowUpRight className="w-3 h-3 opacity-0 -ml-1 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Row */}
+              <div className="mt-8 pt-6 border-t border-neutral-200/80 dark:border-neutral-800/90 flex flex-col sm:flex-row items-center gap-3">
+                <a
+                  href={FLICKR_CONFIG.PROFILE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto flex-1 py-3 px-5 rounded-xl bg-neutral-950 dark:bg-amber-500 hover:bg-neutral-800 dark:hover:bg-amber-400 text-white dark:text-neutral-950 font-semibold text-sm flex items-center justify-center gap-2 transition-colors shadow-lg cursor-pointer"
+                >
+                  <span>Visit Flickr Profile</span>
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setIsAboutModalOpen(false)}
+                  className="w-full sm:w-auto py-3 px-6 rounded-xl bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-semibold text-sm transition-colors border border-neutral-200 dark:border-neutral-800 cursor-pointer"
+                >
+                  Explore Gallery
+                </button>
               </div>
             </div>
 
-            {/* Bottom Actions */}
-            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-neutral-800 flex flex-col sm:flex-row items-center gap-3">
-              <a
-                href={FLICKR_CONFIG.PROFILE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto flex-1 py-3 px-5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-sm flex items-center justify-center gap-2 transition-colors shadow-lg shadow-amber-500/20 cursor-pointer"
-              >
-                <span>Visit Flickr Profile</span>
-                <ExternalLink className="w-4 h-4" />
-              </a>
+            {/* Right Column: Full-Bleed Editorial Portrait */}
+            <div className="md:col-span-5 relative bg-[#060608] min-h-[320px] sm:min-h-[380px] md:min-h-full order-1 md:order-2 overflow-hidden">
+              <img
+                src={FLICKR_CONFIG.AVATAR_URL}
+                alt="Tal Malek Portrait"
+                className="w-full h-full object-cover object-top md:absolute md:inset-0"
+              />
 
-              <button
-                onClick={() => setIsAboutModalOpen(false)}
-                className="w-full sm:w-auto py-3 px-6 rounded-2xl bg-gray-100 dark:bg-neutral-900 hover:bg-gray-200 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-semibold text-sm transition-colors border border-gray-200 dark:border-neutral-800 cursor-pointer"
-              >
-                Back to Gallery
-              </button>
+              {/* Subtle Editorial Vignette & Bottom Caption */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/25 pointer-events-none" />
+              <div className="hidden md:block absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-amber-500/30 to-transparent pointer-events-none" />
+
+              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between text-white pointer-events-none">
+                <div>
+                  <span className="block text-[10px] font-mono uppercase tracking-[0.22em] text-amber-400/90">
+                    Portfolio
+                  </span>
+                  <span className="block text-sm font-serif tracking-wide text-white/95">
+                    Tal Malek Photography
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono text-white/60 tracking-widest uppercase">
+                  EST. FLICKR
+                </span>
+              </div>
             </div>
           </motion.div>
         </div>

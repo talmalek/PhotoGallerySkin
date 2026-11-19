@@ -4,11 +4,13 @@
  * ZERO local media storage - direct high-resolution CDN stream.
  */
 
+import talMalekAvatar from '../assets/tal-malek.jpg';
+
 export const FLICKR_CONFIG = {
   USERNAME: 'talmalek',
   USER_NSID: '126120136@N05',
   PROFILE_URL: 'https://www.flickr.com/photos/talmalek/',
-  AVATAR_URL: 'https://live.staticflickr.com/7408/buddyicons/126120136@N05_r.jpg?1422715756#126120136@N05'
+  AVATAR_URL: talMalekAvatar
 };
 
 export const DEFAULT_ALBUMS = [

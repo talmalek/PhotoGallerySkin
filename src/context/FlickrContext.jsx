@@ -72,16 +72,18 @@ export function FlickrProvider({ children }) {
     }
   }, [darkMode]);
 
-  // Pagination State - Options: 50, 100, 200 (Default: 200)
+  // Pagination State - Options: 50, 100, 200 (Default: 50)
   const [pageSize, setPageSizeState] = useState(() => {
-    const saved = localStorage.getItem('flickr_page_size');
-    return saved ? parseInt(saved, 10) : 200;
+    localStorage.removeItem('flickr_page_size');
+    const saved = localStorage.getItem('flickr_page_size_v2');
+    const parsed = saved ? parseInt(saved, 10) : 50;
+    return [50, 100, 200].includes(parsed) ? parsed : 50;
   });
   const [currentPage, setCurrentPage] = useState(1);
 
   const setPageSize = (size) => {
     setPageSizeState(size);
-    localStorage.setItem('flickr_page_size', size.toString());
+    localStorage.setItem('flickr_page_size_v2', size.toString());
     setCurrentPage(1);
   };
 

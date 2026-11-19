@@ -56,11 +56,11 @@ function MainContent() {
   const { darkMode } = useFlickr();
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 selection:bg-amber-500/20 selection:text-amber-900 ${
-      darkMode ? 'bg-[#09090b] text-neutral-100' : 'bg-white text-neutral-900'
+    <div className={`min-h-screen transition-colors duration-500 selection:bg-[#9A6B38]/20 selection:text-[#121212] dark:selection:bg-[#C89D5C]/25 dark:selection:text-[#F2F0EC] ${
+      darkMode ? 'bg-[#08080A] text-[#F2F0EC]' : 'bg-[#FAF9F6] text-[#121212]'
     }`}>
       <Navbar />
-      <main className={`transition-colors duration-500 ${darkMode ? 'bg-[#09090b]' : 'bg-white'}`}>
+      <main className={`transition-colors duration-500 ${darkMode ? 'bg-[#08080A]' : 'bg-[#FAF9F6]'}`}>
         <Hero />
         <GalleryGrid />
       </main>

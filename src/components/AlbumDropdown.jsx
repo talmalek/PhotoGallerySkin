@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Folder, Check, Sparkles, Layers } from 'lucide-react';
+import { ChevronDown, Check, Layers } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 
 export default function AlbumDropdown() {
@@ -8,10 +8,9 @@ export default function AlbumDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Search across both Flickr and Google albums
-  const currentAlbum = 
-    albums.find(a => a.id === activeAlbum) || 
-    googleAlbums.find(a => a.id === activeAlbum) || 
+  const currentAlbum =
+    albums.find(a => a.id === activeAlbum) ||
+    googleAlbums.find(a => a.id === activeAlbum) ||
     albums[0];
 
   const isGoogleActive = currentAlbum?.source === 'google' || currentAlbum?.id?.startsWith('google_');
@@ -28,126 +27,116 @@ export default function AlbumDropdown() {
 
   return (
     <div className="relative z-40" ref={dropdownRef}>
-      {/* Trigger Button */}
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+      {/* Minimal Architectural Trigger */}
+      <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 px-4 py-2 rounded-xl glass-panel hover:bg-gray-100 dark:hover:bg-neutral-800 transition-all duration-300 text-sm font-medium border border-gray-200/80 dark:border-neutral-700/50 shadow-md cursor-pointer group"
+        className="flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-stone-100/80 dark:bg-neutral-900/90 hover:bg-stone-200/70 dark:hover:bg-neutral-800/90 transition-colors text-xs sm:text-sm border border-stone-200/90 dark:border-neutral-800 cursor-pointer group"
       >
-        <div className="flex items-center gap-2">
-          <Layers className={`w-4 h-4 group-hover:rotate-12 transition-transform duration-300 ${
-            isGoogleActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
-          }`} />
-          <span className="text-neutral-500 dark:text-neutral-400 text-xs font-mono uppercase tracking-wider hidden sm:inline">
-            {isGoogleActive ? 'Google:' : 'Flickr:'}
-          </span>
-          <span className="text-neutral-900 dark:text-neutral-100 font-bold max-w-[160px] sm:max-w-[200px] truncate">
-            {currentAlbum.title}
-          </span>
-        </div>
-
-        {/* Total Album Count Badge */}
-        <span className={`px-2.5 py-0.5 rounded-full text-xs font-mono border font-bold ${
-          isGoogleActive
-            ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20'
-            : 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20'
-        }`}>
-          {currentAlbum.count} Photos
+        <span
+          className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+            isGoogleActive ? 'bg-emerald-500' : 'bg-[#9A6B38] dark:bg-[#C89D5C]'
+          }`}
+        />
+        <span className="text-[#121212] dark:text-[#F2F0EC] font-medium max-w-[150px] sm:max-w-[210px] truncate">
+          {currentAlbum.title}
         </span>
-
-        <ChevronDown className={`w-4 h-4 text-neutral-400 transition-transform duration-300 ${isOpen ? 'rotate-180 text-amber-600' : ''}`} />
-      </motion.button>
+        <span className="text-[11px] font-mono text-stone-500 dark:text-neutral-400 tabular-nums">
+          {currentAlbum.count}
+        </span>
+        <ChevronDown
+          className={`w-3.5 h-3.5 text-stone-400 dark:text-neutral-500 transition-transform duration-200 ${
+            isOpen ? 'rotate-180 text-[#9A6B38] dark:text-[#C89D5C]' : ''
+          }`}
+        />
+      </button>
 
       {/* Dropdown Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 4, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute right-0 sm:left-0 mt-2 w-80 sm:w-96 rounded-2xl glass-panel p-2 shadow-2xl border border-gray-200 dark:border-neutral-700/60 backdrop-blur-2xl z-50 overflow-hidden bg-white/95 dark:bg-neutral-900/95"
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 6, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 mt-1 w-80 sm:w-[340px] rounded-xl p-2 shadow-2xl border border-stone-200 dark:border-neutral-800 bg-[#FAF9F6]/98 dark:bg-[#101014]/98 backdrop-blur-2xl z-50 overflow-hidden"
           >
             {/* Flickr Section Header */}
-            <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 flex items-center justify-between border-b border-gray-100 dark:border-neutral-800 mb-1">
-              <span>📷 Flickr Photostream &amp; Albums</span>
-              <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+            <div className="px-2.5 py-1.5 text-[10px] font-mono uppercase tracking-[0.18em] text-stone-400 dark:text-neutral-500 flex items-center justify-between border-b border-stone-200/70 dark:border-neutral-800/80 mb-1">
+              <span className="flex items-center gap-1.5">
+                <Layers className="w-3 h-3 text-[#9A6B38] dark:text-[#C89D5C]" />
+                Flickr Collections
+              </span>
+              <span>{albums.length}</span>
             </div>
 
-            <div className="max-h-56 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+            <div className="max-h-56 overflow-y-auto space-y-0.5 pr-0.5">
               {albums.map((album) => {
                 const isSelected = album.id === activeAlbum;
                 return (
-                  <motion.button
+                  <button
                     key={album.id}
-                    whileHover={{ x: 3 }}
+                    type="button"
                     onClick={() => {
                       selectAlbum(album.id);
                       setIsOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all duration-200 cursor-pointer ${
+                    className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors cursor-pointer ${
                       isSelected
-                        ? 'bg-amber-500/10 text-amber-800 dark:text-amber-300 font-bold border border-amber-500/30'
-                        : 'hover:bg-gray-100 dark:hover:bg-neutral-800/60 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100'
+                        ? 'bg-[#9A6B38]/10 dark:bg-[#C89D5C]/15 text-[#9A6B38] dark:text-[#C89D5C] font-medium'
+                        : 'hover:bg-stone-200/50 dark:hover:bg-neutral-800/60 text-stone-700 dark:text-neutral-300'
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 truncate">
-                      <Folder className={`w-4 h-4 ${isSelected ? 'text-amber-600 dark:text-amber-400' : 'text-neutral-400'}`} />
-                      <span className="truncate">{album.title}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono font-bold text-neutral-500 dark:text-neutral-400 bg-gray-100 dark:bg-neutral-800 px-2 py-0.5 rounded-md border border-neutral-200 dark:border-neutral-700">
+                    <span className="truncate">{album.title}</span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-[11px] font-mono text-stone-400 dark:text-neutral-500 tabular-nums">
                         {album.count}
                       </span>
-                      {isSelected && <Check className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />}
+                      {isSelected && <Check className="w-3.5 h-3.5 text-[#9A6B38] dark:text-[#C89D5C]" />}
                     </div>
-                  </motion.button>
+                  </button>
                 );
               })}
             </div>
 
             {/* Google Photos Section Header */}
-            <div className="mt-3 px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center justify-between border-t border-b border-gray-100 dark:border-neutral-800 mb-1">
-              <span>🖼️ Google Photos Albums</span>
-              <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full font-bold">
-                {googleAlbums.length}
-              </span>
-            </div>
+            {googleAlbums.length > 0 && (
+              <>
+                <div className="mt-2.5 px-2.5 py-1.5 text-[10px] font-mono uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-400 flex items-center justify-between border-t border-b border-stone-200/70 dark:border-neutral-800/80 mb-1">
+                  <span>Google Photos</span>
+                  <span>{googleAlbums.length}</span>
+                </div>
 
-            <div className="max-h-48 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
-              {googleAlbums.map((album) => {
-                const isSelected = album.id === activeAlbum;
-                return (
-                  <motion.button
-                    key={album.id}
-                    whileHover={{ x: 3 }}
-                    onClick={() => {
-                      selectAlbum(album.id);
-                      setIsOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all duration-200 cursor-pointer ${
-                      isSelected
-                        ? 'bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-500/30'
-                        : 'hover:bg-gray-100 dark:hover:bg-neutral-800/60 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5 truncate">
-                      <Folder className={`w-4 h-4 ${isSelected ? 'text-emerald-600 dark:text-emerald-400' : 'text-emerald-500/60'}`} />
-                      <span className="truncate">{album.title}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
-                        {album.count}
-                      </span>
-                      {isSelected && <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />}
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
+                <div className="max-h-44 overflow-y-auto space-y-0.5 pr-0.5">
+                  {googleAlbums.map((album) => {
+                    const isSelected = album.id === activeAlbum;
+                    return (
+                      <button
+                        key={album.id}
+                        type="button"
+                        onClick={() => {
+                          selectAlbum(album.id);
+                          setIsOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs sm:text-sm transition-colors cursor-pointer ${
+                          isSelected
+                            ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium'
+                            : 'hover:bg-stone-200/50 dark:hover:bg-neutral-800/60 text-stone-700 dark:text-neutral-300'
+                        }`}
+                      >
+                        <span className="truncate">{album.title}</span>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="text-[11px] font-mono text-stone-400 dark:text-neutral-500 tabular-nums">
+                            {album.count}
+                          </span>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

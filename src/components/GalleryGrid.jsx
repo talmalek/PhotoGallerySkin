@@ -105,6 +105,15 @@ function StarfieldCanvas({ cursorX, cursorY }) {
   );
 }
 
+function isGooglePhoto(photo) {
+  return (
+    photo?.source === 'google' ||
+    photo?.id?.startsWith('gphoto_') ||
+    (photo?.link || '').includes('google') ||
+    (photo?.link || '').includes('goo.gl')
+  );
+}
+
 /**
  * ZipperCard Component (Masonry View)
  * Left Column (colIdx 0): arrives from LEFT (-125px -> 0px)
@@ -151,10 +160,10 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
       whileHover={{ scale: 1.03 }}
       transition={{ duration: 0.3 }}
       onClick={() => setActivePhoto(photo)}
-      className="group relative rounded-3xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer"
+      className="group relative rounded-xl overflow-hidden bg-stone-100 dark:bg-neutral-900 shadow-xs hover:shadow-2xl border border-stone-200/70 dark:border-neutral-800/80 cursor-pointer"
     >
       <div
-        className="w-full relative overflow-hidden flex items-center justify-center bg-neutral-200/40 dark:bg-neutral-800/40"
+        className="w-full relative overflow-hidden flex items-center justify-center bg-stone-200/40 dark:bg-neutral-800/40"
         style={{ aspectRatio: realAspectRatio }}
       >
         <img
@@ -171,33 +180,30 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
 
         {/* Video Pill Badge */}
         {photo.isVideo && (
-          <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-xs font-mono font-bold shadow-lg border border-white/20">
+          <div className="absolute top-3.5 left-3.5 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/65 backdrop-blur-md text-white text-[11px] font-mono font-medium shadow-md border border-white/15">
             <Play className="w-3 h-3 fill-white text-white" />
             <span>{photo.duration || 'VIDEO'}</span>
           </div>
         )}
 
-        <div className="absolute inset-0 bg-neutral-950/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] p-6 flex flex-col justify-between z-10 text-left">
-          <div className="flex justify-between items-center">
-            <span className="px-3 py-1 rounded-full bg-white/90 text-neutral-900 text-xs font-mono font-bold shadow-md truncate max-w-[200px]">
-              {photo.title}
-            </span>
-            <div className="w-10 h-10 rounded-full bg-white text-neutral-950 flex items-center justify-center shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-5 flex flex-col justify-between z-10 text-left">
+          <div className="flex justify-end">
+            <div className="w-9 h-9 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/20 flex items-center justify-center transform -translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
               {photo.isVideo ? (
-                <Play className="w-4 h-4 text-neutral-900 fill-neutral-900 ml-0.5" />
+                <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5" />
               ) : (
-                <Maximize2 className="w-4 h-4 text-neutral-900" />
+                <Maximize2 className="w-3.5 h-3.5 text-white" />
               )}
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold text-white leading-snug line-clamp-2">
+            <h3 className="font-editorial text-lg font-medium text-white leading-snug line-clamp-2">
               {photo.title}
             </h3>
-            <div className="mt-2 flex items-center justify-between text-xs font-mono text-neutral-200">
+            <div className="mt-1.5 flex items-center justify-between text-[11px] font-mono text-white/75">
               <span className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-amber-300" />
+                <Calendar className="w-3 h-3 text-[#C89D5C]" />
                 {photo.dateTaken}
               </span>
               <a
@@ -205,10 +211,10 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="text-white hover:text-amber-300 p-1 flex items-center gap-1 bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-lg backdrop-blur-md transition-colors"
-                title="View on Flickr"
+                className="text-white/90 hover:text-[#C89D5C] flex items-center gap-1 transition-colors"
+                title={isGooglePhoto(photo) ? 'Open on Google Photos' : 'Open on Flickr'}
               >
-                <span>Flickr</span>
+                <span>{isGooglePhoto(photo) ? 'Google Photos' : 'Flickr'}</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
@@ -314,10 +320,10 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
       whileHover={{ scale: 1.05, zIndex: 30 }}
       onMouseEnter={() => setIsHovered(true)}
       onClick={() => setActivePhoto(photo)}
-      className="group relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 shadow-sm hover:shadow-2xl border border-neutral-200/80 dark:border-neutral-800 cursor-pointer z-10 will-change-transform"
+      className="group relative rounded-lg overflow-hidden bg-stone-100 dark:bg-neutral-900 shadow-xs hover:shadow-2xl border border-stone-200/70 dark:border-neutral-800/80 cursor-pointer z-10 will-change-transform"
     >
       <div
-        className="w-full relative overflow-hidden flex items-center justify-center bg-neutral-200/40 dark:bg-neutral-800/40"
+        className="w-full relative overflow-hidden flex items-center justify-center bg-stone-200/40 dark:bg-neutral-800/40"
         style={{ aspectRatio: realAspectRatio }}
       >
         <img
@@ -335,33 +341,30 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
 
         {/* Video Pill Badge */}
         {photo.isVideo && (
-          <div className="absolute top-2.5 left-2.5 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/65 backdrop-blur-md text-white text-[10px] font-mono font-bold shadow-md border border-white/20">
+          <div className="absolute top-2.5 left-2.5 z-20 flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md text-white text-[10px] font-mono font-medium shadow-md border border-white/15">
             <Play className="w-2.5 h-2.5 fill-white text-white" />
             <span>{photo.duration || 'VIDEO'}</span>
           </div>
         )}
 
-        <div className="absolute inset-0 bg-neutral-950/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] p-3.5 flex flex-col justify-between z-10 text-left">
-          <div className="flex justify-between items-center">
-            <span className="px-2 py-0.5 rounded-full bg-white/90 text-neutral-900 text-[10px] font-mono font-bold shadow-sm truncate max-w-[130px]">
-              {photo.title}
-            </span>
-            <div className="w-7 h-7 rounded-full bg-white text-neutral-950 flex items-center justify-center shadow-md transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-3 flex flex-col justify-between z-10 text-left">
+          <div className="flex justify-end">
+            <div className="w-7 h-7 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/20 flex items-center justify-center">
               {photo.isVideo ? (
-                <Play className="w-3 h-3 text-neutral-900 fill-neutral-900 ml-0.5" />
+                <Play className="w-3 h-3 text-white fill-white ml-0.5" />
               ) : (
-                <Maximize2 className="w-3.5 h-3.5 text-neutral-900" />
+                <Maximize2 className="w-3 h-3 text-white" />
               )}
             </div>
           </div>
 
           <div>
-            <h4 className="text-xs sm:text-sm font-bold text-white leading-snug line-clamp-2">
+            <h4 className="font-editorial text-xs sm:text-sm font-medium text-white leading-snug line-clamp-2">
               {photo.title}
             </h4>
-            <div className="mt-1 flex items-center justify-between text-[10px] font-mono text-neutral-300">
+            <div className="mt-1 flex items-center justify-between text-[10px] font-mono text-white/75">
               <span className="flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-amber-300" />
+                <Calendar className="w-2.5 h-2.5 text-[#C89D5C]" />
                 {photo.dateTaken}
               </span>
               <a
@@ -369,10 +372,10 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="text-white hover:text-amber-300 flex items-center gap-0.5 bg-white/20 hover:bg-white/30 px-1.5 py-0.5 rounded backdrop-blur-md transition-colors"
-                title="View on Flickr"
+                className="text-white/90 hover:text-[#C89D5C] flex items-center gap-0.5 transition-colors"
+                title={isGooglePhoto(photo) ? 'Open on Google Photos' : 'Open on Flickr'}
               >
-                <span>Flickr</span>
+                <span>{isGooglePhoto(photo) ? 'Google Photos' : 'Flickr'}</span>
                 <ExternalLink className="w-2.5 h-2.5" />
               </a>
             </div>
@@ -425,11 +428,11 @@ function PaginationBar({ currentPage, totalPages, pageSize, setPageSize, setCurr
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="mt-12 mb-6 flex flex-col sm:flex-row items-center justify-between gap-6 py-5 px-6 rounded-3xl bg-neutral-100/90 dark:bg-neutral-900/90 border border-neutral-200/80 dark:border-neutral-800 backdrop-blur-md relative z-20 shadow-lg">
+    <div className="mt-14 mb-6 flex flex-col sm:flex-row items-center justify-between gap-5 py-4 px-5 rounded-xl bg-stone-100/80 dark:bg-neutral-900/80 border border-stone-200/80 dark:border-neutral-800 backdrop-blur-md relative z-20">
       {/* Page Size Selector */}
-      <div className="flex items-center gap-3">
-        <span className="text-xs font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-wider font-semibold">Per Page:</span>
-        <div className="flex items-center gap-1.5 bg-neutral-200/60 dark:bg-neutral-800/60 p-1 rounded-xl">
+      <div className="flex items-center gap-2.5">
+        <span className="text-[11px] font-mono text-stone-500 dark:text-neutral-400 uppercase tracking-[0.14em]">Per Page</span>
+        <div className="flex items-center gap-1 bg-stone-200/60 dark:bg-neutral-800/70 p-0.5 rounded-lg">
           {[50, 100, 200].map((size) => (
             <button
               key={size}
@@ -439,10 +442,10 @@ function PaginationBar({ currentPage, totalPages, pageSize, setPageSize, setCurr
                   sectionRef.current.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all ${
+              className={`px-2.5 py-1 rounded-md text-xs font-mono font-medium transition-all cursor-pointer tabular-nums ${
                 pageSize === size
-                  ? 'bg-amber-600 text-white shadow-md'
-                  : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                  ? 'bg-[#9A6B38] dark:bg-[#C89D5C] text-white dark:text-neutral-950 shadow-xs font-semibold'
+                  : 'text-stone-600 dark:text-neutral-400 hover:text-[#121212] dark:hover:text-white'
               }`}
             >
               {size}
@@ -452,19 +455,19 @@ function PaginationBar({ currentPage, totalPages, pageSize, setPageSize, setCurr
       </div>
 
       {/* Page Info */}
-      <div className="text-xs font-mono font-semibold text-neutral-600 dark:text-neutral-400">
-        Showing <span className="text-amber-600 dark:text-amber-400 font-bold">{startIdx}–{endIdx}</span> of <span className="font-bold">{totalPhotos}</span> Photos
+      <div className="text-xs font-mono text-stone-500 dark:text-neutral-400 tabular-nums">
+        <span className="text-[#9A6B38] dark:text-[#C89D5C] font-semibold">{startIdx}—{endIdx}</span> / {totalPhotos} Works
       </div>
 
       {/* Page Navigation Buttons */}
       {totalPages > 1 && (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="p-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm flex items-center gap-1 text-xs font-mono font-bold"
+            className="px-2.5 py-1.5 rounded-lg border border-stone-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-stone-700 dark:text-neutral-200 hover:border-[#9A6B38]/50 dark:hover:border-[#C89D5C]/50 disabled:opacity-35 disabled:cursor-not-allowed transition-all flex items-center gap-1 text-xs font-mono cursor-pointer"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3.5 h-3.5" />
             <span>Prev</span>
           </button>
 
@@ -473,10 +476,10 @@ function PaginationBar({ currentPage, totalPages, pageSize, setPageSize, setCurr
               <button
                 key={p}
                 onClick={() => handlePageChange(p)}
-                className={`w-8 h-8 rounded-xl text-xs font-mono font-bold transition-all ${
+                className={`w-8 h-8 rounded-lg text-xs font-mono transition-all cursor-pointer tabular-nums ${
                   currentPage === p
-                    ? 'bg-amber-600 text-white shadow-md'
-                    : 'bg-white/50 dark:bg-neutral-800/50 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700'
+                    ? 'bg-[#9A6B38] dark:bg-[#C89D5C] text-white dark:text-neutral-950 font-semibold shadow-xs'
+                    : 'bg-white/60 dark:bg-neutral-800/50 text-stone-600 dark:text-neutral-400 hover:bg-stone-200/70 dark:hover:bg-neutral-700'
                 }`}
               >
                 {p}
@@ -487,10 +490,10 @@ function PaginationBar({ currentPage, totalPages, pageSize, setPageSize, setCurr
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="p-2 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm flex items-center gap-1 text-xs font-mono font-bold"
+            className="px-2.5 py-1.5 rounded-lg border border-stone-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-stone-700 dark:text-neutral-200 hover:border-[#9A6B38]/50 dark:hover:border-[#C89D5C]/50 disabled:opacity-35 disabled:cursor-not-allowed transition-all flex items-center gap-1 text-xs font-mono cursor-pointer"
           >
             <span>Next</span>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
@@ -572,7 +575,7 @@ export default function GalleryGrid() {
   }, [windowWidth]);
 
   // Page pagination slicing
-  const activePageSize = pageSize || 200;
+  const activePageSize = pageSize || 50;
   const totalPages = Math.ceil(photos.length / activePageSize);
   const paginatedPhotos = useMemo(() => {
     const start = (currentPage - 1) * activePageSize;
