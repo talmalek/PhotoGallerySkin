@@ -37,7 +37,7 @@ export function FlickrProvider({ children }) {
 
   const setGoogleAlbums = (newAlbums) => {
     setGoogleAlbumsState(newAlbums);
-    saveCentralGoogleAlbums(newAlbums);
+    return saveCentralGoogleAlbums(newAlbums);
   };
   
   // Lightbox & UI States - Default to CLEAN WHITE THEME (darkMode = false) and MASONRY view mode

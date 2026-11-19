@@ -14,7 +14,8 @@ import {
   Lock,
   Unlock,
   KeyRound,
-  Globe
+  Globe,
+  RefreshCw
 } from 'lucide-react';
 import { useFlickr } from '../context/FlickrContext';
 import { fetchGoogleSharedAlbum } from '../services/googlePhotosService';
@@ -38,6 +39,7 @@ export default function GooglePhotosSettingsModal() {
 
   const [inputUrl, setInputUrl] = useState('');
   const [fetching, setFetching] = useState(false);
+  const [refreshingId, setRefreshingId] = useState(null);
   const [statusMsg, setStatusMsg] = useState({ text: '', isError: false });
   const [copied, setCopied] = useState(false);
 
@@ -119,6 +121,60 @@ export default function GooglePhotosSettingsModal() {
       });
     } finally {
       setFetching(false);
+    }
+  };
+
+  const handleRefreshAlbum = async (album) => {
+    if (refreshingId || fetching) return;
+
+    setRefreshingId(album.id);
+    setStatusMsg({ text: `Refreshing "${album.title}" from Google Photos...`, isError: false });
+
+    try {
+      const albumData = await fetchGoogleSharedAlbum(album.shareUrl);
+      if (albumData && albumData.photos && albumData.photos.length > 0) {
+        const oldCount = album.count || album.photos?.length || 0;
+        const newCount = albumData.count || albumData.photos.length;
+        const updatedAlbum = {
+          ...album,
+          title: albumData.title || album.title,
+          count: newCount,
+          coverUrl: albumData.coverUrl || albumData.photos[0].thumbUrl || albumData.photos[0].url_s || album.coverUrl,
+          photos: albumData.photos
+        };
+
+        const updated = googleAlbums.map(a => (a.id === album.id ? updatedAlbum : a));
+        const synced = await setGoogleAlbums(updated);
+
+        if (!synced) {
+          setStatusMsg({
+            text: `Refreshed "${updatedAlbum.title}" locally (${oldCount} → ${newCount} photos), but cloud sync failed.`,
+            isError: true
+          });
+        } else if (newCount !== oldCount) {
+          setStatusMsg({
+            text: `✓ Synced "${updatedAlbum.title}": ${oldCount} → ${newCount} photos.`,
+            isError: false
+          });
+        } else {
+          setStatusMsg({
+            text: `✓ "${updatedAlbum.title}" refreshed (${newCount} photos, synced to cloud).`,
+            isError: false
+          });
+        }
+      } else {
+        setStatusMsg({
+          text: `Could not refresh "${album.title}". Verify the sharing link is still active.`,
+          isError: true
+        });
+      }
+    } catch (err) {
+      setStatusMsg({
+        text: `Failed to refresh "${album.title}". Check connection and try again.`,
+        isError: true
+      });
+    } finally {
+      setRefreshingId(null);
     }
   };
 
@@ -357,14 +413,26 @@ export default function GooglePhotosSettingsModal() {
                             </div>
                           </div>
 
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveAlbum(album.id)}
-                            className="p-2 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 transition-colors cursor-pointer shrink-0"
-                            title="Remove Album"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleRefreshAlbum(album)}
+                              disabled={refreshingId !== null || fetching}
+                              className="p-2 rounded-xl text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/40 disabled:opacity-40 transition-colors cursor-pointer"
+                              title="Refresh album from Google Photos and sync to cloud"
+                            >
+                              <RefreshCw className={`w-4 h-4 ${refreshingId === album.id ? 'animate-spin text-emerald-400' : ''}`} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveAlbum(album.id)}
+                              disabled={refreshingId === album.id}
+                              className="p-2 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 disabled:opacity-40 transition-colors cursor-pointer"
+                              title="Remove Album"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>

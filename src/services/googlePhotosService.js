@@ -15,7 +15,9 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
 
   // 1. Try local dev server endpoint (fastest & handles Google redirects cleanly)
   try {
-    const res = await fetch(`/api/extract-google-album?url=${encodeURIComponent(shareUrl)}`);
+    const res = await fetch(`/api/extract-google-album?url=${encodeURIComponent(shareUrl)}`, {
+      cache: 'no-store'
+    });
     if (res.ok) {
       const data = await res.json();
       if (data.stat === 'ok' && data.photos && data.photos.length > 0) {
@@ -27,11 +29,15 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
   }
 
   // 2. Fallback to CORS proxy pool for production / static environments (GitHub Pages)
-  const cleanUrl = shareUrl.includes('?') ? `${shareUrl}&_imcp=1` : `${shareUrl}?_imcp=1`;
+  const cacheBust = `_t=${Date.now()}`;
+  const cleanUrl = shareUrl.includes('?') ? `${shareUrl}&_imcp=1&${cacheBust}` : `${shareUrl}?_imcp=1&${cacheBust}`;
   const proxies = [
     {
       url: `https://r.jina.ai/${shareUrl}`,
-      headers: { 'X-Return-Format': 'html' }
+      headers: {
+        'X-Return-Format': 'html',
+        'X-No-Cache': 'true'
+      }
     },
     {
       url: `https://api.allorigins.win/raw?url=${encodeURIComponent(cleanUrl)}`,
@@ -45,7 +51,8 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
       const timer = setTimeout(() => controller.abort(), 12000);
       const res = await fetch(proxy.url, {
         signal: controller.signal,
-        headers: proxy.headers || {}
+        headers: proxy.headers || {},
+        cache: 'no-store'
       });
       clearTimeout(timer);
 
