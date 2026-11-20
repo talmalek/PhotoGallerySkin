@@ -114,29 +114,59 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.12 }}
-          className="relative w-full overflow-hidden py-3 mb-8 border-y border-stone-200/70 dark:border-neutral-800/80"
+          className="relative w-full overflow-hidden py-5 mb-8 border-y border-stone-200/70 dark:border-neutral-800/80"
         >
-          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#FAF9F6] dark:from-[#08080A] to-transparent z-10 pointer-events-none transition-colors duration-500" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#FAF9F6] dark:from-[#08080A] to-transparent z-10 pointer-events-none transition-colors duration-500" />
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#FAF9F6] dark:from-[#08080A] to-transparent z-30 pointer-events-none transition-colors duration-500" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#FAF9F6] dark:from-[#08080A] to-transparent z-30 pointer-events-none transition-colors duration-500" />
 
-          <div className="animate-marquee gap-3">
+          <div className="animate-marquee gap-3.5">
             {[...marqueeItems, ...marqueeItems].map((photo, index) => (
               <button
                 key={`${photo.id}-${index}`}
                 type="button"
                 onClick={() => setActivePhoto(photo)}
-                className="w-44 h-28 sm:w-56 sm:h-36 rounded-md overflow-hidden relative group shrink-0 bg-stone-200/60 dark:bg-neutral-900 cursor-pointer text-left"
+                className="w-44 h-28 sm:w-56 sm:h-36 rounded-md overflow-visible relative group hover:z-20 shrink-0 cursor-pointer text-left transition-transform duration-300 hover:scale-[1.03]"
               >
-                <img
-                  src={photo.thumbUrl}
-                  alt={photo.title}
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2.5 flex flex-col justify-end">
-                  <span className="text-[11px] font-medium text-white truncate">{photo.title}</span>
-                  <span className="text-[9px] font-mono text-[#C89D5C]">{photo.dateTaken}</span>
+                {/* Dark-Mode Molten Amber / Solar-Eclipse Hover Glow */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none hidden dark:block absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
+                >
+                  <div
+                    className="absolute -inset-2.5 rounded-lg blur-[14px]"
+                    style={{
+                      background:
+                        'radial-gradient(ellipse 85% 55% at 50% 6%, rgba(255,155,40,0.95) 0%, rgba(255,62,0,0.72) 42%, rgba(220,24,0,0.34) 72%, rgba(255,40,0,0.22) 100%)'
+                    }}
+                  />
+                  <div
+                    className="absolute -inset-[4px] rounded-md blur-[5px]"
+                    style={{
+                      background:
+                        'linear-gradient(180deg, rgba(255,220,130,0.95) 0%, rgba(255,105,15,0.85) 28%, rgba(255,58,0,0.55) 68%, rgba(255,90,20,0.75) 100%)'
+                    }}
+                  />
+                  <div
+                    className="absolute -inset-[1.5px] rounded-md"
+                    style={{
+                      background:
+                        'linear-gradient(180deg, rgba(255,248,220,1) 0%, rgba(255,132,20,0.95) 22%, rgba(255,64,0,0.78) 65%, rgba(255,115,28,0.9) 100%)'
+                    }}
+                  />
+                </div>
+
+                <div className="relative w-full h-full rounded-md overflow-hidden bg-stone-200/60 dark:bg-neutral-900">
+                  <img
+                    src={photo.thumbUrl}
+                    alt={photo.title}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2.5 flex flex-col justify-end">
+                    <span className="text-[11px] font-medium text-white truncate">{photo.title}</span>
+                    <span className="text-[9px] font-mono text-[#C89D5C]">{photo.dateTaken}</span>
+                  </div>
                 </div>
               </button>
             ))}

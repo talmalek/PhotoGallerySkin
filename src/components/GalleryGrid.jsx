@@ -115,6 +115,43 @@ function isGooglePhoto(photo) {
 }
 
 /**
+ * Dark-Mode Molten Amber / Solar-Eclipse Rim Glow for Hovered Gallery Cards
+ */
+function CardEclipseGlow({ rounded = 'rounded-xl' }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none hidden dark:block absolute inset-0 ${rounded} opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10`}
+    >
+      {/* Wide atmospheric crimson-orange top-peaked bloom */}
+      <div
+        className={`absolute -inset-3 ${rounded} blur-[18px]`}
+        style={{
+          background:
+            'radial-gradient(ellipse 85% 55% at 50% 6%, rgba(255,155,40,0.95) 0%, rgba(255,62,0,0.72) 42%, rgba(220,24,0,0.34) 72%, rgba(255,40,0,0.22) 100%)'
+        }}
+      />
+      {/* Tight intense molten flare hugging perimeter */}
+      <div
+        className={`absolute -inset-[5px] ${rounded} blur-[6px]`}
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(255,220,130,0.95) 0%, rgba(255,105,15,0.85) 28%, rgba(255,58,0,0.55) 68%, rgba(255,90,20,0.75) 100%)'
+        }}
+      />
+      {/* Razor-sharp incandescent filament rim */}
+      <div
+        className={`absolute -inset-[1.5px] ${rounded}`}
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(255,248,220,1) 0%, rgba(255,132,20,0.95) 22%, rgba(255,64,0,0.78) 65%, rgba(255,115,28,0.9) 100%)'
+        }}
+      />
+    </div>
+  );
+}
+
+/**
  * ZipperCard Component (Masonry View)
  * Left Column (colIdx 0): arrives from LEFT (-125px -> 0px)
  * Middle Column (colIdx 1): STAYS in middle (0px)
@@ -160,10 +197,11 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
       whileHover={{ scale: 1.03 }}
       transition={{ duration: 0.3 }}
       onClick={() => setActivePhoto(photo)}
-      className="group relative rounded-xl overflow-hidden bg-stone-100 dark:bg-neutral-900 shadow-xs hover:shadow-2xl border border-stone-200/70 dark:border-neutral-800/80 cursor-pointer"
+      className="group relative rounded-xl overflow-visible hover:z-30 cursor-pointer"
     >
+      <CardEclipseGlow rounded="rounded-xl" />
       <div
-        className="w-full relative overflow-hidden flex items-center justify-center bg-stone-200/40 dark:bg-neutral-800/40"
+        className="w-full relative rounded-xl overflow-hidden flex items-center justify-center bg-stone-100 dark:bg-neutral-900 shadow-xs group-hover:shadow-2xl dark:group-hover:shadow-[0_0_28px_rgba(255,72,0,0.35)] border border-stone-200/70 dark:border-neutral-800/80 dark:group-hover:border-transparent transition-colors duration-300"
         style={{ aspectRatio: realAspectRatio }}
       >
         <img
@@ -314,16 +352,18 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
       style={{
         x: shiftX,
         y: shiftY,
-        contentVisibility: 'auto',
+        contentVisibility: isHovered ? 'visible' : 'auto',
         containIntrinsicSize: '1px 240px'
       }}
       whileHover={{ scale: 1.05, zIndex: 30 }}
       onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={() => setActivePhoto(photo)}
-      className="group relative rounded-lg overflow-hidden bg-stone-100 dark:bg-neutral-900 shadow-xs hover:shadow-2xl border border-stone-200/70 dark:border-neutral-800/80 cursor-pointer z-10 will-change-transform"
+      className="group relative rounded-lg overflow-visible cursor-pointer z-10 will-change-transform"
     >
+      <CardEclipseGlow rounded="rounded-lg" />
       <div
-        className="w-full relative overflow-hidden flex items-center justify-center bg-stone-200/40 dark:bg-neutral-800/40"
+        className="w-full relative rounded-lg overflow-hidden flex items-center justify-center bg-stone-100 dark:bg-neutral-900 shadow-xs group-hover:shadow-2xl dark:group-hover:shadow-[0_0_24px_rgba(255,72,0,0.35)] border border-stone-200/70 dark:border-neutral-800/80 dark:group-hover:border-transparent transition-colors duration-300"
         style={{ aspectRatio: realAspectRatio }}
       >
         <img

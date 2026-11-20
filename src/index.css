@@ -6,6 +6,7 @@
   :root {
     --font-sans: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-serif: 'Playfair Display', 'Lora', Georgia, serif;
+    --font-brand: 'Cinzel', 'Playfair Display', Georgia, serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     --bg-canvas: #FAF9F6;
     --ink-primary: #121212;
@@ -38,6 +39,14 @@ html.dark section {
 
 .font-editorial {
   font-family: var(--font-serif);
+}
+
+.font-brand {
+  font-family: var(--font-brand);
+}
+
+.font-brand-sub {
+  font-family: 'Outfit', var(--font-sans);
 }
 
 .font-serif-italic {
@@ -133,4 +142,133 @@ html.dark ::-webkit-scrollbar-thumb {
 html.dark .skeleton-shimmer {
   background: linear-gradient(90deg, #141418 25%, #1E1E24 50%, #141418 75%);
   background-size: 200% 100%;
+}
+
+/* Camera Lens Shutter Exposure & Glint */
+@keyframes lens-shutter-exposure {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  38% {
+    transform: scale(1.06);
+    opacity: 0.78;
+  }
+  52% {
+    transform: scale(1.06);
+    opacity: 0.78;
+  }
+  78% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes lens-glint-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-120%) rotate(25deg);
+  }
+  48% {
+    opacity: 0;
+  }
+  68% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(140%) rotate(25deg);
+  }
+}
+
+.lens-photo-actuate {
+  animation: lens-shutter-exposure 760ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.lens-glint-actuate {
+  animation: lens-glint-sweep 760ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lens-photo-actuate,
+  .lens-glint-actuate,
+  .dark-lens-corona-spin,
+  .dark-lens-corona-pulse {
+    animation: none !important;
+  }
+}
+
+/* Dark-Mode Solar Eclipse / Molten Amber Rim Glow */
+@keyframes lens-corona-orbit {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes lens-corona-breathe {
+  0%, 100% {
+    opacity: 0.88;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.045);
+  }
+}
+
+.dark-lens-corona-spin {
+  animation: lens-corona-orbit 9s linear infinite;
+}
+
+.dark-lens-corona-pulse {
+  animation: lens-corona-breathe 4.2s ease-in-out infinite;
+}
+
+/* Custom High-DPI Gloved Hand Pointer (64px CSS size: 64px 1x + 128px 2x Retina) */
+@media (pointer: fine) {
+  html,
+  body {
+    cursor: url('./assets/cursor-hand-64.png') 12 4, auto;
+    cursor: -webkit-image-set(
+      url('./assets/cursor-hand-64.png') 1x,
+      url('./assets/cursor-hand-128.png') 2x
+    ) 12 4, auto;
+    cursor: image-set(
+      url('./assets/cursor-hand-64.png') 1x,
+      url('./assets/cursor-hand-128.png') 2x
+    ) 12 4, auto;
+  }
+
+  a,
+  button,
+  [role='button'],
+  select,
+  summary,
+  .cursor-pointer {
+    cursor: url('./assets/cursor-hand-64.png') 12 4, pointer !important;
+    cursor: -webkit-image-set(
+      url('./assets/cursor-hand-64.png') 1x,
+      url('./assets/cursor-hand-128.png') 2x
+    ) 12 4, pointer !important;
+    cursor: image-set(
+      url('./assets/cursor-hand-64.png') 1x,
+      url('./assets/cursor-hand-128.png') 2x
+    ) 12 4, pointer !important;
+  }
+
+  input[type='text'],
+  input[type='search'],
+  input[type='email'],
+  input[type='password'],
+  input[type='url'],
+  textarea {
+    cursor: text !important;
+  }
 }

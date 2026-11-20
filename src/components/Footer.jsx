@@ -19,11 +19,11 @@ export default function Footer() {
           onClick={() => setIsAboutModalOpen(true)}
           className="flex items-center gap-3 text-left group cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-full overflow-hidden border border-stone-300 dark:border-neutral-700 group-hover:border-[#9A6B38] dark:group-hover:border-[#C89D5C] transition-colors bg-neutral-200 shrink-0">
+          <div className="w-10 h-10 rounded-full overflow-hidden border border-stone-300 dark:border-neutral-700 group-hover:border-[#9A6B38] dark:group-hover:border-[#C89D5C] transition-colors bg-[#FAF9F6] dark:bg-[#121216] p-0.5 flex items-center justify-center shrink-0">
             <img
-              src={FLICKR_CONFIG.AVATAR_URL}
-              alt="Tal Malek"
-              className="w-full h-full object-cover object-[50%_25%]"
+              src={FLICKR_CONFIG.LOGO_URL}
+              alt="Tal Malek Logo"
+              className="w-full h-full object-contain dark:invert"
               onError={(e) => {
                 e.target.style.display = 'none';
               }}

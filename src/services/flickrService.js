@@ -5,12 +5,14 @@
  */
 
 import talMalekAvatar from '../assets/tal-malek.jpg';
+import tmLogo from '../assets/tm-logo.png';
 
 export const FLICKR_CONFIG = {
   USERNAME: 'talmalek',
   USER_NSID: '126120136@N05',
   PROFILE_URL: 'https://www.flickr.com/photos/talmalek/',
-  AVATAR_URL: talMalekAvatar
+  AVATAR_URL: talMalekAvatar,
+  LOGO_URL: tmLogo
 };
 
 export const DEFAULT_ALBUMS = [
