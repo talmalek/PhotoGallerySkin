@@ -91,6 +91,11 @@ export default function LightboxModal() {
     (activePhoto.link || '').includes('goo.gl');
   const openSourceLabel = isGooglePhoto ? 'Open on Google Photos' : 'Open on Flickr';
 
+  const descriptionText = activePhoto.description || 'Captured moment by Tal Malek.';
+  const rtlCount = (descriptionText.match(/[\u0590-\u05FF\u0600-\u06FF]/g) || []).length;
+  const ltrCount = (descriptionText.match(/[A-Za-z]/g) || []).length;
+  const descriptionDir = rtlCount > ltrCount ? 'rtl' : 'ltr';
+
   const toggleZoom = (e) => {
     e.stopPropagation();
     setIsZoomed(!isZoomed);
@@ -308,12 +313,24 @@ export default function LightboxModal() {
                   </button>
                 </div>
 
-                <h3 className="text-xl font-bold text-neutral-900 mb-2 leading-tight">
+                <h3 className="text-xl font-bold text-neutral-900 mb-3 leading-tight">
                   {activePhoto.title}
                 </h3>
-                <p className="text-xs text-neutral-600 leading-relaxed font-light mb-6">
-                  {activePhoto.description || 'Captured moment by Tal Malek.'}
-                </p>
+
+                {/* Photo Description Card */}
+                <div className="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/80 mb-5">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-amber-700 font-bold block mb-1.5">
+                    Description
+                  </span>
+                  <p
+                    dir={descriptionDir}
+                    className={`text-xs sm:text-[13px] text-neutral-800 leading-relaxed whitespace-pre-line break-words ${
+                      descriptionDir === 'rtl' ? 'text-right' : 'text-left'
+                    }`}
+                  >
+                    {descriptionText}
+                  </p>
+                </div>
 
                 {/* Video Media Specs Section */}
                 {activePhoto.isVideo && (

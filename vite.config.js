@@ -99,7 +99,7 @@ function flickrKeyPlugin() {
 
             let html = '';
             gRes.on('data', chunk => html += chunk);
-            gRes.on('end', () => {
+            gRes.on('end', async () => {
               // Extract album title
               let title = 'Google Photos Album';
               const ogTitleMatch = html.match(/<meta property=["']og:title["'] content=["']([^"']+)["']/i);
@@ -107,7 +107,92 @@ function flickrKeyPlugin() {
                 title = ogTitleMatch[1].replace(/·.*$/, '').replace(/📸.*$/, '').trim();
               }
 
-              // Extract video metadata (Google Photos embeds video format and duration under 76647426)
+              // Extract share key from final redirected URL for batchexecute metadata RPC
+              let shareKey = '';
+              try {
+                shareKey = new URL(fetchUrl).searchParams.get('key') || '';
+              } catch {
+                shareKey = '';
+              }
+
+              // Parse structured AF_initDataCallback ds:1 items if present
+              const parsedItems = [];
+              const ds1Match = html.match(/AF_initDataCallback\(\{key:\s*'ds:1',\s*hash:\s*'[^']+',\s*data:(\[[\s\S]*?\])\s*,\s*sideChannel:/);
+              if (ds1Match && ds1Match[1]) {
+                try {
+                  const ds1Data = JSON.parse(ds1Match[1]);
+                  if (Array.isArray(ds1Data?.[1])) {
+                    ds1Data[1].forEach((it) => {
+                      if (Array.isArray(it) && typeof it[0] === 'string' && typeof it[1]?.[0] === 'string') {
+                        parsedItems.push(it);
+                      }
+                    });
+                  }
+                } catch {
+                  // fall back to regex extraction below
+                }
+              }
+
+              // Helper to batch-fetch per-photo description/filename via Google Photos fDcn4b RPC
+              const fetchBatchMeta = (mediaKeys) => new Promise((resolve) => {
+                const map = new Map();
+                if (!shareKey || mediaKeys.length === 0) return resolve(map);
+                const fReqs = mediaKeys.map((mk, i) => ['fDcn4b', JSON.stringify([mk, 1, shareKey]), null, String(i + 1)]);
+                const postBody = new URLSearchParams({ 'f.req': JSON.stringify([fReqs]) }).toString();
+                const rpcReq = https.request({
+                  hostname: 'photos.google.com',
+                  path: '/_/PhotosUi/data/batchexecute?rpcids=fDcn4b',
+                  method: 'POST',
+                  headers: {
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                    'Content-Length': Buffer.byteLength(postBody)
+                  }
+                }, (rpcRes) => {
+                  let body = '';
+                  rpcRes.on('data', c => body += c);
+                  rpcRes.on('end', () => {
+                    for (const line of body.split('\n')) {
+                      if (!line.includes('wrb.fr')) continue;
+                      try {
+                        const arr = JSON.parse(line);
+                        for (const entry of arr) {
+                          if (Array.isArray(entry) && entry[0] === 'wrb.fr' && entry[2]) {
+                            const info = JSON.parse(entry[2]);
+                            const row = info?.[0];
+                            if (Array.isArray(row) && typeof row[0] === 'string') {
+                              map.set(row[0], {
+                                description: typeof row[1] === 'string' ? row[1].trim() : '',
+                                filename: typeof row[2] === 'string' ? row[2].trim() : '',
+                                timestamp: typeof row[3] === 'number' ? row[3] : null,
+                                width: typeof row[6] === 'number' ? row[6] : null,
+                                height: typeof row[7] === 'number' ? row[7] : null
+                              });
+                            }
+                          }
+                        }
+                      } catch {
+                        // ignore malformed chunks
+                      }
+                    }
+                    resolve(map);
+                  });
+                });
+                rpcReq.on('error', () => resolve(map));
+                rpcReq.write(postBody);
+                rpcReq.end();
+              });
+
+              const metaByKey = new Map();
+              if (parsedItems.length > 0 && shareKey) {
+                for (let s = 0; s < parsedItems.length; s += 40) {
+                  const chunkKeys = parsedItems.slice(s, s + 40).map(it => it[0]);
+                  const chunkMeta = await fetchBatchMeta(chunkKeys);
+                  chunkMeta.forEach((v, k) => metaByKey.set(k, v));
+                }
+              }
+
+              // Extract video metadata fallback
               const videoMetaMap = new Map();
               const rawItemMatches = [...html.matchAll(/\["(https:\/\/lh3\.googleusercontent\.com\/pw\/[a-zA-Z0-9_\-]+)",\s*(\d+),\s*(\d+)/g)];
               rawItemMatches.forEach(m => {
@@ -132,13 +217,38 @@ function flickrKeyPlugin() {
                 }
               });
 
-              // Extract photo CDN URLs
-              const matches = [...html.matchAll(/(https:\/\/lh3\.googleusercontent\.com\/pw\/[a-zA-Z0-9_\-]+)/g)].map(m => m[1]);
-              const uniqueUrls = [...new Set(matches)];
+              const sourceList = parsedItems.length > 0
+                ? parsedItems.map((it) => ({
+                    mediaKey: it[0],
+                    baseUrl: it[1][0],
+                    width: it[1][1] || 4,
+                    height: it[1][2] || 3,
+                    timestamp: typeof it[2] === 'number' ? it[2] : null
+                  }))
+                : [...new Set([...html.matchAll(/(https:\/\/lh3\.googleusercontent\.com\/pw\/[a-zA-Z0-9_\-]+)/g)].map(m => m[1]))].map((baseUrl, i) => ({
+                    mediaKey: String(i),
+                    baseUrl,
+                    width: 4,
+                    height: 3,
+                    timestamp: null
+                  }));
 
-              const photos = uniqueUrls.map((baseUrl, idx) => {
-                const photoId = `gphoto_${idx}`;
-                const photoTitle = `${title} - Photo ${idx + 1}`;
+              const photos = sourceList.map((entry, idx) => {
+                const { mediaKey, baseUrl } = entry;
+                const meta = metaByKey.get(mediaKey) || {};
+                const w = meta.width || entry.width || 4;
+                const h = meta.height || entry.height || 3;
+                const cleanTitle = meta.filename
+                  ? meta.filename.replace(/\.(webp|jpg|jpeg|png|gif|heic|mp4|mov)$/i, '').trim()
+                  : `${title} - Photo ${idx + 1}`;
+                const description = meta.description || `Captured moment from Google Photos album: ${title}`;
+                const hashTags = [...description.matchAll(/#([A-Za-z0-9_\-]+)/g)].map(m => m[1]);
+                const tags = [...new Set(['Google Photos', title, ...hashTags])];
+                const ts = meta.timestamp || entry.timestamp;
+                const dateTaken = ts
+                  ? new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                  : '2024';
+
                 const thumbUrl = `${baseUrl}=w800-h600`;
                 const mediumUrl = `${baseUrl}=w1200-h900`;
                 const largeUrl = `${baseUrl}=w1600`;
@@ -147,8 +257,9 @@ function flickrKeyPlugin() {
                 const isVideo = !!videoInfo;
 
                 return {
-                  id: photoId,
-                  title: photoTitle,
+                  id: `gphoto_${mediaKey}`,
+                  mediaKey,
+                  title: cleanTitle,
                   nanoUrl: `${baseUrl}=w150-h150-c`,
                   smallUrl: `${baseUrl}=w400-h300`,
                   small320Url: `${baseUrl}=w320`,
@@ -161,12 +272,12 @@ function flickrKeyPlugin() {
                   url_b: largeUrl,
                   url_k: fullUrl,
                   url_o: `${baseUrl}=d`,
-                  aspectRatio: '4/3',
+                  aspectRatio: `${w}/${h}`,
                   link: targetUrl,
                   author: 'Tal Malek',
-                  dateTaken: '2024',
-                  description: `Captured moment from Google Photos album: ${title}`,
-                  tags: ['Google Photos', title],
+                  dateTaken,
+                  description,
+                  tags,
                   source: 'google',
                   albumTitle: title,
                   isVideo,

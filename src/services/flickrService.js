@@ -225,7 +225,7 @@ export async function fetchPublicPhotostream(page = 1, customApiKey = '') {
 
   // 1. Try Direct Flickr REST API (flickr.people.getPublicPhotos) - per_page=500
   try {
-    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,url_q,url_s,url_m,url_n&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500&page=${page}`;
+    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&user_id=${FLICKR_CONFIG.USER_NSID}&extras=description,date_taken,tags,url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,url_q,url_s,url_m,url_n&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500&page=${page}`;
     const res = await fetch(apiUrl);
     const data = await res.json();
 
@@ -325,7 +325,7 @@ export async function fetchAlbumPhotos(albumId, customApiKey = '') {
 
   // 1. REST API Album Query (flickr.photosets.getPhotos)
   try {
-    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${FLICKR_CONFIG.USER_NSID}&extras=url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,url_q,url_s,url_m,url_n&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500`;
+    const apiUrl = `https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=${albumId}&user_id=${FLICKR_CONFIG.USER_NSID}&extras=description,date_taken,tags,url_z,url_c,url_b,url_k,height_z,width_z,height_c,width_c,height_b,width_b,height_n,width_n,url_q,url_s,url_m,url_n&format=json&nojsoncallback=1&api_key=${apiKey}&per_page=500`;
     const res = await fetch(apiUrl);
     const data = await res.json();
 

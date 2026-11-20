@@ -179,13 +179,25 @@ export function FlickrProvider({ children }) {
     }
   };
 
+  // Reset to page 1 when search query changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
   const filteredPhotos = photos.filter(photo => {
-    if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    const titleMatch = (photo.title || '').toLowerCase().includes(query);
-    const tagMatch = Array.isArray(photo.tags) && photo.tags.some(t => t.toLowerCase().includes(query));
-    const descMatch = (photo.description || '').toLowerCase().includes(query);
-    return titleMatch || tagMatch || descMatch;
+    const trimmed = (searchQuery || '').trim().toLowerCase();
+    if (!trimmed) return true;
+    const terms = trimmed.split(/\s+/).filter(Boolean);
+    const haystack = [
+      photo.title || '',
+      photo.description || '',
+      photo.dateTaken || '',
+      photo.albumTitle || '',
+      Array.isArray(photo.tags) ? photo.tags.join(' ') : ''
+    ]
+      .join(' ')
+      .toLowerCase();
+    return terms.every(term => haystack.includes(term));
   });
 
   return (
