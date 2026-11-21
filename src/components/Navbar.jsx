@@ -172,10 +172,10 @@ export default function Navbar() {
         >
           {/* Protruding Camera Lens Medallion */}
           <div className="relative self-start mt-1.5 sm:mt-2 -mb-5 sm:-mb-7 z-20 shrink-0 transform-gpu">
-            {/* Dark-Mode Only: Multi-Layer Molten Amber / Solar-Eclipse Rim Glow */}
+            {/* Multi-Layer Molten Amber / Solar-Eclipse Rim Glow */}
             <div
               aria-hidden="true"
-              className="pointer-events-none hidden dark:block absolute inset-0 rounded-full dark-lens-corona-pulse"
+              className="pointer-events-none absolute inset-0 rounded-full dark-lens-corona-pulse"
             >
               {/* Layer 1: Wide atmospheric crimson-orange corona bloom */}
               <div

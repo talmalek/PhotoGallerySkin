@@ -113,6 +113,44 @@ html.dark .glass-pill {
   animation-play-state: paused;
 }
 
+/* Custom Accessible Scrollbar for Dropdown Menus & Panels */
+.dropdown-scroll {
+  --dropdown-scroll-thumb: rgba(154, 107, 56, 0.45);
+  --dropdown-scroll-track: rgba(0, 0, 0, 0.05);
+  scrollbar-width: thin;
+  scrollbar-color: var(--dropdown-scroll-thumb) var(--dropdown-scroll-track);
+  overscroll-behavior: contain;
+}
+
+html.dark .dropdown-scroll {
+  --dropdown-scroll-thumb: rgba(255, 122, 24, 0.55);
+  --dropdown-scroll-track: rgba(255, 255, 255, 0.06);
+}
+
+.dropdown-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-track {
+  background: var(--dropdown-scroll-track);
+  border-radius: 9999px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-thumb {
+  background: var(--dropdown-scroll-thumb);
+  border-radius: 9999px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-brass);
+}
+
+@supports not (scrollbar-color: auto) {
+  .dropdown-scroll {
+    scrollbar-width: auto;
+  }
+}
+
 /* Custom Scrollbars: Legacy WebKit/Blink fallback when standard scrollbar-color is unsupported */
 @supports not (scrollbar-color: auto) {
   :root {
@@ -242,44 +280,50 @@ html.dark .skeleton-shimmer {
   animation: lens-corona-breathe 4.2s ease-in-out infinite;
 }
 
-/* Custom High-DPI Gloved Hand Pointer (64px CSS size: 64px 1x + 128px 2x Retina) */
-@media (pointer: fine) {
-  html,
-  body {
-    cursor: url('./assets/cursor-hand-64.png') 12 4, auto;
-    cursor: -webkit-image-set(
-      url('./assets/cursor-hand-64.png') 1x,
-      url('./assets/cursor-hand-128.png') 2x
-    ) 12 4, auto;
-    cursor: image-set(
-      url('./assets/cursor-hand-64.png') 1x,
-      url('./assets/cursor-hand-128.png') 2x
-    ) 12 4, auto;
-  }
+/* Pinterest-style Cursor System:
+   - Regular default arrow on page canvas and non-interactive regions
+   - Pointer hand strictly when hovering over clickable/interactive objects
+   - Text I-beam cursor for typing surfaces
+   - Not-allowed cursor for disabled elements
+*/
+html,
+body {
+  cursor: default;
+}
 
+:where(
   a,
   button,
   [role='button'],
+  input[type='button'],
+  input[type='submit'],
+  input[type='reset'],
+  input[type='checkbox'],
+  input[type='radio'],
   select,
   summary,
-  .cursor-pointer {
-    cursor: url('./assets/cursor-hand-64.png') 12 4, pointer !important;
-    cursor: -webkit-image-set(
-      url('./assets/cursor-hand-64.png') 1x,
-      url('./assets/cursor-hand-128.png') 2x
-    ) 12 4, pointer !important;
-    cursor: image-set(
-      url('./assets/cursor-hand-64.png') 1x,
-      url('./assets/cursor-hand-128.png') 2x
-    ) 12 4, pointer !important;
-  }
+  .cursor-pointer
+):not(:disabled, [aria-disabled='true']) {
+  cursor: pointer;
+}
 
-  input[type='text'],
-  input[type='search'],
-  input[type='email'],
-  input[type='password'],
-  input[type='url'],
-  textarea {
-    cursor: text !important;
-  }
+button:disabled,
+[disabled],
+[aria-disabled='true'],
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+input:where(
+  [type='text'],
+  [type='search'],
+  [type='email'],
+  [type='password'],
+  [type='url'],
+  [type='tel'],
+  [type='number']
+),
+textarea,
+[contenteditable='true'] {
+  cursor: text;
 }

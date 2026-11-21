@@ -65,7 +65,7 @@ export default function AlbumDropdown() {
             animate={{ opacity: 1, y: 10, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute left-1/2 -translate-x-1/2 mt-1 w-80 sm:w-[348px] rounded-2xl p-2 shadow-2xl border border-stone-200 dark:border-[#FF7A18]/30 bg-[#FAF9F6]/98 dark:bg-[#0D0D11]/95 dark:shadow-[0_24px_56px_-12px_rgba(0,0,0,0.92),0_0_26px_rgba(255,95,15,0.2)] backdrop-blur-2xl z-50 overflow-hidden"
+            className="absolute left-1/2 -translate-x-1/2 mt-1 w-80 sm:w-[348px] max-h-[85vh] flex flex-col rounded-2xl p-2 shadow-2xl border border-stone-200 dark:border-[#FF7A18]/30 bg-[#FAF9F6]/98 dark:bg-[#0D0D11]/95 dark:shadow-[0_24px_56px_-12px_rgba(0,0,0,0.92),0_0_26px_rgba(255,95,15,0.2)] backdrop-blur-2xl z-50 overflow-hidden"
           >
             {/* Subtle top molten ember hairline (Dark Mode) */}
             <div
@@ -74,7 +74,7 @@ export default function AlbumDropdown() {
             />
 
             {/* Flickr Section Header */}
-            <div className="px-3 py-2 text-[10px] font-mono uppercase tracking-[0.2em] text-stone-400 dark:text-neutral-400 flex items-center justify-between border-b border-stone-200/70 dark:border-white/[0.07] mb-1.5">
+            <div className="px-3 py-2 text-[10px] font-mono uppercase tracking-[0.2em] text-stone-400 dark:text-neutral-400 flex items-center justify-between border-b border-stone-200/70 dark:border-white/[0.07] mb-1.5 shrink-0">
               <span className="flex items-center gap-1.5">
                 <Layers className="w-3 h-3 text-[#9A6B38] dark:text-[#FF8C2A]" />
                 Flickr Collections
@@ -82,7 +82,7 @@ export default function AlbumDropdown() {
               <span className="text-[#9A6B38] dark:text-[#FFB35C]">{albums.length}</span>
             </div>
 
-            <div className="max-h-56 overflow-y-auto space-y-1 pr-0.5">
+            <div className="max-h-52 overflow-y-auto dropdown-scroll space-y-1 pr-1.5 overscroll-contain">
               {albums.map((album) => {
                 const isSelected = album.id === activeAlbum;
                 return (
@@ -114,12 +114,12 @@ export default function AlbumDropdown() {
             {/* Google Photos Section Header */}
             {googleAlbums.length > 0 && (
               <>
-                <div className="mt-2.5 px-3 py-2 text-[10px] font-mono uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400 flex items-center justify-between border-t border-b border-stone-200/70 dark:border-white/[0.07] mb-1.5">
+                <div className="mt-2.5 px-3 py-2 text-[10px] font-mono uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-400 flex items-center justify-between border-t border-b border-stone-200/70 dark:border-white/[0.07] mb-1.5 shrink-0">
                   <span>Google Photos</span>
                   <span>{googleAlbums.length}</span>
                 </div>
 
-                <div className="max-h-44 overflow-y-auto space-y-1 pr-0.5">
+                <div className="max-h-48 overflow-y-auto dropdown-scroll space-y-1 pr-1.5 overscroll-contain">
                   {googleAlbums.map((album) => {
                     const isSelected = album.id === activeAlbum;
                     return (

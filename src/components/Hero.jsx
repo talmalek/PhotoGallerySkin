@@ -92,9 +92,15 @@ export default function Hero() {
 
           {/* Compact Stats + Portfolio Trigger */}
           <div className="flex items-center gap-3 text-[11px] font-mono text-stone-500 dark:text-neutral-400">
-            <span className="tabular-nums">{allPhotosCount || 635} Works</span>
+            <span className="tabular-nums">
+              {activeAlbum === 'all'
+                ? `${allPhotosCount || 635} Works`
+                : `${photos.length || currentAlbum?.count || 0} Works`}
+            </span>
             <span className="text-stone-300 dark:text-neutral-700">·</span>
-            <span className="tabular-nums">{albums.length - 1} Series</span>
+            <span className="tabular-nums">
+              {activeAlbum === 'all' ? `${albums.length - 1} Series` : '1 Series'}
+            </span>
             <span className="text-stone-300 dark:text-neutral-700">·</span>
             <button
               type="button"
