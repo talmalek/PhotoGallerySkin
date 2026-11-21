@@ -40,37 +40,88 @@ export function FlickrProvider({ children }) {
     return saveCentralGoogleAlbums(newAlbums);
   };
   
-  // Lightbox & UI States - Default to CLEAN WHITE THEME (darkMode = false) and MASONRY view mode
+  // Lightbox & UI States - Synchronized with <meta name="color-scheme"> and system preference
   const [activePhoto, setActivePhoto] = useState(null);
   const [viewMode, setViewModeState] = useState('masonry');
-  const [darkMode, setDarkModeState] = useState(() => localStorage.getItem('flickr_dark_mode') === 'true');
+  const [colorSchemeOverride, setColorSchemeOverride] = useState(() => {
+    try {
+      const stored = localStorage.getItem('color-scheme');
+      if (stored === 'light' || stored === 'dark') return stored;
+      const legacy = localStorage.getItem('flickr_dark_mode');
+      if (legacy === 'true') return 'dark';
+      if (legacy === 'false') return 'light';
+    } catch {
+      // Ignore storage access errors
+    }
+    return null;
+  });
+  const [systemPrefersDark, setSystemPrefersDark] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
 
-  const setDarkMode = (val) => {
-    setDarkModeState(val);
-    localStorage.setItem('flickr_dark_mode', val ? 'true' : 'false');
-  };
+  const darkMode = colorSchemeOverride ? colorSchemeOverride === 'dark' : systemPrefersDark;
+
+  const setDarkMode = useCallback((val) => {
+    const target = val ? 'dark' : 'light';
+    const currentSystem = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+
+    if (target === currentSystem) {
+      setColorSchemeOverride(null);
+      try {
+        localStorage.removeItem('color-scheme');
+        localStorage.removeItem('flickr_dark_mode');
+      } catch {
+        // Ignore storage access errors
+      }
+    } else {
+      setColorSchemeOverride(target);
+      try {
+        localStorage.setItem('color-scheme', target);
+        localStorage.removeItem('flickr_dark_mode');
+      } catch {
+        // Ignore storage access errors
+      }
+    }
+  }, []);
 
   const setViewMode = (mode) => {
     setViewModeState(mode);
     localStorage.setItem('flickr_view_mode', mode);
   };
 
-  // Toggle dark/light class on root html and body
+  // Track OS scheme changes and cross-tab storage updates without retroactively erasing pinned overrides
   useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleMediaChange = (e) => setSystemPrefersDark(e.matches);
+    const handleStorage = (e) => {
+      if (e.key === 'color-scheme') {
+        setColorSchemeOverride(e.newValue === 'light' || e.newValue === 'dark' ? e.newValue : null);
+      }
+    };
+    mq.addEventListener('change', handleMediaChange);
+    window.addEventListener('storage', handleStorage);
+    return () => {
+      mq.removeEventListener('change', handleMediaChange);
+      window.removeEventListener('storage', handleStorage);
+    };
+  }, []);
+
+  // Synchronize <meta name="color-scheme"> and root classes
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="color-scheme"]');
+    if (meta) {
+      meta.content = colorSchemeOverride ?? 'light dark';
+    }
     const root = document.documentElement;
     const body = document.body;
-    if (darkMode) {
-      root.classList.add('dark');
-      root.classList.remove('light');
-      body.classList.add('dark');
-      body.classList.remove('light');
-    } else {
-      root.classList.remove('dark');
-      root.classList.add('light');
-      body.classList.remove('dark');
-      body.classList.add('light');
-    }
-  }, [darkMode]);
+    root.classList.toggle('dark', darkMode);
+    root.classList.toggle('light', !darkMode);
+    body.classList.toggle('dark', darkMode);
+    body.classList.toggle('light', !darkMode);
+  }, [colorSchemeOverride, darkMode]);
 
   // Pagination State - Options: 50, 100, 200 (Default: 50)
   const [pageSize, setPageSizeState] = useState(() => {

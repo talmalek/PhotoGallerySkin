@@ -131,35 +131,26 @@ export async function extractFreshFlickrApiKey() {
   ];
 
   const fetchCandidatesFromSource = async (source) => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 10000);
+    const res = await fetch(source.url, {
+      signal: AbortSignal.timeout(10000),
+      headers: source.headers || {}
+    });
+    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+    const html = await res.text();
 
-    try {
-      const res = await fetch(source.url, {
-        signal: controller.signal,
-        headers: source.headers || {}
-      });
-      clearTimeout(timer);
-      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-      const html = await res.text();
+    const keyMatches = [
+      ...html.matchAll(/site_key\s*[:=]\s*["']([a-f0-9]{32})["']/gi),
+      ...html.matchAll(/api_key\s*[:=]\s*["']([a-f0-9]{32})["']/gi),
+      ...html.matchAll(/root\.YUI_config\.flickr\.api\.site_key\s*=\s*["']([a-f0-9]{32})["']/gi),
+      ...html.matchAll(/"([a-f0-9]{32})"/gi)
+    ].map(m => m[1]);
 
-      const keyMatches = [
-        ...html.matchAll(/site_key\s*[:=]\s*["']([a-f0-9]{32})["']/gi),
-        ...html.matchAll(/api_key\s*[:=]\s*["']([a-f0-9]{32})["']/gi),
-        ...html.matchAll(/root\.YUI_config\.flickr\.api\.site_key\s*=\s*["']([a-f0-9]{32})["']/gi),
-        ...html.matchAll(/"([a-f0-9]{32})"/gi)
-      ].map(m => m[1]);
+    const uniqueCandidates = [...new Set(keyMatches)];
 
-      const uniqueCandidates = [...new Set(keyMatches)];
-
-      for (const k of uniqueCandidates) {
-        if (await testApiKey(k)) return k;
-      }
-      throw new Error('No valid key extracted from source');
-    } catch (err) {
-      clearTimeout(timer);
-      throw err;
+    for (const k of uniqueCandidates) {
+      if (await testApiKey(k)) return k;
     }
+    throw new Error('No valid key extracted from source');
   };
 
   const tasks = sources.map(source => fetchCandidatesFromSource(source));

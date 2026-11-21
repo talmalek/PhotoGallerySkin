@@ -34,8 +34,11 @@ function StarfieldCanvas({ cursorX, cursorY }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+
     const ctx = canvas.getContext('2d');
-    let animationFrameId;
+    let animationFrameId = null;
+    let isSkipped = false;
 
     const handleResize = () => {
       if (!canvas) return;
@@ -58,6 +61,11 @@ function StarfieldCanvas({ cursorX, cursorY }) {
     }));
 
     const render = () => {
+      if (isSkipped || document.hidden) {
+        animationFrameId = null;
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const cx = cursorX ? cursorX.get() : -9999;
@@ -88,16 +96,77 @@ function StarfieldCanvas({ cursorX, cursorY }) {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    const startAnimation = () => {
+      if (animationFrameId === null && !isSkipped && !document.hidden) {
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+
+    const stopAnimation = () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopAnimation();
+      } else {
+        startAnimation();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Pause background rAF loop when browser skips off-screen rendering
+    const supportsContentVisibility = 'contentVisibility' in document.documentElement.style;
+    let observer = null;
+    const handleContentVisibilityChange = (event) => {
+      isSkipped = Boolean(event.skipped);
+      if (isSkipped) {
+        stopAnimation();
+      } else {
+        startAnimation();
+      }
+    };
+
+    if (supportsContentVisibility) {
+      canvas.addEventListener('contentvisibilityautostatechange', handleContentVisibilityChange);
+    } else if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.some((entry) => entry.isIntersecting);
+          isSkipped = !visible;
+          if (isSkipped) {
+            stopAnimation();
+          } else {
+            startAnimation();
+          }
+        },
+        { rootMargin: '200px' }
+      );
+      observer.observe(canvas);
+    }
+
+    startAnimation();
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      stopAnimation();
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (supportsContentVisibility) {
+        canvas.removeEventListener('contentvisibilityautostatechange', handleContentVisibilityChange);
+      }
+      if (observer) observer.disconnect();
     };
   }, [cursorX, cursorY, darkMode]);
 
   return (
     <canvas
       ref={canvasRef}
+      style={{
+        contentVisibility: 'auto',
+        containIntrinsicSize: 'auto none auto 500px'
+      }}
       className={`absolute inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-700 ${
         darkMode ? 'opacity-80' : 'opacity-35'
       }`}
@@ -190,10 +259,23 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
   const y = useTransform(scrollYProgress, [0, 1], [initialY, 0]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [0, 1]);
 
+  const isLcpCandidate = globalIdx === 0;
+  const isBelowFold = globalIdx >= 6;
+
   return (
     <motion.div
       ref={cardRef}
-      style={{ x, y, opacity }}
+      style={{
+        x,
+        y,
+        opacity,
+        ...(isBelowFold
+          ? {
+              contentVisibility: 'auto',
+              containIntrinsicSize: 'auto none auto 360px'
+            }
+          : {})
+      }}
       whileHover={{ scale: 1.03 }}
       transition={{ duration: 0.3 }}
       onClick={() => setActivePhoto(photo)}
@@ -207,7 +289,8 @@ const ZipperCard = memo(function ZipperCard({ photo, globalIdx, colIdx, setActiv
         <img
           src={photo.mediumUrl || photo.thumbUrl}
           alt={photo.title}
-          loading="lazy"
+          loading={isLcpCandidate ? undefined : 'lazy'}
+          fetchPriority={isLcpCandidate ? 'high' : undefined}
           referrerPolicy="no-referrer"
           onLoad={handleImageLoad}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
@@ -343,6 +426,9 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
   const shiftX = useSpring(rawShiftX, { stiffness: 180, damping: 24 });
   const shiftY = useSpring(rawShiftY, { stiffness: 180, damping: 24 });
 
+  const isLcpCandidate = globalIdx === 0;
+  const isBelowFold = globalIdx >= 6;
+
   return (
     <motion.div
       ref={cardRef}
@@ -352,8 +438,12 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
       style={{
         x: shiftX,
         y: shiftY,
-        contentVisibility: isHovered ? 'visible' : 'auto',
-        containIntrinsicSize: '1px 240px'
+        ...(isBelowFold && !isHovered
+          ? {
+              contentVisibility: 'auto',
+              containIntrinsicSize: 'auto none auto 240px'
+            }
+          : {})
       }}
       whileHover={{ scale: 1.05, zIndex: 30 }}
       onMouseEnter={() => setIsHovered(true)}
@@ -369,7 +459,8 @@ const MatrixCard = memo(function MatrixCard({ photo, globalIdx, cursorX, cursorY
         <img
           src={currentSrc}
           alt={photo.title}
-          loading="lazy"
+          loading={isLcpCandidate ? undefined : 'lazy'}
+          fetchPriority={isLcpCandidate ? 'high' : undefined}
           decoding="async"
           referrerPolicy="no-referrer"
           onLoad={handleImageLoad}

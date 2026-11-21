@@ -7,6 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="referrer" content="no-referrer" />
     <meta name="color-scheme" content="light dark" />
+    <script>
+      try {
+        const stored = localStorage.getItem('color-scheme');
+        const legacy = localStorage.getItem('flickr_dark_mode');
+        const scheme = stored === 'light' || stored === 'dark'
+          ? stored
+          : legacy === 'true'
+            ? 'dark'
+            : 'light dark';
+        const meta = document.querySelector('meta[name="color-scheme"]');
+        if (meta) meta.content = scheme;
+        const isDark = scheme === 'dark' || (scheme === 'light dark' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', isDark);
+        document.documentElement.classList.toggle('light', !isDark);
+      } catch {}
+    </script>
     <title>Tal Malek Photography</title>
     <meta name="description" content="Official photography portfolio of Tal Malek. Fine art, urban, landscape, and nature photography direct from Flickr and Google Photos collections." />
     

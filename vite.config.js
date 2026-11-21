@@ -117,10 +117,15 @@ function flickrKeyPlugin() {
 
               // Parse structured AF_initDataCallback ds:1 items if present
               const parsedItems = [];
+              let albumCoverBaseUrl = '';
               const ds1Match = html.match(/AF_initDataCallback\(\{key:\s*'ds:1',\s*hash:\s*'[^']+',\s*data:(\[[\s\S]*?\])\s*,\s*sideChannel:/);
               if (ds1Match && ds1Match[1]) {
                 try {
                   const ds1Data = JSON.parse(ds1Match[1]);
+                  const ds1Cover = ds1Data?.[3]?.[4]?.[0];
+                  if (typeof ds1Cover === 'string' && ds1Cover.startsWith('https://lh3.googleusercontent.com/')) {
+                    albumCoverBaseUrl = ds1Cover.replace(/=[^=/?#]+$/, '');
+                  }
                   if (Array.isArray(ds1Data?.[1])) {
                     ds1Data[1].forEach((it) => {
                       if (Array.isArray(it) && typeof it[0] === 'string' && typeof it[1]?.[0] === 'string') {
@@ -130,6 +135,19 @@ function flickrKeyPlugin() {
                   }
                 } catch {
                   // fall back to regex extraction below
+                }
+              }
+
+              // Fallback to og:image meta tag for album cover
+              if (!albumCoverBaseUrl) {
+                const ogImgMatch =
+                  html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+                  html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+                if (ogImgMatch && ogImgMatch[1]) {
+                  const rawCover = ogImgMatch[1].replace(/&amp;/g, '&').trim();
+                  albumCoverBaseUrl = rawCover.startsWith('https://lh3.googleusercontent.com/')
+                    ? rawCover.replace(/=[^=/?#]+$/, '')
+                    : rawCover;
                 }
               }
 
@@ -289,12 +307,18 @@ function flickrKeyPlugin() {
                 };
               });
 
+              const coverUrl = albumCoverBaseUrl
+                ? (albumCoverBaseUrl.startsWith('https://lh3.googleusercontent.com/')
+                    ? `${albumCoverBaseUrl}=w800-h600`
+                    : albumCoverBaseUrl)
+                : (photos[0] ? photos[0].thumbUrl : '');
+
               res.setHeader('Content-Type', 'application/json');
               res.end(JSON.stringify({
                 stat: 'ok',
                 title,
                 count: photos.length,
-                coverUrl: photos[0] ? photos[0].thumbUrl : '',
+                coverUrl,
                 photos
               }));
             });

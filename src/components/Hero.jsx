@@ -159,7 +159,8 @@ export default function Hero() {
                   <img
                     src={photo.thumbUrl}
                     alt={photo.title}
-                    loading="lazy"
+                    loading={index >= 5 ? 'lazy' : undefined}
+                    fetchPriority={index >= 5 ? 'low' : undefined}
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />

@@ -47,14 +47,11 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
 
   for (const proxy of proxies) {
     try {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 12000);
       const res = await fetch(proxy.url, {
-        signal: controller.signal,
+        signal: AbortSignal.timeout(12000),
         headers: proxy.headers || {},
         cache: 'no-store'
       });
-      clearTimeout(timer);
 
       if (res.ok) {
         const text = await res.text();
@@ -66,6 +63,32 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
         const rawTitle = jinaTitleMatch ? jinaTitleMatch[1] : (ogTitleMatch ? ogTitleMatch[1] : '');
         if (rawTitle) {
           title = rawTitle.replace(/·.*$/, '').replace(/📸.*$/, '').trim();
+        }
+
+        // Extract configured album cover from ds:1 metadata or og:image
+        let albumCoverBaseUrl = '';
+        const ds1Match = text.match(/AF_initDataCallback\(\{key:\s*'ds:1',\s*hash:\s*'[^']+',\s*data:(\[[\s\S]*?\])\s*,\s*sideChannel:/);
+        if (ds1Match && ds1Match[1]) {
+          try {
+            const ds1Data = JSON.parse(ds1Match[1]);
+            const ds1Cover = ds1Data?.[3]?.[4]?.[0];
+            if (typeof ds1Cover === 'string' && ds1Cover.startsWith('https://lh3.googleusercontent.com/')) {
+              albumCoverBaseUrl = ds1Cover.replace(/=[^=/?#]+$/, '');
+            }
+          } catch {
+            // fall back to og:image below
+          }
+        }
+        if (!albumCoverBaseUrl) {
+          const ogImgMatch =
+            text.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+            text.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+          if (ogImgMatch && ogImgMatch[1]) {
+            const rawCover = ogImgMatch[1].replace(/&amp;/g, '&').trim();
+            albumCoverBaseUrl = rawCover.startsWith('https://lh3.googleusercontent.com/')
+              ? rawCover.replace(/=[^=/?#]+$/, '')
+              : rawCover;
+          }
         }
 
         // Extract video metadata (Google Photos embeds video format and duration under 76647426)
@@ -140,11 +163,17 @@ export async function fetchGoogleSharedAlbum(shareUrl) {
             };
           });
 
+          const coverUrl = albumCoverBaseUrl
+            ? (albumCoverBaseUrl.startsWith('https://lh3.googleusercontent.com/')
+                ? `${albumCoverBaseUrl}=w800-h600`
+                : albumCoverBaseUrl)
+            : (photos[0] ? photos[0].thumbUrl : '');
+
           return {
             stat: 'ok',
             title,
             count: photos.length,
-            coverUrl: photos[0] ? photos[0].thumbUrl : '',
+            coverUrl,
             photos
           };
         }
@@ -165,13 +194,10 @@ const CENTRAL_STORAGE_URL = 'https://kvdb.io/6NWVNGFdq5TnAtvXyZzRKb/google_album
  */
 export async function fetchCentralGoogleAlbums() {
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
     const res = await fetch(CENTRAL_STORAGE_URL, {
-      signal: controller.signal,
+      signal: AbortSignal.timeout(6000),
       cache: 'no-store'
     });
-    clearTimeout(timer);
 
     if (res.ok) {
       const data = await res.json();
@@ -193,17 +219,14 @@ export async function saveCentralGoogleAlbums(albums) {
   saveGoogleAlbumsToStorage(albums);
 
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(CENTRAL_STORAGE_URL, {
       method: 'POST',
       body: JSON.stringify(albums),
-      signal: controller.signal,
+      signal: AbortSignal.timeout(8000),
       headers: {
         'Content-Type': 'application/json'
       }
     });
-    clearTimeout(timer);
     return res.ok;
   } catch (e) {
     console.warn('[GooglePhotosService] Failed to sync albums to central cloud store:', e);

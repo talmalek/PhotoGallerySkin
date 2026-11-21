@@ -255,9 +255,17 @@ export default function GooglePhotosSettingsModal() {
 
                 <form onSubmit={handlePinSubmit} className="w-full max-w-xs space-y-4">
                   <div className="relative">
+                    <label htmlFor="admin-passcode" className="sr-only">
+                      Admin passcode
+                    </label>
                     <input
+                      id="admin-passcode"
+                      name="password"
                       type="password"
+                      autoComplete="current-password"
                       inputMode="numeric"
+                      enterKeyHint="done"
+                      required
                       maxLength={8}
                       autoFocus
                       value={pinInput}

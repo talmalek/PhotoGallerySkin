@@ -4,13 +4,26 @@
 
 @layer base {
   :root {
+    color-scheme: light dark;
     --font-sans: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-serif: 'Playfair Display', 'Lora', Georgia, serif;
     --font-brand: 'Cinzel', 'Playfair Display', Georgia, serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    --bg-canvas: #FAF9F6;
-    --ink-primary: #121212;
-    --accent-brass: #9A6B38;
+    --bg-canvas: light-dark(#FAF9F6, #08080A);
+    --ink-primary: light-dark(#121212, #F2F0EC);
+    --accent-brass: light-dark(#9A6B38, #C89D5C);
+    --scrollbar-thumb: light-dark(#8C857B, #5C5C68);
+    --scrollbar-track: light-dark(#F3F1EC, #111114);
+    --scrollbar-thumb-hover: var(--accent-brass);
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
+
+    &:has(> head > meta[name="color-scheme"][content="dark"]) {
+      color-scheme: dark;
+    }
+    &:has(> head > meta[name="color-scheme"][content="light"]) {
+      color-scheme: light;
+    }
   }
 
   html.dark {
@@ -100,31 +113,29 @@ html.dark .glass-pill {
   animation-play-state: paused;
 }
 
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
+/* Custom Scrollbars: Legacy WebKit/Blink fallback when standard scrollbar-color is unsupported */
+@supports not (scrollbar-color: auto) {
+  :root {
+    scrollbar-width: auto;
+  }
 
-::-webkit-scrollbar-track {
-  background: #F3F1EC;
-}
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 
-html.dark ::-webkit-scrollbar-track {
-  background: #111114;
-}
+  ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
 
-::-webkit-scrollbar-thumb {
-  background: #D4CFC6;
-  border-radius: 3px;
-}
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+  }
 
-html.dark ::-webkit-scrollbar-thumb {
-  background: #2E2E34;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #9A6B38;
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
 }
 
 /* Skeleton loader */
